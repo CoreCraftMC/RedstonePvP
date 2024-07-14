@@ -1,0 +1,28 @@
+name: '${name}'
+main: '${group}.RedstonePvP'
+
+version: '${version}'
+api-version: '${apiVersion}'
+description: '${description}'
+website: '${website}'
+
+folia-supported: true
+
+dependencies:
+  server:
+    FancyHolograms:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    PlaceholderAPI:
+     load: BEFORE
+     required: false
+     join-classpath: true
+    Oraxen:
+     load: BEFORE
+     required: false
+     join-classpath: true
+    HeadDatabase:
+      load: BEFORE
+      required: false
+      join-classpath: true
