@@ -1,35 +1,40 @@
-package com.ryderbelserion.redstonepvp.command;
+package com.ryderbelserion.redstonepvp.command.subs;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
+import com.ryderbelserion.redstonepvp.config.ConfigManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
-public class BaseCommand extends Command {
+public class CommandReload extends Command {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public void execute(CommandContext<CommandSourceStack> stack) {
-        stack.getSource().getSender().sendMessage("This is the base command.");
+    public void execute(final CommandContext<CommandSourceStack> stack) {
+        ConfigManager.refresh();
+
+        //todo() add reload message
     }
 
     @Override
-    public String getPermission() {
-        return "redstonepvp.access";
+    public final String getPermission() {
+        return "redstonepvp.reload";
     }
 
     @Override
-    public LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("redstonepvp").executes(context -> {
-            execute(context);
+    public final LiteralCommandNode<CommandSourceStack> literal() {
+        return Commands.literal("reload")
+                .requires(source -> source.getSender().hasPermission(getPermission()))
+                .executes(context -> {
+                    execute(context);
 
-            return 1;
-        }).build();
+                    return 1;
+                }).build();
     }
 
     @Override

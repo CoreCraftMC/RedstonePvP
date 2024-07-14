@@ -1,13 +1,11 @@
 package com.ryderbelserion.redstonepvp.api.core.command;
 
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
-import com.ryderbelserion.redstonepvp.api.core.command.objects.CommandContext;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CommandHandler {
@@ -15,11 +13,7 @@ public class CommandHandler {
     private final Map<String, Command> commands = new HashMap<>();
 
     public void execute(CommandSender sender, String label, String[] args) {
-        this.commands.get(label).execute(new CommandContext(
-                sender,
-                label,
-                List.of(args)
-        ), args);
+
     }
 
     //todo() add permission check which filters out unwanted args.

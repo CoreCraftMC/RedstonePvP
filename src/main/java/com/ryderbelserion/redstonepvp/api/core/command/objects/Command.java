@@ -1,15 +1,17 @@
 package com.ryderbelserion.redstonepvp.api.core.command.objects;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public abstract class Command {
 
-    protected List<String> aliases = new ArrayList<>();
+    public abstract void execute(CommandContext<CommandSourceStack> stack);
 
-    public abstract void execute(CommandContext context, String[] args);
+    public abstract String getPermission();
 
-    public final List<String> getAliases() {
-        return this.aliases;
-    }
+    public abstract LiteralCommandNode<CommandSourceStack> literal();
+
+    public abstract Command registerPermission();
+
 }
