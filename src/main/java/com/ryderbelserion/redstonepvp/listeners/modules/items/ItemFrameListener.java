@@ -42,9 +42,6 @@ public class ItemFrameListener implements Listener {
         final Player player = event.getPlayer();
         final Inventory inventory = player.getInventory();
 
-        // If frame is empty, we don't need to play anything, obviously.
-        if (itemFrame.isEmpty()) return;
-
         // If inventory is not empty, we return.
         if (inventory.firstEmpty() == -1) {
             player.spawnParticle(Particle.DUST, itemFrame.getLocation(), 1, new Particle.DustOptions(Color.RED, 1));
