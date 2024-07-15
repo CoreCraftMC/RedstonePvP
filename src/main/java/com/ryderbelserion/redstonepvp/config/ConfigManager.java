@@ -10,6 +10,8 @@ public class ConfigManager {
 
     private static SettingsManager config;
 
+    private static SettingsManager messages;
+
     /**
      * Loads configuration files.
      */
@@ -21,6 +23,12 @@ public class ConfigManager {
                 .useDefaultMigrationService()
                 .configurationData(Config.class)
                 .create();
+
+        messages = SettingsManagerBuilder
+                .withYamlFile(new File(dataFolder, "messages.yml"), builder)
+                .useDefaultMigrationService()
+                .configurationData(Config.class)
+                .create();
     }
 
     /**
@@ -28,6 +36,8 @@ public class ConfigManager {
      */
     public static void refresh() {
         config.reload();
+
+        messages.reload();
     }
 
     /**
@@ -35,5 +45,12 @@ public class ConfigManager {
      */
     public static SettingsManager getConfig() {
         return config;
+    }
+
+    /**
+     * @return gets messages.yml
+     */
+    public static SettingsManager getMessages() {
+        return messages;
     }
 }

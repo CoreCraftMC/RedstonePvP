@@ -4,6 +4,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
+import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.config.ConfigManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -25,7 +26,8 @@ public class CommandReload extends Command {
         // Reload modules.
         this.plugin.getLoader().reload();
 
-        //todo() add reload message
+        // Send the message.
+        Messages.reloaded_plugin.sendMessage(stack.getSource().getSender());
     }
 
     @Override

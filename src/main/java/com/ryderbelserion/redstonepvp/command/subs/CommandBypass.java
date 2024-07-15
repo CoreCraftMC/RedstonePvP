@@ -5,6 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.cache.CacheManager;
+import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.entity.Player;
@@ -19,17 +20,17 @@ public class CommandBypass extends Command {
     public void execute(final CommandContext<CommandSourceStack> stack) {
         if (!(stack.getSource().getSender() instanceof Player player)) return;
 
-        if (CacheManager.containsPlayer(player)) {
+        final boolean hasPlayer = CacheManager.containsPlayer(player);
+
+        final String toggle = hasPlayer ? "enabled" : "disabled";
+
+        if (hasPlayer) {
             CacheManager.removePlayer(player);
-
-            //todo() add removal message
-
-            return;
+        } else {
+            CacheManager.addPlayer(player);
         }
 
-        CacheManager.addPlayer(player);
-
-        //todo() add add message
+        Messages.item_frame_bypass.sendMessage(player, "{toggle}", toggle);
     }
 
     @Override

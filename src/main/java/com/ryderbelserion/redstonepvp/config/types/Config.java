@@ -18,6 +18,9 @@ public class Config implements SettingsHolder {
                 """.trim());
     }
 
+    @Comment("The prefix used in commands")
+    public static final Property<String> command_prefix = newProperty("settings.prefix", "<gray>[<red>Redstone<white>PvP<gray>] <reset>");
+
     @Comment("Do you want verbose logs in console?")
     public static final Property<Boolean> verbose_logging = newProperty("settings.verbose-logging", false);
 
