@@ -5,7 +5,6 @@ import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
@@ -16,7 +15,7 @@ public class Config implements SettingsHolder {
     public void registerComments(@NotNull CommentsConfiguration conf) {
         conf.setComment("combat", """
                 A plethora of tweaks to change how combat feels on the server.
-                """);
+                """.trim());
     }
 
     @Comment("Do you want verbose logs in console?")
