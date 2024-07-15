@@ -1,16 +1,23 @@
 package com.ryderbelserion.redstonepvp;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.PacketEventsAPI;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.settings.PacketEventsSettings;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.redstonepvp.api.modules.ModuleLoader;
 import com.ryderbelserion.redstonepvp.command.BaseCommand;
 import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
 import com.ryderbelserion.redstonepvp.command.subs.CommandReload;
 import com.ryderbelserion.redstonepvp.config.ConfigManager;
-import com.ryderbelserion.redstonepvp.listeners.PlayerDamageEvent;
-import com.ryderbelserion.redstonepvp.listeners.modules.PlayerFrequencyListener;
+import com.ryderbelserion.redstonepvp.listeners.PlayerDamageListener;
+import com.ryderbelserion.redstonepvp.listeners.modules.PlayerPacketModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.AttackCooldownModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.HitDelayModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.ItemFrameListener;
+import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
+import com.ryderbelserion.vital.paper.plugins.PluginManager;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -52,6 +59,7 @@ public class RedstonePvP extends JavaPlugin {
         this.loader.load();
 
         List.of(
+                new PlayerDamageListener(),
                 new ItemFrameListener()
         ).forEach(clazz -> getServer().getPluginManager().registerEvents(clazz, this));
     }
