@@ -12,7 +12,7 @@ vault = "1.7.1"
 packetevents = "2.4.0"
 triumph-cmd = "2.0.0-ALPHA-10"
 tirumph-gui = "3.1.7"
-vital = "1.9.8"
+vital = "1.9.10"
 
 # Paper
 paperweight = "1.7.1"
