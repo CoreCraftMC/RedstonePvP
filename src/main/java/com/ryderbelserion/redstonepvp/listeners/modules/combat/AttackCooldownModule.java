@@ -1,7 +1,7 @@
 package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.modules.ModuleHandler;
+import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleHandler;
 import com.ryderbelserion.redstonepvp.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.config.types.Config;
 import org.bukkit.attribute.Attribute;

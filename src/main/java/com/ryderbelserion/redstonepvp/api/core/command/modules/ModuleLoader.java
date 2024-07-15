@@ -1,4 +1,4 @@
-package com.ryderbelserion.redstonepvp.api.modules;
+package com.ryderbelserion.redstonepvp.api.core.command.modules;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,6 +1,6 @@
 package com.ryderbelserion.redstonepvp.listeners.modules.items;
 
-import com.ryderbelserion.redstonepvp.cache.CacheManager;
+import com.ryderbelserion.redstonepvp.api.cache.CacheManager;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.Sound;

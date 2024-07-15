@@ -3,7 +3,7 @@ package com.ryderbelserion.redstonepvp;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.settings.PacketEventsSettings;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.redstonepvp.api.modules.ModuleLoader;
+import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleLoader;
 import com.ryderbelserion.redstonepvp.command.BaseCommand;
 import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
 import com.ryderbelserion.redstonepvp.command.subs.CommandReload;

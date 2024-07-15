@@ -1,4 +1,4 @@
-package com.ryderbelserion.redstonepvp.api.modules;
+package com.ryderbelserion.redstonepvp.api.core.command.modules;
 
 import org.bukkit.event.Listener;
 
