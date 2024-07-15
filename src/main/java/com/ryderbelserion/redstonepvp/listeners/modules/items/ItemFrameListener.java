@@ -38,16 +38,19 @@ public class ItemFrameListener implements Listener {
 
     @EventHandler
     public void onItemFrameRotate(PlayerInteractEntityEvent event) {
+        // Check if it's an item frame.
         if (!(event.getRightClicked() instanceof ItemFrame)) return;
 
         // If the cache contains a player, we are editing the frames.
         if (CacheManager.containsPlayer(event.getPlayer())) return;
 
+        // Cancel the event.
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onItemFrameInteract(PlayerInteractAtEntityEvent event) {
+        // Check if it's an item frame.
         if (!(event.getRightClicked() instanceof ItemFrame itemFrame)) return;
 
         final Player player = event.getPlayer();
