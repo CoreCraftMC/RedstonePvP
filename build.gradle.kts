@@ -9,6 +9,8 @@ plugins {
 rootProject.version = "1.0.0"
 
 repositories {
+    maven("https://repo.codemc.io/repository/maven-releases")
+
     maven("https://repo.fancyplugins.de/releases")
 }
 
@@ -20,6 +22,8 @@ dependencies {
     implementation(libs.vital.paper)
 
     //compileOnly(libs.fancy.holograms)
+
+    compileOnly(libs.packet.events)
 }
 
 tasks {

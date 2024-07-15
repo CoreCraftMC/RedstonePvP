@@ -32,6 +32,12 @@ public class RedstonePvP extends JavaPlugin {
     private ModuleLoader loader;
 
     @Override
+    public void onLoad() {
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this, new PacketEventsSettings().checkForUpdates(false)));
+        PacketEvents.getAPI().load();
+    }
+
+    @Override
     public void onEnable() {
         // Load the configuration.
         ConfigManager.load(getDataFolder());
@@ -48,8 +54,9 @@ public class RedstonePvP extends JavaPlugin {
             event.registrar().register(root.build(), "the base command for RedstonePvP");
         });
 
-        this.loader = new ModuleLoader();
+        PluginManager.registerPlugin(new PacketEventsSupport());
 
+        this.loader = new ModuleLoader();
 
         List.of(
                 new AttackCooldownModule(),
