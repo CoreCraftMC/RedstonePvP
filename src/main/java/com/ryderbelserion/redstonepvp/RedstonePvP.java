@@ -10,6 +10,7 @@ import com.ryderbelserion.redstonepvp.command.BaseCommand;
 import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
 import com.ryderbelserion.redstonepvp.command.subs.CommandReload;
 import com.ryderbelserion.redstonepvp.config.ConfigManager;
+import com.ryderbelserion.redstonepvp.config.types.Config;
 import com.ryderbelserion.redstonepvp.listeners.PlayerDamageListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.PlayerPacketModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.AttackCooldownModule;
@@ -40,10 +41,14 @@ public class RedstonePvP extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        new VitalPaper(this).setLogging(true);
+        // Create the instance of the framework.
+        final VitalPaper vital = new VitalPaper(this);
 
         // Load the configuration.
         ConfigManager.load(getDataFolder());
+
+        // Set if we should log in the framework.
+        vital.setLogging(ConfigManager.getConfig().getProperty(Config.verbose_logging));
 
         // Register commands.
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
