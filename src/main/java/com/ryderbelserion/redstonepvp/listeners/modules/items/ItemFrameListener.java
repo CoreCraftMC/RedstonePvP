@@ -22,6 +22,11 @@ public class ItemFrameListener implements Listener {
         // If the cache contains a player, we are editing the frames.
         if (CacheManager.containsPlayer(player)) return;
 
+        // If it's a projectile, remove it.
+        if (event.getDamager() instanceof Projectile) {
+            event.getDamager().remove();
+        }
+
         event.setCancelled(true);
     }
 
