@@ -16,7 +16,14 @@ public class CommandReload extends Command {
 
     @Override
     public void execute(final CommandContext<CommandSourceStack> stack) {
+        // Refresh the config.
         ConfigManager.refresh();
+
+        // Unload any modules.
+        this.plugin.getLoader().unload();
+
+        // Reload modules.
+        this.plugin.getLoader().reload();
 
         //todo() add reload message
     }
