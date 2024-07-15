@@ -68,15 +68,15 @@ public enum Messages {
     }
 
     public void sendMessage(final CommandSender sender, final String placeholder, final String replacement) {
-        sender.sendMessage(getMessage(sender, placeholder, replacement));
+        sender.sendRichMessage(getMessage(sender, placeholder, replacement));
     }
 
     public void sendMessage(final CommandSender sender, final Map<String, String> placeholders) {
-        sender.sendMessage(getMessage(sender, placeholders));
+        sender.sendRichMessage(getMessage(sender, placeholders));
     }
 
     public void sendMessage(final CommandSender sender) {
-        sender.sendMessage(getMessage(sender));
+        sender.sendRichMessage(getMessage(sender));
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
