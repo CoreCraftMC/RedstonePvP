@@ -6,6 +6,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -17,16 +18,21 @@ public class ItemFrameListener implements Listener {
 
     @EventHandler
     public void onItemFrameDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof ItemFrame) || !(event.getDamager() instanceof Player player)) return;
+        // Check if it's an item frame.
+        if (!(event.getEntity() instanceof ItemFrame)) return;
 
-        // If the cache contains a player, we are editing the frames.
-        if (CacheManager.containsPlayer(player)) return;
+        // Check if player.
+        if (event.getDamager() instanceof Player player) {
+            // If the cache contains a player, we are editing the frames.
+            if (CacheManager.containsPlayer(player)) return;
+        }
 
         // If it's a projectile, remove it.
         if (event.getDamager() instanceof Projectile) {
             event.getDamager().remove();
         }
 
+        // Cancel the event.
         event.setCancelled(true);
     }
 
