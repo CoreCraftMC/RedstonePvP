@@ -1,8 +1,6 @@
 package com.ryderbelserion.redstonepvp;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.PacketEventsAPI;
-import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.settings.PacketEventsSettings;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.redstonepvp.api.modules.ModuleLoader;
@@ -12,7 +10,6 @@ import com.ryderbelserion.redstonepvp.command.subs.CommandReload;
 import com.ryderbelserion.redstonepvp.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.config.types.Config;
 import com.ryderbelserion.redstonepvp.listeners.PlayerDamageListener;
-import com.ryderbelserion.redstonepvp.listeners.modules.PlayerPacketModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.AttackCooldownModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.HitDelayModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.ItemFrameListener;
@@ -81,7 +78,7 @@ public class RedstonePvP extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        PluginManager.getPlugin("packetevents").remove();
     }
 
     public final ModuleLoader getLoader() {
