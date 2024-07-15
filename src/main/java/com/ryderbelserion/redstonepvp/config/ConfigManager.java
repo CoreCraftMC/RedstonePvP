@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.redstonepvp.config.types.Config;
+import com.ryderbelserion.redstonepvp.config.types.Locale;
 import java.io.File;
 
 public class ConfigManager {
@@ -27,7 +28,7 @@ public class ConfigManager {
         messages = SettingsManagerBuilder
                 .withYamlFile(new File(dataFolder, "messages.yml"), builder)
                 .useDefaultMigrationService()
-                .configurationData(Config.class)
+                .configurationData(Locale.class)
                 .create();
     }
 
