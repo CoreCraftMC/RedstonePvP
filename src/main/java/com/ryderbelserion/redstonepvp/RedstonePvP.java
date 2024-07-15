@@ -16,6 +16,7 @@ import com.ryderbelserion.redstonepvp.listeners.modules.combat.AttackCooldownMod
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.HitDelayModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.ItemFrameListener;
 import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
+import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.plugins.PluginManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -39,6 +40,8 @@ public class RedstonePvP extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        new VitalPaper(this).setLogging(true);
+
         // Load the configuration.
         ConfigManager.load(getDataFolder());
 
