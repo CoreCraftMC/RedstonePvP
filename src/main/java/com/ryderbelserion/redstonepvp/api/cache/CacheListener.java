@@ -1,4 +1,4 @@
-package com.ryderbelserion.redstonepvp.cache;
+package com.ryderbelserion.redstonepvp.api.cache;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
