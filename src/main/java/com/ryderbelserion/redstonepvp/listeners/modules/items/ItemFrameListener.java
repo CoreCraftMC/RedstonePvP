@@ -1,5 +1,6 @@
 package com.ryderbelserion.redstonepvp.listeners.modules.items;
 
+import com.ryderbelserion.redstonepvp.cache.CacheManager;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -16,7 +17,10 @@ public class ItemFrameListener implements Listener {
 
     @EventHandler
     public void onItemFrameDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof ItemFrame)) return;
+        if (!(event.getEntity() instanceof ItemFrame) || !(event.getDamager() instanceof Player player)) return;
+
+        // If the cache contains a player, we are editing the frames.
+        if (CacheManager.containsPlayer(player)) return;
 
         event.setCancelled(true);
     }
@@ -24,6 +28,9 @@ public class ItemFrameListener implements Listener {
     @EventHandler
     public void onItemFrameRotate(PlayerInteractEntityEvent event) {
         if (!(event.getRightClicked() instanceof ItemFrame)) return;
+
+        // If the cache contains a player, we are editing the frames.
+        if (CacheManager.containsPlayer(event.getPlayer())) return;
 
         event.setCancelled(true);
     }
@@ -35,6 +42,10 @@ public class ItemFrameListener implements Listener {
         final Player player = event.getPlayer();
         final Inventory inventory = player.getInventory();
 
+        // If frame is empty, we don't need to play anything, obviously.
+        if (itemFrame.isEmpty()) return;
+
+        // If inventory is not empty, we return.
         if (inventory.firstEmpty() == -1) {
             player.spawnParticle(Particle.DUST, itemFrame.getLocation(), 1, new Particle.DustOptions(Color.RED, 1));
 
