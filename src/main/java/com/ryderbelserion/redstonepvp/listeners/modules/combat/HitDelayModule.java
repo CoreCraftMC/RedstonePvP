@@ -2,8 +2,8 @@ package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleHandler;
-import com.ryderbelserion.redstonepvp.config.ConfigManager;
-import com.ryderbelserion.redstonepvp.config.types.Config;
+import com.ryderbelserion.redstonepvp.managers.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.Config;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerChangedWorldEvent;

@@ -1,4 +1,4 @@
-package com.ryderbelserion.redstonepvp.config.types;
+package com.ryderbelserion.redstonepvp.managers.config;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;

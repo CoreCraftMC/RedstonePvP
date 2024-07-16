@@ -2,9 +2,9 @@ package com.ryderbelserion.redstonepvp.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.ryderbelserion.redstonepvp.config.ConfigManager;
-import com.ryderbelserion.redstonepvp.config.types.Config;
-import com.ryderbelserion.redstonepvp.config.types.Locale;
+import com.ryderbelserion.redstonepvp.managers.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.Config;
+import com.ryderbelserion.redstonepvp.managers.config.Locale;
 import com.ryderbelserion.vital.core.util.StringUtil;
 import com.ryderbelserion.vital.paper.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;

@@ -7,8 +7,8 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketTypeCommon;
 import com.github.retrooper.packetevents.protocol.sound.Sound;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSoundEffect;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.config.ConfigManager;
-import com.ryderbelserion.redstonepvp.config.types.Config;
+import com.ryderbelserion.redstonepvp.managers.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.Config;
 import java.util.List;
 
 public class PlayerPacketModule implements PacketListener {

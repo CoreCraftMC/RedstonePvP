@@ -5,7 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
-import com.ryderbelserion.redstonepvp.config.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.ConfigManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.permissions.Permission;
@@ -19,9 +19,6 @@ public class CommandReload extends Command {
     public void execute(final CommandContext<CommandSourceStack> stack) {
         // Refresh the config.
         ConfigManager.refresh();
-
-        // Unload any modules.
-        this.plugin.getLoader().unload();
 
         // Reload modules.
         this.plugin.getLoader().reload();
