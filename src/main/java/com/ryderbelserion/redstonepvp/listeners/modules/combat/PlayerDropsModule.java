@@ -34,6 +34,8 @@ public class PlayerDropsModule extends ModuleHandler {
     public void reload() {
         this.drops.clear();
 
+        if (!isEnabled()) return;
+
         final FileConfiguration configuration = Files.player_drops.getConfiguration();
 
         final ConfigurationSection section = configuration.getConfigurationSection("drops");
@@ -52,6 +54,8 @@ public class PlayerDropsModule extends ModuleHandler {
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player player) || !(event.getEntity() instanceof Player target)) return;
+
+        if (!isEnabled()) return;
 
         final PlayerDrop playerDrop = getDrop();
 
