@@ -11,6 +11,7 @@ vault = "1.7.1"
 # Libraries
 packetevents = "2.4.0"
 triumph-gui = "3.1.7"
+hikari = "4.0.3"
 vital = "1.9.10"
 
 # Paper
@@ -37,6 +38,8 @@ vault = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault" }
 
 # Libraries
 triumph-gui = { module = "dev.triumphteam:triumph-gui", version.ref = "triumph-gui" }
+
+hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 
 packet-events = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents" }
 
