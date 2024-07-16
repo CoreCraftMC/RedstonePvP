@@ -100,8 +100,7 @@ public class AnvilRepairListener implements Listener {
             item = player.getWorld().dropItem(block.getLocation().clone().add(.5, 2, .5), itemStack);
 
             item.setVelocity(new Vector(0, .2, 0));
-            item.customName(itemStack.displayName());
-            item.setCustomNameVisible(true);
+            item.setCustomNameVisible(false);
             item.setCanPlayerPickup(false);
             item.setCanMobPickup(false);
         } catch (Exception exception) {
