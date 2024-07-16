@@ -5,6 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
+import com.ryderbelserion.redstonepvp.managers.data.Connector;
 import com.ryderbelserion.redstonepvp.managers.data.SqliteConnector;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -43,7 +44,7 @@ public class CommandBeaconAdd extends Command {
         final String location = MiscUtils.location(block.getLocation());
 
         // Get the instance.
-        final SqliteConnector instance = StorageManager.getRedstone();
+        final Connector instance = this.plugin.getDataManager().getConnector();
 
         /*if (!instance.isOpen()) {
             return;
