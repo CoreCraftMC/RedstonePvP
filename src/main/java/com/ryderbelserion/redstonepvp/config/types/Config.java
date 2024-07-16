@@ -19,7 +19,7 @@ public class Config implements SettingsHolder {
     }
 
     @Comment("The prefix used in commands")
-    public static final Property<String> command_prefix = newProperty("settings.prefix", "<gray>[<red>Redstone<white>PvP<gray>] <reset>");
+    public static final Property<String> command_prefix = newProperty("settings.prefix", "<dark_red><b>[</b></dark_red><red>Redstone<white>PvP<dark_red><b>]</b></dark_red> <reset>");
 
     @Comment("Do you want verbose logs in console?")
     public static final Property<Boolean> verbose_logging = newProperty("settings.verbose-logging", false);
@@ -36,4 +36,10 @@ public class Config implements SettingsHolder {
             "entity.player.attack.strong",
             "entity.player.attack.sweep"
     ));
+
+    @Comment("The material required to repair items.")
+    public static final Property<String> anvil_repair_material = newProperty("feature.anvil-repair.material", "gold_ingot");
+
+    @Comment("The amount of the material required to repair items. -1 is disabled!")
+    public static final Property<Integer> anvil_repair_cost = newProperty("feature.anvil-repair.cost", 32);
 }

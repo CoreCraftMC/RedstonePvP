@@ -12,6 +12,7 @@ import com.ryderbelserion.redstonepvp.config.types.Config;
 import com.ryderbelserion.redstonepvp.listeners.PlayerDamageListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.AttackCooldownModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.HitDelayModule;
+import com.ryderbelserion.redstonepvp.listeners.modules.items.AnvilRepairListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.ItemFrameListener;
 import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
 import com.ryderbelserion.vital.paper.VitalPaper;
@@ -72,6 +73,7 @@ public class RedstonePvP extends JavaPlugin {
 
         List.of(
                 new PlayerDamageListener(),
+                new AnvilRepairListener(),
                 new ItemFrameListener()
         ).forEach(clazz -> getServer().getPluginManager().registerEvents(clazz, this));
     }

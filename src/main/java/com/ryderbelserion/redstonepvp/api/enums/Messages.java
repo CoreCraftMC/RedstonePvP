@@ -19,7 +19,11 @@ import java.util.Map;
 public enum Messages {
 
     reloaded_plugin(Locale.reloaded_plugin),
-    item_frame_bypass(Locale.item_frame_bypass);
+    no_item_in_hand(Locale.no_item_in_hand),
+    item_frame_bypass(Locale.item_frame_bypass),
+    anvil_repair_not_enough(Locale.anvil_repair_not_enough),
+    anvil_repair_no_damage(Locale.anvil_repair_no_damage),
+    anvil_repair_not_valid(Locale.anvil_repair_not_valid);
 
     private Property<String> property;
 
