@@ -24,6 +24,9 @@ public class Config implements SettingsHolder {
     @Comment("Do you want verbose logs in console?")
     public static final Property<Boolean> verbose_logging = newProperty("settings.verbose-logging", false);
 
+    @Comment("The amount of particles to show. -1 is disabled!")
+    public static final Property<Integer> blood_effect = newProperty("combat.blood-effect.count", 20);
+
     @Comment("What to set the attack frequency to, 8 is similar to 1.8.8. -1 is disabled!")
     public static final Property<Integer> hit_delay = newProperty("combat.attack-frequency.player-delay", 8);
 
