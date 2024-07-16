@@ -8,6 +8,7 @@ import com.ryderbelserion.redstonepvp.api.cache.CacheManager;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -18,7 +19,13 @@ public class CommandBypass extends Command {
 
     @Override
     public void execute(final CommandContext<CommandSourceStack> stack) {
-        if (!(stack.getSource().getSender() instanceof Player player)) return;
+        final CommandSender sender = stack.getSource().getSender();
+
+        if (!(sender instanceof Player player)) {
+            Messages.not_a_player.sendMessage(sender);
+
+            return;
+        }
 
         final boolean hasPlayer = CacheManager.containsPlayer(player);
 

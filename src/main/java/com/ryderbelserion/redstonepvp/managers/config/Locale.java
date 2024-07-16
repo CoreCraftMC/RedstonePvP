@@ -26,6 +26,9 @@ public class Locale implements SettingsHolder {
     public static final Property<String> reloaded_plugin = newProperty("root.reload-plugin", "{prefix}<white>You have reloaded <red>Redstone<white>PvP");
 
     @Comment("A list of available placeholders: {prefix}")
+    public static final Property<String> not_a_player = newProperty("root.not-a-player", "{prefix}<white>You must be a player to run this command.");
+
+    @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> no_item_in_hand = newProperty("root.no-item-in-hand", "{prefix}<white>You have no item or valid item in hand.");
 
     @Comment("A list of available placeholders: {prefix}, {toggle}")

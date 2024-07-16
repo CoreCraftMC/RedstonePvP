@@ -13,5 +13,4 @@ public abstract class Command {
     public abstract LiteralCommandNode<CommandSourceStack> literal();
 
     public abstract Command registerPermission();
-
 }

@@ -20,6 +20,7 @@ public enum Messages {
 
     reloaded_plugin(Locale.reloaded_plugin),
     no_item_in_hand(Locale.no_item_in_hand),
+    not_a_player(Locale.not_a_player),
     item_frame_bypass(Locale.item_frame_bypass),
     anvil_repair_not_enough(Locale.anvil_repair_not_enough),
     anvil_repair_no_damage(Locale.anvil_repair_no_damage),
