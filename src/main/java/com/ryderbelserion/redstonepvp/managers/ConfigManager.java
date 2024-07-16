@@ -1,13 +1,16 @@
-package com.ryderbelserion.redstonepvp.config;
+package com.ryderbelserion.redstonepvp.managers;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.ryderbelserion.redstonepvp.config.types.Config;
-import com.ryderbelserion.redstonepvp.config.types.Locale;
+import com.ryderbelserion.redstonepvp.managers.config.Config;
+import com.ryderbelserion.redstonepvp.managers.config.Locale;
+import com.ryderbelserion.vital.paper.files.config.FileManager;
 import java.io.File;
 
 public class ConfigManager {
+
+    private static FileManager fileManager;
 
     private static SettingsManager config;
 
@@ -17,6 +20,8 @@ public class ConfigManager {
      * Loads configuration files.
      */
     public static void load(final File dataFolder) {
+        fileManager = new FileManager();
+
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
         config = SettingsManagerBuilder
@@ -30,6 +35,8 @@ public class ConfigManager {
                 .useDefaultMigrationService()
                 .configurationData(Locale.class)
                 .create();
+
+        fileManager.addFile("player-drops.yml").init();
     }
 
     /**
@@ -39,6 +46,8 @@ public class ConfigManager {
         config.reload();
 
         messages.reload();
+
+        fileManager.reloadFiles().init();
     }
 
     /**
@@ -53,5 +62,12 @@ public class ConfigManager {
      */
     public static SettingsManager getMessages() {
         return messages;
+    }
+
+    /**
+     * @return {@link FileManager}
+     */
+    public static FileManager getFileManager() {
+        return fileManager;
     }
 }

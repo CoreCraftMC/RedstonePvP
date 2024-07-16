@@ -1,0 +1,25 @@
+# settings related to drops.
+settings:
+  # should players drop items?
+  player-drops: true
+
+# the items to drop.
+drops:
+  gold_ingot:
+    # the material to drop
+    material: gold_ingot
+    # the min amount to drop
+    min: 1
+    # the max amount to drop
+    max: 3
+    # the higher the number, the more likely it will drop.
+    weight: 95.0
+  diamond:
+    # the material to drop
+    material: diamond
+    # the min amount to drop
+    min: 1
+    # the max amount to drop
+    max: 2
+    # the higher the number, the more likely it will drop.
+    weight: 3.0
