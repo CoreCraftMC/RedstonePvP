@@ -68,6 +68,7 @@ public class RedstonePvP extends JavaPlugin {
 
         List.of(
                 new AttackCooldownModule(),
+                new PlayerDropsModule(),
                 new HitDelayModule()
         ).forEach(module -> this.loader.addModule(module));
 
