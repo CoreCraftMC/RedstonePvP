@@ -7,6 +7,7 @@ import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleLoader;
 import com.ryderbelserion.redstonepvp.command.BaseCommand;
 import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
 import com.ryderbelserion.redstonepvp.command.subs.CommandReload;
+import com.ryderbelserion.redstonepvp.command.subs.beacons.CommandBeacon;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.PlayerDropsModule;
 import com.ryderbelserion.redstonepvp.managers.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.Config;
@@ -17,7 +18,6 @@ import com.ryderbelserion.redstonepvp.listeners.modules.items.AnvilRepairListene
 import com.ryderbelserion.redstonepvp.listeners.modules.items.ItemFrameListener;
 import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
 import com.ryderbelserion.vital.paper.VitalPaper;
-import com.ryderbelserion.vital.paper.files.config.FileManager;
 import com.ryderbelserion.vital.paper.plugins.PluginManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -55,6 +55,7 @@ public class RedstonePvP extends JavaPlugin {
             LiteralArgumentBuilder<CommandSourceStack> root = new BaseCommand().registerPermission().literal().createBuilder();
 
             List.of(
+                    new CommandBeacon(),
                     new CommandReload(),
                     new CommandBypass()
             ).forEach(command -> root.then(command.registerPermission().literal()));
@@ -62,8 +63,10 @@ public class RedstonePvP extends JavaPlugin {
             event.registrar().register(root.build(), "the base command for RedstonePvP");
         });
 
+        // Register packets support.
         PluginManager.registerPlugin(new PacketEventsSupport());
 
+        // Load modules.
         this.loader = new ModuleLoader();
 
         List.of(
@@ -74,6 +77,7 @@ public class RedstonePvP extends JavaPlugin {
 
         this.loader.load();
 
+        // Register listeners.
         List.of(
                 new PlayerDamageListener(),
                 new AnvilRepairListener(),
