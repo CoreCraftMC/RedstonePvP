@@ -10,6 +10,7 @@ import com.ryderbelserion.redstonepvp.command.subs.CommandReload;
 import com.ryderbelserion.redstonepvp.command.subs.beacons.CommandBeacon;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.PlayerDropsModule;
 import com.ryderbelserion.redstonepvp.managers.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.DataManager;
 import com.ryderbelserion.redstonepvp.managers.config.Config;
 import com.ryderbelserion.redstonepvp.listeners.PlayerDamageListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.AttackCooldownModule;
@@ -39,6 +40,8 @@ public class RedstonePvP extends JavaPlugin {
         PacketEvents.getAPI().load();
     }
 
+    private DataManager dataManager;
+
     @Override
     public void onEnable() {
         // Create the instance of the framework.
@@ -49,6 +52,9 @@ public class RedstonePvP extends JavaPlugin {
 
         // Set if we should log in the framework.
         vital.setLogging(ConfigManager.getConfig().getProperty(Config.verbose_logging));
+
+        // Create data manager.
+        this.dataManager = new DataManager().init();
 
         // Register commands.
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -92,5 +98,9 @@ public class RedstonePvP extends JavaPlugin {
 
     public final ModuleLoader getLoader() {
         return this.loader;
+    }
+
+    public final DataManager getDataManager() {
+        return this.dataManager;
     }
 }
