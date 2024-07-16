@@ -17,11 +17,7 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
-    //implementation(libs.triumph.cmds)
-
     implementation(libs.vital.paper)
-
-    //compileOnly(libs.fancy.holograms)
 
     compileOnly(libs.packet.events)
 }

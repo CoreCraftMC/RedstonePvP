@@ -10,8 +10,7 @@ vault = "1.7.1"
 
 # Libraries
 packetevents = "2.4.0"
-triumph-cmd = "2.0.0-ALPHA-10"
-tirumph-gui = "3.1.7"
+triumph-gui = "3.1.7"
 vital = "1.9.10"
 
 # Paper
@@ -37,13 +36,9 @@ placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholder
 vault = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault" }
 
 # Libraries
-triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
-triumph-gui = { module = "dev.triumphteam:triumph-gui", version.ref = "tirumph-gui" }
+triumph-gui = { module = "dev.triumphteam:triumph-gui", version.ref = "triumph-gui" }
 
 packet-events = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents" }
 
 vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital" }
 vital-core = { module = "com.ryderbelserion.vital:core", version.ref = "vital" }
-
-[bundles]
-triumph = ["triumph-cmds", "triumph-gui"]
