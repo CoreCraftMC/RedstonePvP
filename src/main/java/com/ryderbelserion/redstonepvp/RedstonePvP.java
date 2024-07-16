@@ -20,6 +20,7 @@ import com.ryderbelserion.redstonepvp.listeners.modules.items.ItemFrameListener;
 import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
 import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.plugins.PluginManager;
+import com.ryderbelserion.vital.paper.plugins.interfaces.Plugin;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -93,7 +94,11 @@ public class RedstonePvP extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        PluginManager.getPlugin("packetevents").remove();
+        final Plugin packets = PluginManager.getPlugin("packetevents");
+
+        if (packets != null) {
+            packets.remove();
+        }
     }
 
     public final ModuleLoader getLoader() {
