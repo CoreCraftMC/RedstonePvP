@@ -38,7 +38,7 @@ tasks {
         archiveClassifier.set("")
 
         listOf(
-            "com.ryderbelserion",
+            "com.ryderbelserion.vital",
             "com.zaxxer"
         ).forEach {
             relocate(it, "libs.$it")
