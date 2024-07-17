@@ -51,6 +51,36 @@ public class BeaconManager {
     }
 
     /**
+     * Populates the cache on startup from the database.
+     *
+     * @param dataManager {@link DataManager}
+     */
+    public static void populate(final DataManager dataManager) {
+        beaconDrops = CompletableFuture.supplyAsync(() -> {
+            final Map<UUID, BeaconDrop> beaconDrops = new HashMap<>();
+
+            try (Connection connection = dataManager.getConnector().getConnection()) {
+                final PreparedStatement statement = connection.prepareStatement("select * from beacon_locations");
+
+                final ResultSet resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+                    final UUID uuid = UUID.fromString(resultSet.getString("id"));
+
+                    beaconDrops.put(uuid, new BeaconDrop(uuid, resultSet.getString("location"), resultSet.getInt("time")));
+                }
+
+                // Close statement to clean up resources.
+                statement.close();
+            } catch (SQLException exception) {
+                plugin.getComponentLogger().warn("Failed to populate the cache on startup.", exception);
+            }
+
+            return beaconDrops;
+        }).join();
+    }
+
+    /**
      * Removes a location from the cache and the database.
      *
      * @param location the location to remove

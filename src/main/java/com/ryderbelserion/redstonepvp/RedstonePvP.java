@@ -9,6 +9,7 @@ import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
 import com.ryderbelserion.redstonepvp.command.subs.CommandReload;
 import com.ryderbelserion.redstonepvp.command.subs.beacons.CommandBeacon;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.PlayerDropsModule;
+import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.managers.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.DataManager;
 import com.ryderbelserion.redstonepvp.managers.config.Config;
@@ -57,6 +58,9 @@ public class RedstonePvP extends JavaPlugin {
 
         // Create data manager.
         this.dataManager = new DataManager().init();
+
+        // Populate existing beacon drop locations in the cache.
+        BeaconManager.populate(this.dataManager);
 
         // Register commands.
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
