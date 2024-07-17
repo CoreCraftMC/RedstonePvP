@@ -75,6 +75,11 @@ public class BeaconManager {
     }
 
     public static List<UUID> getLocations() {
+    public static List<UUID> getLocations(final boolean queryDirectly) {
+        if (!queryDirectly) {
+            return beaconDrops.keySet().stream().toList();
+        }
+
         return CompletableFuture.supplyAsync(() -> {
             List<UUID> uuids = new ArrayList<>();
 
@@ -98,6 +103,23 @@ public class BeaconManager {
     }
 
     public static boolean hasLocation(final String location) {
+    public static boolean hasLocation(final String location, final boolean queryDirectly) {
+        if (!queryDirectly) {
+            UUID uuid = null;
+
+            // Loop through current beacon drops, compare if the key matches the location. if yes, grab uuid.
+            for (BeaconDrop drop : beaconDrops.values()) {
+                if (drop.getKey().equalsIgnoreCase(location)) {
+                    uuid = drop.getUUID();
+
+                    break;
+                }
+            }
+
+            return beaconDrops.containsKey(uuid);
+        }
+
+        // Only query the database directly if in a command.
         return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
                 final PreparedStatement statement = connection.prepareStatement("select id from beacon_locations where location = ?");

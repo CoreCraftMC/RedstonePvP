@@ -40,7 +40,7 @@ public class CommandBeaconAdd extends Command {
 
         final String location = MiscUtils.location(block.getLocation());
 
-        if (BeaconManager.hasLocation(location)) {
+        if (BeaconManager.hasLocation(location, false)) {
             Messages.beacon_drop_exists.sendMessage(player);
 
             return;
