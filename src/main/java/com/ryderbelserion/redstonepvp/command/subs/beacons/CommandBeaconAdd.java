@@ -2,7 +2,6 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
@@ -11,7 +10,6 @@ import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

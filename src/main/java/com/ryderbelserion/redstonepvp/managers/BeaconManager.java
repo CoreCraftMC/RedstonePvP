@@ -79,6 +79,8 @@ public class BeaconManager {
 
             return beaconDrops;
         }).join();
+
+        //todo() run tasks to start drops.
     }
 
     /**
