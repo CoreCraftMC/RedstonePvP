@@ -2,7 +2,7 @@ package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 
 import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleHandler;
 import com.ryderbelserion.redstonepvp.api.enums.Files;
-import com.ryderbelserion.redstonepvp.api.objects.PlayerDrop;
+import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerDropsModule extends ModuleHandler {
 
-    private final List<PlayerDrop> drops = new ArrayList<>();
+    private final List<ItemDrop> drops = new ArrayList<>();
 
     public PlayerDropsModule() {
         reload();
@@ -47,7 +47,7 @@ public class PlayerDropsModule extends ModuleHandler {
 
             if (subSection == null) return;
 
-            this.drops.add(new PlayerDrop(subSection));
+            this.drops.add(new ItemDrop(subSection));
         });
     }
 
@@ -57,20 +57,20 @@ public class PlayerDropsModule extends ModuleHandler {
 
         if (!isEnabled()) return;
 
-        final PlayerDrop playerDrop = getDrop();
+        final ItemDrop itemDrop = getDrop();
 
-        if (playerDrop == null) {
+        if (itemDrop == null) {
             return;
         }
 
-        player.getWorld().dropItem(target.getLocation(), playerDrop.getItem());
+        player.getWorld().dropItem(target.getLocation(), itemDrop.getItem());
     }
 
-    private PlayerDrop getDrop() {
+    private ItemDrop getDrop() {
         double weight = 0.0;
 
-        for (PlayerDrop playerDrop : this.drops) {
-            weight += playerDrop.getWeight();
+        for (ItemDrop itemDrop : this.drops) {
+            weight += itemDrop.getWeight();
         }
 
         int index = 0;
