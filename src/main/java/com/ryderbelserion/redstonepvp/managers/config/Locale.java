@@ -16,30 +16,37 @@ public class Locale implements SettingsHolder {
                 "",
                 "Issues: https://github.com/CoreCraftMC/RedstonePvP/issues",
                 "Features: https://github.com/CoreCraftMC/RedstonePvP/issues",
+                "",
+                "All messages allow the use of {prefix} unless stated otherwise.",
                 ""
         };
 
         conf.setComment("root", header);
     }
 
-    @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> reloaded_plugin = newProperty("root.reload-plugin", "{prefix}<white>You have reloaded <red>Redstone<white>PvP");
 
-    @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> not_a_player = newProperty("root.not-a-player", "{prefix}<white>You must be a player to run this command.");
 
-    @Comment("A list of available placeholders: {prefix}")
+    public static final Property<String> not_a_block = newProperty("root.not-a-block", "{prefix}<white>That is not a block.");
+
     public static final Property<String> no_item_in_hand = newProperty("root.no-item-in-hand", "{prefix}<white>You have no item or valid item in hand.");
 
-    @Comment("A list of available placeholders: {prefix}, {toggle}")
+    @Comment("A list of available placeholders: {toggle}")
     public static final Property<String> item_frame_bypass = newProperty("root.item-frame-bypass", "{prefix}<white> Item Frame Bypass: <red>{toggle}");
 
-    @Comment("A list of available placeholders: {prefix}, {type}, {amount}")
+    @Comment("A list of available placeholders: {type}, {amount}")
     public static final Property<String> anvil_repair_not_enough = newProperty("root.anvil-repair.not-enough", "{prefix}<white>Not enough {type}, you need {amount} {type}");
 
-    @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> anvil_repair_no_damage = newProperty("root.anvil-repair.no-damage", "{prefix}<white>The item you are trying to repair has no damage.");
 
-    @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> anvil_repair_not_valid = newProperty("root.anvil-repair.not-valid", "{prefix}<white>Cannot repair this item as it has no durability.");
+
+    public static final Property<String> beacon_drop_added = newProperty("root.beacon-drops.added", "{prefix}<white>You have added a new beacon drop location.");
+
+    public static final Property<String> beacon_drop_exists = newProperty("root.beacon-drops.exists", "{prefix}<white>A beacon drop already exists at this location!");
+
+    public static final Property<String> beacon_drop_removed = newProperty("root.beacon-drops.removed", "{prefix}<white>You have removed a beacon drop location.");
+
+    public static final Property<String> beacon_drop_invalid = newProperty("root.beacon-drops.invalid", "{prefix}<white>There is no beacon drop at this location.");
 }

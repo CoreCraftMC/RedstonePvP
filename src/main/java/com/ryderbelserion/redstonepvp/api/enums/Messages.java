@@ -21,10 +21,15 @@ public enum Messages {
     reloaded_plugin(Locale.reloaded_plugin),
     no_item_in_hand(Locale.no_item_in_hand),
     not_a_player(Locale.not_a_player),
+    not_a_block(Locale.not_a_block),
     item_frame_bypass(Locale.item_frame_bypass),
     anvil_repair_not_enough(Locale.anvil_repair_not_enough),
     anvil_repair_no_damage(Locale.anvil_repair_no_damage),
-    anvil_repair_not_valid(Locale.anvil_repair_not_valid);
+    anvil_repair_not_valid(Locale.anvil_repair_not_valid),
+    beacon_drop_added(Locale.beacon_drop_added),
+    beacon_drop_removed(Locale.beacon_drop_removed),
+    beacon_drop_exists(Locale.beacon_drop_exists),
+    beacon_drop_invalid(Locale.beacon_drop_invalid);
 
     private Property<String> property;
 

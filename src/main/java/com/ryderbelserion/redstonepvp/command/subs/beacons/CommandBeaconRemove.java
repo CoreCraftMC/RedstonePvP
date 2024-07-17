@@ -32,7 +32,7 @@ public class CommandBeaconRemove extends Command {
         final Block block = player.getTargetBlock(null, 5);
 
         if (block.isEmpty()) {
-            //todo() not looking at block.
+            Messages.not_a_block.sendMessage(sender);
 
             return;
         }
@@ -40,11 +40,12 @@ public class CommandBeaconRemove extends Command {
         final String location = MiscUtils.location(block.getLocation());
 
         if (!BeaconManager.hasLocation(location)) {
-            player.sendMessage("Location does not exist.");
-            //todo() add proper message
+            Messages.beacon_drop_invalid.sendMessage(player);
 
             return;
         }
+
+        Messages.beacon_drop_removed.sendMessage(player);
 
         BeaconManager.removeLocation(location);
     }

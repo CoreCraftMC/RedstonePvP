@@ -36,7 +36,7 @@ public class CommandBeaconAdd extends Command {
         final Block block = player.getTargetBlock(null, 5);
 
         if (block.isEmpty()) {
-            //todo() not looking at block.
+            Messages.not_a_block.sendMessage(sender);
 
             return;
         }
@@ -44,11 +44,12 @@ public class CommandBeaconAdd extends Command {
         final String location = MiscUtils.location(block.getLocation());
 
         if (BeaconManager.hasLocation(location)) {
-            player.sendMessage("Location already exists.");
-            //todo() already a location, send a message.
+            Messages.beacon_drop_exists.sendMessage(player);
 
             return;
         }
+
+        Messages.beacon_drop_added.sendMessage(player);
 
         BeaconManager.addLocation(UUID.randomUUID(), location);
     }
