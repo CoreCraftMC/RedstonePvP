@@ -17,6 +17,7 @@ import com.ryderbelserion.redstonepvp.listeners.modules.combat.AttackCooldownMod
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.HitDelayModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.AnvilRepairListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.ItemFrameListener;
+import com.ryderbelserion.redstonepvp.managers.data.Connector;
 import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
 import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.plugins.PluginManager;
@@ -98,6 +99,18 @@ public class RedstonePvP extends JavaPlugin {
 
         if (packets != null) {
             packets.remove();
+        }
+
+        if (this.dataManager != null) {
+            final Connector connector = this.dataManager.getConnector();
+
+            if (connector != null) {
+                connector.stop();
+            }
+        }
+
+        if (this.loader != null) {
+            this.loader.unload();
         }
     }
 
