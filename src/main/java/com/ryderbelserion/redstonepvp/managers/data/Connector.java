@@ -17,4 +17,6 @@ public interface Connector {
 
     File getFile();
 
+    boolean tableExists(Connection connection, String table);
+
 }

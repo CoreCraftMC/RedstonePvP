@@ -76,4 +76,20 @@ public class SqliteConnector implements Connector {
     public final File getFile() {
         return this.file;
     }
+
+    @Override
+    public final boolean tableExists(final Connection connection, final String table) {
+        try (ResultSet resultSet = connection.getMetaData().getTables(
+                null,
+                null,
+                table,
+                null
+        )) {
+            return resultSet.next();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+
+            return false;
+        }
+    }
 }
