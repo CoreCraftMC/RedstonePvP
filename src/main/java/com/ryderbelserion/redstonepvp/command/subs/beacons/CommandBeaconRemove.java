@@ -5,8 +5,11 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
+import com.ryderbelserion.redstonepvp.managers.BeaconManager;
+import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -25,6 +28,25 @@ public class CommandBeaconRemove extends Command {
 
             return;
         }
+
+        final Block block = player.getTargetBlock(null, 5);
+
+        if (block.isEmpty()) {
+            //todo() not looking at block.
+
+            return;
+        }
+
+        final String location = MiscUtils.location(block.getLocation());
+
+        if (!BeaconManager.hasLocation(location)) {
+            player.sendMessage("Location does not exist.");
+            //todo() add proper message
+
+            return;
+        }
+
+        BeaconManager.removeLocation(location);
     }
 
     @Override

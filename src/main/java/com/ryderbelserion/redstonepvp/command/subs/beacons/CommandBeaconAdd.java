@@ -5,21 +5,19 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
-import com.ryderbelserion.redstonepvp.managers.data.Connector;
+import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public class CommandBeaconAdd extends Command {
 
@@ -43,30 +41,16 @@ public class CommandBeaconAdd extends Command {
             return;
         }
 
-        // Convert block location to String.
         final String location = MiscUtils.location(block.getLocation());
 
-        // Get the instance.
-        final Connector instance = this.plugin.getDataManager().getConnector();
+        if (BeaconManager.hasLocation(location)) {
+            player.sendMessage("Location already exists.");
+            //todo() already a location, send a message.
 
-        //todo() make database query to check for location.
+            return;
+        }
 
-        // run off the main thread.
-        CompletableFuture.runAsync(() -> {
-            try (Connection connection = instance.getConnection()) {
-                // it could be null for some reason, you never know!
-                if (connection == null) return;
-
-                final PreparedStatement statement = connection.prepareStatement("insert into beacon_locations(id, location) values (?, ?)");
-
-                statement.setString(1, UUID.randomUUID().toString());
-                statement.setString(2, location);
-
-                statement.executeUpdate();
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
-        });
+        BeaconManager.addLocation(UUID.randomUUID(), location);
     }
 
     @Override
