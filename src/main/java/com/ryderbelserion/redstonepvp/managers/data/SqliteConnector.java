@@ -50,14 +50,16 @@ public class SqliteConnector implements Connector {
                 connection.close();
             }
         } catch (SQLException exception) {
-            this.plugin.getComponentLogger().warn("Failed to close connection!");
+            this.plugin.getComponentLogger().warn("Failed to close connection!", exception);
         }
     }
 
     @Override
     public final boolean isRunning() {
         try {
-            return getConnection() != null && getConnection().isClosed();
+            final Connection connection = getConnection();
+
+            return connection != null && !connection.isClosed();
         } catch (SQLException exception) {
             return false;
         }
