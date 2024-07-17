@@ -1,5 +1,6 @@
 name: '${name}'
 main: '${group}.RedstonePvP'
+loader: '${group}.support.DependencyLoader'
 
 version: '${version}'
 api-version: '${apiVersion}'

@@ -22,6 +22,10 @@ dependencies {
     implementation(libs.hikari.cp)
 
     compileOnly(libs.packet.events)
+
+    compileOnly(libs.vital.paper)
+
+    compileOnly(libs.hikari.cp)
 }
 
 tasks {
@@ -36,13 +40,6 @@ tasks {
     shadowJar {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("")
-
-        listOf(
-            //"com.ryderbelserion.vital", do not relocate
-            "com.zaxxer"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
     }
 
     processResources {
