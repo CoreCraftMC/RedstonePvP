@@ -28,7 +28,7 @@ public class Config implements SettingsHolder {
     public static final Property<Integer> blood_effect = newProperty("combat.blood-effect.count", 20);
 
     @Comment("What to set the attack frequency to, -1 is disabled!")
-    public static final Property<Integer> hit_delay = newProperty("combat.attack-frequency.player-delay", 20);
+    public static final Property<Integer> hit_delay = newProperty("combat.attack-frequency.player-delay", 12);
 
     @Comment("What to set the attack speed to, 40 means no cooldown. -1 is disabled!")
     public static final Property<Integer> attack_cooldown = newProperty("combat.attack-cooldown.generic-attack-speed", 40);
