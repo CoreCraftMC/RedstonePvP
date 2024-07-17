@@ -6,7 +6,10 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.CompletableFuture;
 
 public class SqliteConnector implements Connector {
 
@@ -17,7 +20,7 @@ public class SqliteConnector implements Connector {
     private File file;
 
     @Override
-    public Connector init(File file) {
+    public final Connector init(File file) {
         try {
             file.createNewFile();
         } catch (IOException exception) {
