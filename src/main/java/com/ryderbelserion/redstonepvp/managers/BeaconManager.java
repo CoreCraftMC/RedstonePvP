@@ -17,7 +17,11 @@ public class BeaconManager {
 
     private static final DataManager dataManager = plugin.getDataManager();
 
+    private static final Map<UUID, BeaconDrop> beaconDrops = new HashMap<>();
     public static void addLocation(final UUID uuid, final String location) {
+        // add to cache to ensure better performance in future checks.
+        beaconDrops.put(uuid, new BeaconDrop(uuid, location));
+
         // run off the main thread.
         CompletableFuture.runAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
@@ -36,20 +40,37 @@ public class BeaconManager {
     }
 
     public static void removeLocation(final String location) {
+        UUID uuid = null;
+
+        // Loop through current beacon drops, compare if the key matches the location. if yes, grab uuid.
+        for (BeaconDrop drop : beaconDrops.values()) {
+            if (drop.getKey().equalsIgnoreCase(location)) {
+                uuid = drop.getUUID();
+
+                break;
+            }
+        }
+
+        // if uuid is not null, we remove from the cache.
+        if (uuid != null) {
+            beaconDrops.remove(uuid);
+        }
+
+        // Remove from the database as well.
         CompletableFuture.runAsync(() -> {
-           try (Connection connection = dataManager.getConnector().getConnection()) {
-               final PreparedStatement statement = connection.prepareStatement("delete from beacon_locations where location = ?");
+            try (Connection connection = dataManager.getConnector().getConnection()) {
+                final PreparedStatement statement = connection.prepareStatement("delete from beacon_locations where location = ?");
 
-               statement.setString(1, location);
-               statement.executeUpdate();
+                statement.setString(1, location);
+                statement.executeUpdate();
 
-               // Close statement to clean up resources.
-               statement.close();
-           } catch (SQLException exception) {
-               plugin.getComponentLogger().warn("Failed to delete location {}", location);
+                // Close statement to clean up resources.
+                statement.close();
+            } catch (SQLException exception) {
+                plugin.getComponentLogger().warn("Failed to delete location {}", location);
 
-               exception.printStackTrace();
-           }
+                exception.printStackTrace();
+            }
         });
     }
 
@@ -92,5 +113,9 @@ public class BeaconManager {
                 return false;
             }
         }).join();
+    }
+
+    public static Map<UUID, BeaconDrop> getBeaconDrops() {
+        return Collections.unmodifiableMap(beaconDrops);
     }
 }
