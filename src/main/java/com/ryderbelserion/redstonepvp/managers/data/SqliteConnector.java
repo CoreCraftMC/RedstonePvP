@@ -64,6 +64,11 @@ public class SqliteConnector implements Connector {
     }
 
     @Override
+    public final String url() {
+        return "jdbc:sqlite:" + getFile().getAbsolutePath();
+    }
+
+    @Override
     public final Connection getConnection() {
         try {
             return this.source.getConnection();

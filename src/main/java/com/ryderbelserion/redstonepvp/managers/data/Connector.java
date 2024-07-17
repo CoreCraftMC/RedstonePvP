@@ -13,6 +13,8 @@ public interface Connector {
 
     boolean isRunning();
 
+    String url();
+
     Connection getConnection();
 
     File getFile();
