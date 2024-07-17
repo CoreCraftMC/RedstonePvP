@@ -12,11 +12,8 @@ import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
-
-import java.util.List;
 import java.util.UUID;
 
 public class CommandBeaconAdd extends Command {
