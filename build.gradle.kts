@@ -17,9 +17,7 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
-    implementation(libs.vital.paper)
-
-    implementation(libs.hikari.cp)
+    compileOnly(libs.placeholderapi)
 
     compileOnly(libs.packet.events)
 

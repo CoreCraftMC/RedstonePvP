@@ -12,7 +12,7 @@ vault = "1.7.1"
 packetevents = "2.4.0"
 triumph-gui = "3.1.7"
 hikari = "4.0.3"
-vital = "1.9.10"
+vital = "1.9.11"
 
 # Paper
 paperweight = "1.7.1"
