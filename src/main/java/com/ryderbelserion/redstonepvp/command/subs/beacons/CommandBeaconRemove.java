@@ -62,7 +62,7 @@ public class CommandBeaconRemove extends Command {
                 .executes(context -> {
                     execute(context);
 
-                    return 1;
+                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 }).build();
     }
 

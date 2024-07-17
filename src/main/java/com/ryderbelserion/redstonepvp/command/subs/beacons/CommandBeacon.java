@@ -41,7 +41,7 @@ public class CommandBeacon extends Command {
                 .executes(context -> {
                     execute(context);
 
-                    return 1;
+                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
                 .then(new CommandBeaconAdd().registerPermission().literal())
                 .then(new CommandBeaconRemove().registerPermission().literal())
