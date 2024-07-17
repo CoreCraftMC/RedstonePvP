@@ -38,7 +38,7 @@ tasks {
         archiveClassifier.set("")
 
         listOf(
-            "com.ryderbelserion.vital",
+            //"com.ryderbelserion.vital", do not relocate
             "com.zaxxer"
         ).forEach {
             relocate(it, "libs.$it")
