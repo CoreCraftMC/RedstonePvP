@@ -26,17 +26,38 @@ public class SqliteConnector implements Connector {
            this.file = file;
         }
 
-        final HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:sqlite:" + getFile().getAbsolutePath());
-
-        this.source = new HikariDataSource(config);
+        start();
 
         return this;
     }
 
     @Override
     public void start() {
+        final HikariConfig config = new HikariConfig();
 
+        config.setJdbcUrl(url());
+        config.setMaximumPoolSize(5); // 5 is enough for flat file.
+
+        this.source = new HikariDataSource(config);
+
+        // run off the main thread.
+        CompletableFuture.runAsync(() -> {
+            try (final Connection connection = getConnection()) {
+                if (connection == null) return;
+
+                boolean exists = tableExists(connection, "beacon_locations");
+
+                if (exists) {
+                    return;
+                }
+
+                final PreparedStatement statement = connection.prepareStatement("create table beacon_locations(id varchar(36) primary key, location varchar(64))");
+
+                statement.executeUpdate();
+            } catch (SQLException exception) {
+                this.plugin.getComponentLogger().warn("Failed to execute statement.", exception);
+            }
+        });
     }
 
     @Override
