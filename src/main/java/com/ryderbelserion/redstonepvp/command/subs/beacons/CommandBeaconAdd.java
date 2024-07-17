@@ -1,6 +1,8 @@
 package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
@@ -9,12 +11,16 @@ import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+
 import java.util.UUID;
+
+import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconAdd extends Command {
 
@@ -48,7 +54,7 @@ public class CommandBeaconAdd extends Command {
 
         Messages.beacon_drop_added.sendMessage(player);
 
-        BeaconManager.addLocation(UUID.randomUUID(), location);
+        BeaconManager.addLocation(UUID.randomUUID(), location, stack.getArgument("time", Integer.class));
     }
 
     @Override
@@ -60,11 +66,19 @@ public class CommandBeaconAdd extends Command {
     public final LiteralCommandNode<CommandSourceStack> literal() {
         return Commands.literal("add")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
+                .then(argument("time", IntegerArgumentType.integer(5, 60))
+                .suggests((context, builder) -> {
+                    for (int count = 1; count < 60; count++) {
+                        builder.suggest(count);
+                    }
+
+                    return builder.buildFuture();
+                })
                 .executes(context -> {
                     execute(context);
 
-                    return 1;
-                }).build();
+                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+                })).build();
     }
 
     @Override

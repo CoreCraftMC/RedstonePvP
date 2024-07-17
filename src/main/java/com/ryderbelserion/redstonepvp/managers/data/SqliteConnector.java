@@ -54,7 +54,7 @@ public class SqliteConnector implements Connector {
                     return;
                 }
 
-                final PreparedStatement statement = connection.prepareStatement("create table beacon_locations(id varchar(36) primary key, location varchar(64))");
+                final PreparedStatement statement = connection.prepareStatement("create table beacon_locations(id varchar(36) primary key, location varchar(64), time int)");
 
                 statement.executeUpdate();
             } catch (SQLException exception) {

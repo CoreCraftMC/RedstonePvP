@@ -2,7 +2,6 @@ package com.ryderbelserion.redstonepvp.managers;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.objects.BeaconDrop;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +20,7 @@ public class BeaconManager {
 
     private static final DataManager dataManager = plugin.getDataManager();
 
-    private static final Map<UUID, BeaconDrop> beaconDrops = new HashMap<>();
+    private static Map<UUID, BeaconDrop> beaconDrops = new HashMap<>();
 
     /**
      * Adds a location to the cache and the database.
@@ -29,21 +28,23 @@ public class BeaconManager {
      * @param uuid the uuid to identify a location
      * @param location the location to add
      */
-    public static void addLocation(final UUID uuid, final String location) {
+    public static void addLocation(final UUID uuid, final String location, final int time) {
         // add to cache to ensure better performance in future checks.
-        beaconDrops.put(uuid, new BeaconDrop(uuid, location));
+        beaconDrops.put(uuid, new BeaconDrop(uuid, location, time));
 
         // run off the main thread.
         CompletableFuture.runAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
-                final PreparedStatement statement = connection.prepareStatement("insert into beacon_locations(id, location) values (?, ?)");
+                final PreparedStatement statement = connection.prepareStatement("insert into beacon_locations(id, location, time) values (?, ?, ?)");
 
                 statement.setString(1, String.valueOf(uuid));
                 statement.setString(2, location);
+                statement.setInt(3, time);
 
                 statement.executeUpdate();
+                statement.close();
             } catch (SQLException exception) {
-                plugin.getComponentLogger().warn("Failed to add {}, {}", uuid, location);
+                plugin.getComponentLogger().warn("Failed to add {}, {}, {}", uuid, location, time);
 
                 exception.printStackTrace();
             }
