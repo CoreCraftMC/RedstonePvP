@@ -62,7 +62,7 @@ public class RedstonePvP extends JavaPlugin {
         this.dataManager = new DataManager().init();
 
         // Populate existing beacon drop locations in the cache.
-        //BeaconManager.populate(this.dataManager);
+        BeaconManager.populate(this.dataManager);
 
         // Register commands.
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
