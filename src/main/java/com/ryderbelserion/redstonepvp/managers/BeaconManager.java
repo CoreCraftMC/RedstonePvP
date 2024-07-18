@@ -3,7 +3,6 @@ package com.ryderbelserion.redstonepvp.managers;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.objects.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.data.Connector;
-import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class BeaconManager {
@@ -23,23 +21,23 @@ public class BeaconManager {
 
     private static final DataManager dataManager = plugin.getDataManager();
 
-    private static Map<UUID, BeaconDrop> beaconDrops = new HashMap<>();
+    private static Map<String, BeaconDrop> beaconDrops = new HashMap<>();
 
     /**
      * Adds a location to the cache and the database.
      *
-     * @param uuid the uuid to identify a location
+     * @param name the name of the location.
      * @param location the location to add
      */
-    public static void addLocation(final UUID uuid, final String location, final int time) {
+    public static void addLocation(final String name, final String location, final int time) {
         // add to cache to ensure better performance in future checks. use a random uuid for the hashmap as we don't care what's there.
-        beaconDrops.put(uuid, new BeaconDrop(uuid, location, time));
+        beaconDrops.put(name, new BeaconDrop(name, location, time));
 
         // run off the main thread.
         CompletableFuture.runAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement("insert into beacon_locations(id, location, time) values (?, ?, ?)")) {
-                    statement.setString(1, String.valueOf(uuid));
+                    statement.setString(1, name);
                     statement.setString(2, location);
                     statement.setInt(3, time);
 
@@ -52,7 +50,7 @@ public class BeaconManager {
                     statement.executeUpdate();
                 }
             } catch (SQLException exception) {
-                plugin.getComponentLogger().warn("Failed to add {}, {}, {}", uuid, location, time);
+                plugin.getComponentLogger().warn("Failed to add {}, {}, {}", name, location, time);
 
                 exception.printStackTrace();
             }
@@ -66,7 +64,7 @@ public class BeaconManager {
      */
     public static void populate(final DataManager dataManager) {
         beaconDrops = CompletableFuture.supplyAsync(() -> {
-            final Map<UUID, BeaconDrop> beaconDrops = new HashMap<>();
+            final Map<String, BeaconDrop> beaconDrops = new HashMap<>();
 
             final Connector connector = dataManager.getConnector();
 
@@ -77,10 +75,10 @@ public class BeaconManager {
 
                         while (resultSet.next()) {
                             // Get all the data from the database.
-                            final BeaconDrop drop = new BeaconDrop(UUID.fromString(resultSet.getString("id")), resultSet.getString("location"), resultSet.getInt("time"));
+                            final BeaconDrop drop = new BeaconDrop(resultSet.getString("id"), resultSet.getString("location"), resultSet.getInt("time"));
 
                             // Use a random uuid() for the hashmap.
-                            beaconDrops.put(drop.getUUID(), drop);
+                            beaconDrops.put(drop.getName(), drop);
                         }
                     }
                 }
@@ -100,20 +98,20 @@ public class BeaconManager {
      * @param location the location to remove
      */
     public static void removeLocation(final String location) {
-        UUID uuid = null;
+        String name = null;
 
         // Loop through current beacon drops, compare if the key matches the location. if yes, grab uuid.
         for (BeaconDrop drop : beaconDrops.values()) {
             if (drop.getRawLocation().equalsIgnoreCase(location)) {
-                uuid = drop.getUUID();
+                name = drop.getName();
 
                 break;
             }
         }
 
         // if uuid is not null, we remove from the cache.
-        if (uuid != null) {
-            beaconDrops.remove(uuid);
+        if (name != null) {
+            beaconDrops.remove(name);
         }
 
         // Remove from the database as well.
@@ -138,17 +136,17 @@ public class BeaconManager {
      * @param queryDirectly true or false, decides whether to query the database or use the cache
      * @return a list of uuids
      */
-    public static List<UUID> getLocations(final boolean queryDirectly) {
+    public static List<String> getLocations(final boolean queryDirectly) {
         if (queryDirectly) {
             return CompletableFuture.supplyAsync(() -> {
-                List<UUID> uuids = new ArrayList<>();
+                List<String> uuids = new ArrayList<>();
 
                 try (Connection connection = dataManager.getConnector().getConnection()) {
                     try (final PreparedStatement statement = connection.prepareStatement("select * from beacon_locations")) {
                         final ResultSet resultSet = statement.executeQuery();
 
                         while (resultSet.next()) {
-                            uuids.add(UUID.fromString(resultSet.getString("id")));
+                            uuids.add(resultSet.getString("id"));
                         }
                     }
                 } catch (SQLException exception) {
@@ -160,6 +158,26 @@ public class BeaconManager {
         }
 
         return beaconDrops.keySet().stream().toList();
+    }
+
+    /**
+     * Gets a beacon drop object
+     *
+     * @param name the name of the drop location
+     * @return the {@link BeaconDrop}
+     */
+    public static BeaconDrop getDrop(final String name) {
+        return beaconDrops.get(name);
+    }
+
+    /**
+     * Checks if the name already taken.
+     *
+     * @param name the name of the location.
+     * @return true or false
+     */
+    public static boolean hasValue(final String name) {
+        return beaconDrops.containsKey(name);
     }
 
     /**
@@ -198,7 +216,7 @@ public class BeaconManager {
         return false;
     }
 
-    public static Map<UUID, BeaconDrop> getBeaconData() {
+    public static Map<String, BeaconDrop> getBeaconData() {
         return Collections.unmodifiableMap(beaconDrops);
     }
 }

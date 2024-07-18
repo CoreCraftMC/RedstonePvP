@@ -1,10 +1,12 @@
 package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
+import com.ryderbelserion.redstonepvp.api.objects.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -14,6 +16,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+
+import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconRemove extends Command {
 
@@ -29,25 +33,25 @@ public class CommandBeaconRemove extends Command {
             return;
         }
 
-        final Block block = player.getTargetBlock(null, 5);
+        final String name = stack.getArgument("name", String.class);
 
-        if (block.isEmpty()) {
-            Messages.not_a_block.sendMessage(sender);
-
-            return;
-        }
-
-        final String location = MiscUtils.location(block.getLocation());
-
-        if (!BeaconManager.hasLocation(location, false)) {
-            Messages.beacon_drop_invalid.sendMessage(player);
+        if (name == null || name.isEmpty() || name.isBlank()) {
+            //todo() tell them the arg is invalid.
 
             return;
         }
 
-        Messages.beacon_drop_removed.sendMessage(player);
+        if (!BeaconManager.hasValue(name)) {
+            Messages.beacon_drop_invalid.sendMessage(player, "{name}", name);
 
-        BeaconManager.removeLocation(location);
+            return;
+        }
+
+        final BeaconDrop drop = BeaconManager.getDrop(name);
+
+        Messages.beacon_drop_removed.sendMessage(player, "{name}", name);
+
+        BeaconManager.removeLocation(drop.getRawLocation());
     }
 
     @Override
@@ -59,11 +63,17 @@ public class CommandBeaconRemove extends Command {
     public final LiteralCommandNode<CommandSourceStack> literal() {
         return Commands.literal("remove")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
+                .then(argument("name", StringArgumentType.string())
+                .suggests((context, builder) -> {
+                    BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
+
+                    return builder.buildFuture();
+                })
                 .executes(context -> {
                     execute(context);
 
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }).build();
+                })).build();
     }
 
     @Override

@@ -9,27 +9,20 @@ public class BeaconDrop {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
-    private final UUID uuid;
+    private final String name;
     private final String rawLocation;
-    //private final Location location;
     private final int time;
 
-    public BeaconDrop(final UUID uuid, final String rawLocation, final int time) {
-        this.uuid = uuid;
+    public BeaconDrop(final String name, final String rawLocation, final int time) {
+        this.name = name;
 
         this.rawLocation = rawLocation;
-
-        //this.location = MiscUtils.location(rawLocation);
 
         this.time = time;
     }
 
-    //public final Location getLocation() {
-    //    return this.location;
-    //}
-
-    public final UUID getUUID() {
-        return this.uuid;
+    public final String getName() {
+        return this.name;
     }
 
     public final String getRawLocation() {

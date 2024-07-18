@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 public enum PersistentKeys {
 
     beacon_item("beacon_item", PersistentDataType.BOOLEAN),
+    beacon_nuke("beacon_nuke", PersistentDataType.STRING),
+    beacon_drop("beacon_drop", PersistentDataType.STRING),
     beacon_location("beacon_location", PersistentDataType.STRING),
     beacon_uuid("beacon_uuid", PersistentDataType.STRING);
 
