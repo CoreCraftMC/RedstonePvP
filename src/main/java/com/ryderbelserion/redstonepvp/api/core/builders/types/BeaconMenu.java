@@ -3,7 +3,7 @@ package com.ryderbelserion.redstonepvp.api.core.builders.types;
 import com.ryderbelserion.redstonepvp.api.core.builders.InventoryBuilder;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.enums.PersistentKeys;
-import com.ryderbelserion.redstonepvp.api.objects.BeaconDrop;
+import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
@@ -32,15 +32,15 @@ public class BeaconMenu extends InventoryBuilder {
     public InventoryBuilder build() {
         final Inventory inventory = getInventory();
 
-        final Map<String, BeaconDrop> beaconData = BeaconManager.getBeaconData();
+        final Map<String, Beacon> beaconData = BeaconManager.getBeaconData();
 
         final ItemBuilder itemBuilder = new ItemBuilder().withType(Material.CHEST);
 
-        beaconData.forEach((uuid, beaconDrop) -> {
+        beaconData.forEach((uuid, beacon) -> {
             // Set the amount to how much time it takes to start a drop event.
-            itemBuilder.setAmount(beaconDrop.getTime());
+            itemBuilder.setAmount(beacon.getTime());
 
-            final Location location = MiscUtils.location(beaconDrop.getRawLocation());
+            final Location location = MiscUtils.location(beacon.getRawLocation());
 
             itemBuilder.setDisplayLore(List.of(
                     "World: " + location.getWorld().getName(),
@@ -49,10 +49,10 @@ public class BeaconMenu extends InventoryBuilder {
                     "Z: " + location.z()
             ));
 
-            itemBuilder.setDisplayName(beaconDrop.getName());
+            itemBuilder.setDisplayName(beacon.getName());
 
-            itemBuilder.setPersistentString(PersistentKeys.beacon_location.getNamespacedKey(), beaconDrop.getRawLocation());
-            itemBuilder.setPersistentString(PersistentKeys.beacon_uuid.getNamespacedKey(), beaconDrop.getName());
+            itemBuilder.setPersistentString(PersistentKeys.beacon_location.getNamespacedKey(), beacon.getRawLocation());
+            itemBuilder.setPersistentString(PersistentKeys.beacon_uuid.getNamespacedKey(), beacon.getName());
 
             inventory.setItem(inventory.firstEmpty(), itemBuilder.getStack());
         });

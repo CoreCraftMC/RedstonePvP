@@ -45,12 +45,12 @@ public class CommandBeaconAdd extends Command {
         final String name = stack.getArgument("name", String.class);
 
         if (name == null || name.isEmpty() || name.isBlank()) {
-            //todo() tell them the arg is invalid.
+            //todo() add message saying it can't be invalid.
 
             return;
         }
 
-        if (BeaconManager.hasValue(name) || BeaconManager.hasLocation(location, false)) {
+        if (BeaconManager.hasValue(name) || BeaconManager.hasLocation(location)) {
             Messages.beacon_drop_exists.sendMessage(player, "{name}", name);
 
             return;

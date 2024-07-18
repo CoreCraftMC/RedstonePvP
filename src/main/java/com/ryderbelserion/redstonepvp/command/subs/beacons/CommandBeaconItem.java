@@ -1,16 +1,17 @@
 package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
-import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
+import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
+import com.ryderbelserion.redstonepvp.api.objects.beacons.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import net.minecraft.commands.arguments.UuidArgument;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,6 +38,8 @@ public class CommandBeaconItem extends Command {
         final String name = stack.getArgument("name", String.class);
 
         if (name == null || name.isEmpty() || name.isBlank()) {
+            //todo() add message saying it can't be invalid.
+
             return;
         }
 

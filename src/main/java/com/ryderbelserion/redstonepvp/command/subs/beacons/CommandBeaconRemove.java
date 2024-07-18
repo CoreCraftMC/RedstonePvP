@@ -34,6 +34,8 @@ public class CommandBeaconRemove extends Command {
         final String name = stack.getArgument("name", String.class);
 
         if (name == null || name.isEmpty() || name.isBlank()) {
+            //todo() add message saying it can't be invalid.
+
             return;
         }
 
