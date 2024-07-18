@@ -8,7 +8,9 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("rawtypes")
 public enum PersistentKeys {
 
-    beacon_item("beacon_item", PersistentDataType.BOOLEAN);
+    beacon_item("beacon_item", PersistentDataType.BOOLEAN),
+    beacon_location("beacon_location", PersistentDataType.STRING),
+    beacon_uuid("beacon_uuid", PersistentDataType.STRING);
 
     private @NotNull final RedstonePvP plugin = RedstonePvP.getPlugin();
 

@@ -34,7 +34,7 @@ public class MainMenu extends InventoryBuilder {
 
     @Override
     public void run(InventoryClickEvent event) {
-        final Player player = (Player) event.getWhoClicked();
+        if (!(event.getWhoClicked() instanceof Player player)) return;
 
         final ItemStack itemStack = event.getCurrentItem();
 
@@ -46,8 +46,8 @@ public class MainMenu extends InventoryBuilder {
 
         if (container.has(PersistentKeys.beacon_item.getNamespacedKey())) {
             player.openInventory(new BeaconMenu(player).build().getInventory());
-
-            event.setCancelled(true);
         }
+
+        event.setCancelled(true);
     }
 }

@@ -3,6 +3,7 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.BeaconMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
@@ -39,21 +40,7 @@ public class CommandBeacon extends Command {
             return;
         }
 
-        //player.openInventory(new MainMenu(player).build().getInventory());
-
-        /*final Block block = player.getTargetBlock(null, 5);
-
-        if (block.isEmpty()) {
-            Messages.not_a_block.sendMessage(sender);
-
-            return;
-        }*/
-
-        //final Location location = block.getLocation();
-
-        //playDropAnimation(location);
-
-        //todo() add gui to manage beacons.
+        player.openInventory(new BeaconMenu(player).build().getInventory());
     }
 
     @Override
