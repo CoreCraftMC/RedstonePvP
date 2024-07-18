@@ -55,7 +55,7 @@ public class SqliteConnector implements Connector {
                     this.plugin.getComponentLogger().warn("Failed to create beacon locations table!", exception);
                 }
 
-                try (final PreparedStatement statement = connection.prepareStatement("create table if not exists beacon_items(location_id varchar(64), item varchar(36), weight double, foreign key (location_id) references beacon_locations(location) on delete cascade)")) {
+                try (final PreparedStatement statement = connection.prepareStatement("create table if not exists beacon_items(location varchar(64), item varchar(36), weight double, foreign key (location) references beacon_locations(location) on delete cascade)")) {
                     statement.executeUpdate();
                 } catch (SQLException exception) {
                     this.plugin.getComponentLogger().warn("Failed to create beacon items table!", exception);

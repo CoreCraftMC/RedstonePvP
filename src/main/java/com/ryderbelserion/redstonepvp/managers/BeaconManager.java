@@ -2,6 +2,7 @@ package com.ryderbelserion.redstonepvp.managers;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.objects.BeaconDrop;
+import com.ryderbelserion.redstonepvp.managers.data.Connector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,14 +36,19 @@ public class BeaconManager {
         // run off the main thread.
         CompletableFuture.runAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
-                final PreparedStatement statement = connection.prepareStatement("insert into beacon_locations(id, location, time) values (?, ?, ?)");
+                try (PreparedStatement statement = connection.prepareStatement("insert into beacon_locations(id, location, time) values (?, ?, ?)")) {
+                    statement.setString(1, String.valueOf(uuid));
+                    statement.setString(2, location);
+                    statement.setInt(3, time);
 
-                statement.setString(1, String.valueOf(uuid));
-                statement.setString(2, location);
-                statement.setInt(3, time);
+                    statement.executeUpdate();
+                }
 
-                statement.executeUpdate();
-                statement.close();
+                try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(location) values (?)")) {
+                    statement.setString(1, location);
+
+                    statement.executeUpdate();
+                }
             } catch (SQLException exception) {
                 plugin.getComponentLogger().warn("Failed to add {}, {}, {}", uuid, location, time);
 
@@ -107,13 +113,11 @@ public class BeaconManager {
         // Remove from the database as well.
         CompletableFuture.runAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
-                final PreparedStatement statement = connection.prepareStatement("delete from beacon_locations where location = ?");
+                try (PreparedStatement statement = connection.prepareStatement("delete from beacon_locations where location = ?")) {
+                    statement.setString(1, location);
 
-                statement.setString(1, location);
-                statement.executeUpdate();
-
-                // Close statement to clean up resources.
-                statement.close();
+                    statement.executeUpdate();
+                }
             } catch (SQLException exception) {
                 plugin.getComponentLogger().warn("Failed to delete location {}", location);
 
@@ -137,16 +141,13 @@ public class BeaconManager {
             List<UUID> uuids = new ArrayList<>();
 
             try (Connection connection = dataManager.getConnector().getConnection()) {
-                final PreparedStatement statement = connection.prepareStatement("select * from beacon_locations");
+                try (final PreparedStatement statement = connection.prepareStatement("select * from beacon_locations")) {
+                    final ResultSet resultSet = statement.executeQuery();
 
-                final ResultSet resultSet = statement.executeQuery();
-
-                while (resultSet.next()) {
-                    uuids.add(UUID.fromString(resultSet.getString("id")));
+                    while (resultSet.next()) {
+                        uuids.add(UUID.fromString(resultSet.getString("id")));
+                    }
                 }
-
-                // Close statement to clean up resources.
-                statement.close();
             } catch (SQLException exception) {
                 plugin.getComponentLogger().warn("Failed to fetch locations", exception);
             }
@@ -180,13 +181,13 @@ public class BeaconManager {
         // Only query the database directly if in a command.
         return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
-                final PreparedStatement statement = connection.prepareStatement("select id from beacon_locations where location = ?");
+                try (final PreparedStatement statement = connection.prepareStatement("select id from beacon_locations where location = ?")) {
+                    statement.setString(1, location);
 
-                statement.setString(1, location);
+                    final ResultSet resultSet = statement.executeQuery();
 
-                final ResultSet resultSet = statement.executeQuery();
-
-                return resultSet.next();
+                    return resultSet.next();
+                }
             } catch (SQLException exception) {
                 plugin.getComponentLogger().warn("Failed to fetch locations", exception);
 
