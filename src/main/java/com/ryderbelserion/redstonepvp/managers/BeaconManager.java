@@ -92,7 +92,7 @@ public class BeaconManager {
 
         // Loop through current beacon drops, compare if the key matches the location. if yes, grab uuid.
         for (BeaconDrop drop : beaconDrops.values()) {
-            if (drop.getKey().equalsIgnoreCase(location)) {
+            if (drop.getRawLocation().equalsIgnoreCase(location)) {
                 uuid = drop.getUUID();
 
                 break;
@@ -166,9 +166,8 @@ public class BeaconManager {
         if (!queryDirectly) {
             UUID uuid = null;
 
-            // Loop through current beacon drops, compare if the key matches the location. if yes, grab uuid.
             for (BeaconDrop drop : beaconDrops.values()) {
-                if (drop.getKey().equalsIgnoreCase(location)) {
+                if (drop.getRawLocation().equalsIgnoreCase(location)) {
                     uuid = drop.getUUID();
 
                     break;
