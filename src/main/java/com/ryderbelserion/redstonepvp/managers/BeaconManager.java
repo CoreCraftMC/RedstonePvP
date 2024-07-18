@@ -66,16 +66,20 @@ public class BeaconManager {
         beaconDrops = CompletableFuture.supplyAsync(() -> {
             final Map<UUID, BeaconDrop> beaconDrops = new HashMap<>();
 
-            try (Connection connection = dataManager.getConnector().getConnection()) {
-                try (PreparedStatement statement = connection.prepareStatement("select * from beacon_locations")) {
-                    final ResultSet resultSet = statement.executeQuery();
+            final Connector connector = dataManager.getConnector();
 
-                    while (resultSet.next()) {
-                        // Get all the data from the database.
-                        final BeaconDrop drop = new BeaconDrop(UUID.fromString(resultSet.getString("id")), resultSet.getString("location"), resultSet.getInt("time"));
+            try (Connection connection = connector.getConnection()) {
+                if (connector.tableExists(connection, "beacon_locations")) {
+                    try (PreparedStatement statement = connection.prepareStatement("select * from beacon_locations")) {
+                        final ResultSet resultSet = statement.executeQuery();
 
-                        // Use a random uuid() for the hashmap.
-                        beaconDrops.put(drop.getUUID(), drop);
+                        while (resultSet.next()) {
+                            // Get all the data from the database.
+                            final BeaconDrop drop = new BeaconDrop(UUID.fromString(resultSet.getString("id")), resultSet.getString("location"), resultSet.getInt("time"));
+
+                            // Use a random uuid() for the hashmap.
+                            beaconDrops.put(drop.getUUID(), drop);
+                        }
                     }
                 }
             } catch (SQLException exception) {
