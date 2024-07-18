@@ -11,6 +11,7 @@ import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.minecraft.commands.arguments.UuidArgument;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -46,6 +47,12 @@ public class CommandBeaconItem extends Command {
         }
 
         final ItemStack itemStack = player.getInventory().getItemInMainHand();
+
+        if (itemStack.getType() == Material.AIR) {
+            Messages.no_item_in_hand.sendMessage(sender);
+
+            return;
+        }
 
         final String base64 = Base64.getEncoder().encodeToString(itemStack.serializeAsBytes());
 
