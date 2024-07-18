@@ -39,8 +39,6 @@ public class CommandBeaconRemove extends Command {
 
         final String location = MiscUtils.location(block.getLocation());
 
-        this.plugin.getLogger().warning("Location: " + BeaconManager.hasLocation(location, false));
-
         if (!BeaconManager.hasLocation(location, false)) {
             Messages.beacon_drop_invalid.sendMessage(player);
 
