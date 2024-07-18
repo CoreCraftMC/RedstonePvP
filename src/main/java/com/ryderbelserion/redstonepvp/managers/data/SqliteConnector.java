@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.concurrent.CompletableFuture;
 
 public class SqliteConnector implements Connector {
@@ -41,6 +40,7 @@ public class SqliteConnector implements Connector {
 
         config.setJdbcUrl(url());
         config.setMaximumPoolSize(5); // 5 is enough for flat file.
+        config.setConnectionInitSql("PRAGMA foreign_keys = ON;");
 
         this.source = new HikariDataSource(config);
 
@@ -49,13 +49,13 @@ public class SqliteConnector implements Connector {
             try (final Connection connection = getConnection()) {
                 if (connection == null) return;
 
-                try (final PreparedStatement statement = connection.prepareStatement("create table if not exists beacon_locations(location varchar(64) primary key, id varchar(64) unique, time int, foreign key (location) references beacon_items(location))")) {
+                try (final PreparedStatement statement = connection.prepareStatement("create table if not exists beacon_locations(location varchar(64) primary key, id varchar(64) unique, time int)")) {
                     statement.executeUpdate();
                 } catch (SQLException exception) {
                     this.plugin.getComponentLogger().warn("Failed to create beacon locations table!", exception);
                 }
 
-                try (final PreparedStatement statement = connection.prepareStatement("create table if not exists beacon_items(location varchar(64), item varchar(36), weight double)")) {
+                try (final PreparedStatement statement = connection.prepareStatement("create table if not exists beacon_items(location_id varchar(64), item varchar(36), weight double, foreign key (location_id) references beacon_locations(location) on delete cascade)")) {
                     statement.executeUpdate();
                 } catch (SQLException exception) {
                     this.plugin.getComponentLogger().warn("Failed to create beacon items table!", exception);
