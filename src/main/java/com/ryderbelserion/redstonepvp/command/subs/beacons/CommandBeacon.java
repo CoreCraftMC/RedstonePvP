@@ -4,7 +4,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.BeaconMenu;
-import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
@@ -59,6 +58,7 @@ public class CommandBeacon extends Command {
                 })
                 .then(new CommandBeaconAdd().registerPermission().literal())
                 .then(new CommandBeaconRemove().registerPermission().literal())
+                .then(new CommandBeaconItem().registerPermission().literal())
                 .build();
     }
 

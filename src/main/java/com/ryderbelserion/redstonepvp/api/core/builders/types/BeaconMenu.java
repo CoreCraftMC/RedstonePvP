@@ -19,7 +19,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class BeaconMenu extends InventoryBuilder {
 
@@ -33,7 +32,7 @@ public class BeaconMenu extends InventoryBuilder {
     public InventoryBuilder build() {
         final Inventory inventory = getInventory();
 
-        final Map<UUID, BeaconDrop> beaconData = BeaconManager.getBeaconData();
+        final Map<String, BeaconDrop> beaconData = BeaconManager.getBeaconData();
 
         final ItemBuilder itemBuilder = new ItemBuilder().withType(Material.CHEST);
 
@@ -50,10 +49,10 @@ public class BeaconMenu extends InventoryBuilder {
                     "Z: " + location.z()
             ));
 
-            itemBuilder.setDisplayName(beaconDrop.getUUID().toString());
+            itemBuilder.setDisplayName(beaconDrop.getName());
 
             itemBuilder.setPersistentString(PersistentKeys.beacon_location.getNamespacedKey(), beaconDrop.getRawLocation());
-            itemBuilder.setPersistentString(PersistentKeys.beacon_uuid.getNamespacedKey(), beaconDrop.getUUID().toString());
+            itemBuilder.setPersistentString(PersistentKeys.beacon_uuid.getNamespacedKey(), beaconDrop.getName());
 
             inventory.setItem(inventory.firstEmpty(), itemBuilder.getStack());
         });
@@ -82,12 +81,20 @@ public class BeaconMenu extends InventoryBuilder {
         if (container.has(PersistentKeys.beacon_location.getNamespacedKey())) {
             final String location = container.get(PersistentKeys.beacon_location.getNamespacedKey(), PersistentDataType.STRING);
 
-            if (location != null) {
-                BeaconManager.removeLocation(location);
+            switch (event.getClick()) {
+                case LEFT -> {
+                    if (location != null) {
+                        BeaconManager.removeLocation(location);
 
-                Messages.beacon_drop_removed.sendMessage(player);
+                        Messages.beacon_drop_removed.sendMessage(player, "{name}", container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING));
 
-                player.openInventory(new BeaconMenu(player).build().getInventory());
+                        player.openInventory(new BeaconMenu(player).build().getInventory());
+                    }
+                }
+
+                case RIGHT -> {
+                    player.openInventory(new ItemMenu(player, location).build().getInventory());
+                }
             }
         }
 

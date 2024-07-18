@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.settings.PacketEventsSettings;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.BeaconMenu;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.ItemMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleLoader;
 import com.ryderbelserion.redstonepvp.command.BaseCommand;
@@ -99,7 +100,8 @@ public class RedstonePvP extends JavaPlugin {
 
                 // Menu listeners
                 new MainMenu(),
-                new BeaconMenu()
+                new BeaconMenu(),
+                new ItemMenu()
         ).forEach(clazz -> getServer().getPluginManager().registerEvents(clazz, this));
     }
 
