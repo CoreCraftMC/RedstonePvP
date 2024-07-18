@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.concurrent.CompletableFuture;
 
 public class SqliteConnector implements Connector {
@@ -48,15 +49,17 @@ public class SqliteConnector implements Connector {
             try (final Connection connection = getConnection()) {
                 if (connection == null) return;
 
-                boolean exists = tableExists(connection, "beacon_locations");
-
-                if (exists) {
-                    return;
+                try (final PreparedStatement statement = connection.prepareStatement("create table if not exists beacon_locations(location varchar(64) primary key, id varchar(64) unique, time int, foreign key (location) references beacon_items(location))")) {
+                    statement.executeUpdate();
+                } catch (SQLException exception) {
+                    this.plugin.getComponentLogger().warn("Failed to create beacon locations table!", exception);
                 }
 
-                final PreparedStatement statement = connection.prepareStatement("create table beacon_locations(id varchar(36) primary key, location varchar(64), time int)");
-
-                statement.executeUpdate();
+                try (final PreparedStatement statement = connection.prepareStatement("create table if not exists beacon_items(location varchar(64), item varchar(36), weight double)")) {
+                    statement.executeUpdate();
+                } catch (SQLException exception) {
+                    this.plugin.getComponentLogger().warn("Failed to create beacon items table!", exception);
+                }
             } catch (SQLException exception) {
                 this.plugin.getComponentLogger().warn("Failed to execute statement.", exception);
             }
