@@ -163,7 +163,7 @@ public class BeaconManager {
      * Gets a beacon drop object
      *
      * @param name the name of the drop location
-     * @return the {@link BeaconDrop}
+     * @return the {@link Beacon}
      */
     public static Beacon getDrop(final String name) {
         return beaconDrops.get(name);
@@ -183,28 +183,10 @@ public class BeaconManager {
      * Checks if a location already exists.
      *
      * @param location the location to check
-     * @param queryDirectly true or false, decides whether to query the database or use the cache
      * @return true or false
      */
-    public static boolean hasLocation(final String location, final boolean queryDirectly) {
+    public static boolean hasLocation(final String location) {
         for (Beacon drop : beaconDrops.values()) {
-            // Only query the database directly if in a command.
-            return CompletableFuture.supplyAsync(() -> {
-                try (Connection connection = dataManager.getConnector().getConnection()) {
-                    try (final PreparedStatement statement = connection.prepareStatement("select id from beacon_locations where location = ?")) {
-                        statement.setString(1, location);
-
-                        final ResultSet resultSet = statement.executeQuery();
-
-                        return resultSet.next();
-                    }
-                } catch (SQLException exception) {
-                    plugin.getComponentLogger().warn("Failed to fetch locations", exception);
-
-                    return false;
-                }
-            }).join();
-        }
             if (location.equalsIgnoreCase(drop.getRawLocation())) {
                 return true;
             }
