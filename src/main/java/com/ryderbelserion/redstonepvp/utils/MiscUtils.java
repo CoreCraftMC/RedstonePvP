@@ -9,10 +9,10 @@ public class MiscUtils {
 
     private static final RedstonePvP plugin = RedstonePvP.getPlugin();
 
-    public static @NotNull String location(@NotNull final Location location, final boolean getName) {
+    public static @NotNull String location(@NotNull final Location location, boolean getName) {
         String name = getName ? location.getWorld().getName() : String.valueOf(location.getWorld().getUID());
 
-        return name + "," + location.getX() + "," + location.getY() + "," + location.getX();
+        return name + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
     }
 
     public static @NotNull String location(@NotNull final Location location) {

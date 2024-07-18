@@ -42,17 +42,23 @@ public class CommandBeaconAdd extends Command {
             return;
         }
 
+        player.sendMessage("Type: " + block.getType());
+
         final String location = MiscUtils.location(block.getLocation());
 
-        if (BeaconManager.hasLocation(location, false)) {
-            Messages.beacon_drop_exists.sendMessage(player);
+        player.sendMessage("Location: " + location);
 
-            return;
-        }
+        //final String location = MiscUtils.location(block.getLocation());
 
-        Messages.beacon_drop_added.sendMessage(player);
+        //if (BeaconManager.hasLocation(location, false)) {
+        //    Messages.beacon_drop_exists.sendMessage(player);
 
-        BeaconManager.addLocation(UUID.randomUUID(), location, stack.getArgument("time", Integer.class));
+        //    return;
+        //}
+
+        //Messages.beacon_drop_added.sendMessage(player);
+
+        //BeaconManager.addLocation(UUID.randomUUID(), location, stack.getArgument("time", Integer.class));
     }
 
     @Override

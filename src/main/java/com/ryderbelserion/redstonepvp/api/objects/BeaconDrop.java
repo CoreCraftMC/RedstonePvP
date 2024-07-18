@@ -11,7 +11,7 @@ public class BeaconDrop {
 
     private final UUID uuid;
     private final String rawLocation;
-    private final Location location;
+    //private final Location location;
     private final int time;
 
     public BeaconDrop(final UUID uuid, final String rawLocation, final int time) {
@@ -19,14 +19,14 @@ public class BeaconDrop {
 
         this.rawLocation = rawLocation;
 
-        this.location = MiscUtils.location(rawLocation);
+        //this.location = MiscUtils.location(rawLocation);
 
         this.time = time;
     }
 
-    public final Location getLocation() {
-        return this.location;
-    }
+    //public final Location getLocation() {
+    //    return this.location;
+    //}
 
     public final UUID getUUID() {
         return this.uuid;

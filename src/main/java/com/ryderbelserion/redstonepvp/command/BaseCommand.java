@@ -3,6 +3,7 @@ package com.ryderbelserion.redstonepvp.command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -26,7 +27,7 @@ public class BaseCommand extends Command {
             return;
         }
 
-        //todo() add gui to manage some things because why not?
+        player.openInventory(new MainMenu(player).build().getInventory());
     }
 
     @Override

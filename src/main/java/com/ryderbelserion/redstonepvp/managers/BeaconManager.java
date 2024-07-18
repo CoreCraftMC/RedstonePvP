@@ -3,6 +3,8 @@ package com.ryderbelserion.redstonepvp.managers;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.objects.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.data.Connector;
+import com.ryderbelserion.redstonepvp.utils.MiscUtils;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +36,7 @@ public class BeaconManager {
         beaconDrops.put(uuid, new BeaconDrop(uuid, location, time));
 
         // run off the main thread.
-        CompletableFuture.runAsync(() -> {
+        /*CompletableFuture.runAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement("insert into beacon_locations(id, location, time) values (?, ?, ?)")) {
                     statement.setString(1, String.valueOf(uuid));
@@ -54,7 +56,7 @@ public class BeaconManager {
 
                 exception.printStackTrace();
             }
-        });
+        });*/
     }
 
     /**
@@ -115,7 +117,7 @@ public class BeaconManager {
         }
 
         // Remove from the database as well.
-        CompletableFuture.runAsync(() -> {
+        /*CompletableFuture.runAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement("delete from beacon_locations where location = ?")) {
                     statement.setString(1, location);
@@ -127,7 +129,7 @@ public class BeaconManager {
 
                 exception.printStackTrace();
             }
-        });
+        });*/
     }
 
     /**
@@ -137,11 +139,11 @@ public class BeaconManager {
      * @return a list of uuids
      */
     public static List<UUID> getLocations(final boolean queryDirectly) {
-        if (!queryDirectly) {
-            return beaconDrops.keySet().stream().toList();
-        }
+//        if (!queryDirectly) {
+//            return beaconDrops.keySet().stream().toList();
+//        }
 
-        return CompletableFuture.supplyAsync(() -> {
+        /*return CompletableFuture.supplyAsync(() -> {
             List<UUID> uuids = new ArrayList<>();
 
             try (Connection connection = dataManager.getConnector().getConnection()) {
@@ -157,7 +159,9 @@ public class BeaconManager {
             }
 
             return uuids;
-        }).join();
+        }).join();*/
+
+        return beaconDrops.keySet().stream().toList();
     }
 
     /**
@@ -168,22 +172,26 @@ public class BeaconManager {
      * @return true or false
      */
     public static boolean hasLocation(final String location, final boolean queryDirectly) {
-        if (!queryDirectly) {
-            UUID uuid = null;
-
+        /*if (!queryDirectly) {
             for (BeaconDrop drop : beaconDrops.values()) {
-                if (drop.getRawLocation().equalsIgnoreCase(location)) {
-                    uuid = drop.getUUID();
-
-                    break;
+                if (location.equalsIgnoreCase(MiscUtils.location(drop.getLocation()))) {
+                    return true;
                 }
             }
 
-            return beaconDrops.containsKey(uuid);
+            return false;
+        }*/
+
+        for (BeaconDrop drop : beaconDrops.values()) {
+            if (location.equalsIgnoreCase(drop.getRawLocation())) {
+                return true;
+            }
         }
 
+        return false;
+
         // Only query the database directly if in a command.
-        return CompletableFuture.supplyAsync(() -> {
+        /*return CompletableFuture.supplyAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
                 try (final PreparedStatement statement = connection.prepareStatement("select id from beacon_locations where location = ?")) {
                     statement.setString(1, location);
@@ -197,10 +205,10 @@ public class BeaconManager {
 
                 return false;
             }
-        }).join();
+        }).join();*/
     }
 
-    public static Map<UUID, BeaconDrop> getBeaconDrops() {
+    public static Map<UUID, BeaconDrop> getBeaconData() {
         return Collections.unmodifiableMap(beaconDrops);
     }
 }

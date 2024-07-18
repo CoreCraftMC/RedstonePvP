@@ -3,6 +3,8 @@ package com.ryderbelserion.redstonepvp;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.settings.PacketEventsSettings;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.BeaconMenu;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleLoader;
 import com.ryderbelserion.redstonepvp.command.BaseCommand;
 import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
@@ -60,7 +62,7 @@ public class RedstonePvP extends JavaPlugin {
         this.dataManager = new DataManager().init();
 
         // Populate existing beacon drop locations in the cache.
-        BeaconManager.populate(this.dataManager);
+        //BeaconManager.populate(this.dataManager);
 
         // Register commands.
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -93,7 +95,11 @@ public class RedstonePvP extends JavaPlugin {
         List.of(
                 new PlayerDamageListener(),
                 new AnvilRepairListener(),
-                new ItemFrameListener()
+                new ItemFrameListener(),
+
+                // Menu listeners
+                new MainMenu(),
+                new BeaconMenu()
         ).forEach(clazz -> getServer().getPluginManager().registerEvents(clazz, this));
     }
 
