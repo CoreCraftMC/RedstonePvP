@@ -29,7 +29,7 @@ public class BeaconManager {
      * @param location the location to add
      */
     public static void addLocation(final UUID uuid, final String location, final int time) {
-        // add to cache to ensure better performance in future checks.
+        // add to cache to ensure better performance in future checks. use a random uuid for the hashmap as we don't care what's there.
         beaconDrops.put(uuid, new BeaconDrop(uuid, location, time));
 
         // run off the main thread.
@@ -61,18 +61,17 @@ public class BeaconManager {
             final Map<UUID, BeaconDrop> beaconDrops = new HashMap<>();
 
             try (Connection connection = dataManager.getConnector().getConnection()) {
-                final PreparedStatement statement = connection.prepareStatement("select * from beacon_locations");
+                try (PreparedStatement statement = connection.prepareStatement("select * from beacon_locations")) {
+                    final ResultSet resultSet = statement.executeQuery();
 
-                final ResultSet resultSet = statement.executeQuery();
+                    while (resultSet.next()) {
+                        // Get all the data from the database.
+                        final BeaconDrop drop = new BeaconDrop(UUID.fromString(resultSet.getString("id")), resultSet.getString("location"), resultSet.getInt("time"));
 
-                while (resultSet.next()) {
-                    final UUID uuid = UUID.fromString(resultSet.getString("id"));
-
-                    beaconDrops.put(uuid, new BeaconDrop(uuid, resultSet.getString("location"), resultSet.getInt("time")));
+                        // Use a random uuid() for the hashmap.
+                        beaconDrops.put(drop.getUUID(), drop);
+                    }
                 }
-
-                // Close statement to clean up resources.
-                statement.close();
             } catch (SQLException exception) {
                 plugin.getComponentLogger().warn("Failed to populate the cache on startup.", exception);
             }
