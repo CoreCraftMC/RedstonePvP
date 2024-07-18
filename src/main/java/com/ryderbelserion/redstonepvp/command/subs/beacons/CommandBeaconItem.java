@@ -54,9 +54,13 @@ public class CommandBeaconItem extends Command {
             return;
         }
 
-        final String base64 = Base64.getEncoder().encodeToString(itemStack.serializeAsBytes());
+        if (BeaconManager.hasValue(name)) {
+            Messages.beacon_drop_doesnt_exist.sendMessage(player, "{name}", name);
 
-        player.sendMessage("Item: " + base64);
+            return;
+        }
+
+        final String base64 = Base64.getEncoder().encodeToString(itemStack.serializeAsBytes());
     }
 
     @Override
