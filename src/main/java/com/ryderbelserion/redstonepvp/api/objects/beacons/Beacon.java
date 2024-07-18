@@ -1,32 +1,36 @@
-package com.ryderbelserion.redstonepvp.api.objects;
+package com.ryderbelserion.redstonepvp.api.objects.beacons;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.utils.MiscUtils;
-import org.bukkit.Location;
-import java.util.UUID;
 
-public class BeaconDrop {
+public class Beacon {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
-    private final String name;
     private final String rawLocation;
+    private final BeaconDrop drop;
+    private final String name;
     private final int time;
 
-    public BeaconDrop(final String name, final String rawLocation, final int time) {
+    public Beacon(final String name, final String rawLocation, final int time) {
         this.name = name;
+
+        this.drop = new BeaconDrop(this.name);
 
         this.rawLocation = rawLocation;
 
         this.time = time;
     }
 
-    public final String getName() {
-        return this.name;
-    }
-
     public final String getRawLocation() {
         return this.rawLocation;
+    }
+
+    public final BeaconDrop getDrop() {
+        return this.drop;
+    }
+
+    public final String getName() {
+        return this.name;
     }
 
     public final int getTime() {

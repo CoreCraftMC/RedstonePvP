@@ -1,7 +1,7 @@
 package com.ryderbelserion.redstonepvp.managers;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.objects.BeaconDrop;
+import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.redstonepvp.managers.data.Connector;
 
 import java.sql.Connection;
@@ -21,7 +21,7 @@ public class BeaconManager {
 
     private static final DataManager dataManager = plugin.getDataManager();
 
-    private static Map<String, BeaconDrop> beaconDrops = new HashMap<>();
+    private static Map<String, Beacon> beaconDrops = new HashMap<>();
 
     /**
      * Adds a location to the cache and the database.
@@ -31,7 +31,7 @@ public class BeaconManager {
      */
     public static void addLocation(final String name, final String location, final int time) {
         // add to cache to ensure better performance in future checks. use a random uuid for the hashmap as we don't care what's there.
-        beaconDrops.put(name, new BeaconDrop(name, location, time));
+        beaconDrops.put(name, new Beacon(name, location, time));
 
         // run off the main thread.
         CompletableFuture.runAsync(() -> {
@@ -64,7 +64,7 @@ public class BeaconManager {
      */
     public static void populate(final DataManager dataManager) {
         beaconDrops = CompletableFuture.supplyAsync(() -> {
-            final Map<String, BeaconDrop> beaconDrops = new HashMap<>();
+            final Map<String, Beacon> beaconDrops = new HashMap<>();
 
             final Connector connector = dataManager.getConnector();
 
@@ -74,10 +74,8 @@ public class BeaconManager {
                         final ResultSet resultSet = statement.executeQuery();
 
                         while (resultSet.next()) {
-                            // Get all the data from the database.
-                            final BeaconDrop drop = new BeaconDrop(resultSet.getString("id"), resultSet.getString("location"), resultSet.getInt("time"));
+                            final Beacon drop = new Beacon(resultSet.getString("id"), resultSet.getString("location"), resultSet.getInt("time"));
 
-                            // Use a random uuid() for the hashmap.
                             beaconDrops.put(drop.getName(), drop);
                         }
                     }
@@ -101,7 +99,7 @@ public class BeaconManager {
         String name = null;
 
         // Loop through current beacon drops, compare if the key matches the location. if yes, grab uuid.
-        for (BeaconDrop drop : beaconDrops.values()) {
+        for (Beacon drop : beaconDrops.values()) {
             if (drop.getRawLocation().equalsIgnoreCase(location)) {
                 name = drop.getName();
 
@@ -167,7 +165,7 @@ public class BeaconManager {
      * @param name the name of the drop location
      * @return the {@link BeaconDrop}
      */
-    public static BeaconDrop getDrop(final String name) {
+    public static Beacon getDrop(final String name) {
         return beaconDrops.get(name);
     }
 
@@ -189,7 +187,7 @@ public class BeaconManager {
      * @return true or false
      */
     public static boolean hasLocation(final String location, final boolean queryDirectly) {
-        if (queryDirectly) {
+        for (Beacon drop : beaconDrops.values()) {
             // Only query the database directly if in a command.
             return CompletableFuture.supplyAsync(() -> {
                 try (Connection connection = dataManager.getConnector().getConnection()) {
@@ -207,8 +205,6 @@ public class BeaconManager {
                 }
             }).join();
         }
-
-        for (BeaconDrop drop : beaconDrops.values()) {
             if (location.equalsIgnoreCase(drop.getRawLocation())) {
                 return true;
             }
@@ -217,7 +213,7 @@ public class BeaconManager {
         return false;
     }
 
-    public static Map<String, BeaconDrop> getBeaconData() {
+    public static Map<String, Beacon> getBeaconData() {
         return Collections.unmodifiableMap(beaconDrops);
     }
 }

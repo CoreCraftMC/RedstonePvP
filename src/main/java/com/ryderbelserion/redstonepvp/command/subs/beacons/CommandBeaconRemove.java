@@ -6,12 +6,10 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.objects.Command;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
-import com.ryderbelserion.redstonepvp.api.objects.BeaconDrop;
+import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
-import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -45,7 +43,7 @@ public class CommandBeaconRemove extends Command {
             return;
         }
 
-        final BeaconDrop drop = BeaconManager.getDrop(name);
+        final Beacon drop = BeaconManager.getDrop(name);
 
         Messages.beacon_drop_removed.sendMessage(player, "{name}", name);
 
