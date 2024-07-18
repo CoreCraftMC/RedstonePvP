@@ -42,11 +42,15 @@ public class Locale implements SettingsHolder {
 
     public static final Property<String> anvil_repair_not_valid = newProperty("root.anvil-repair.not-valid", "{prefix}<white>Cannot repair this item as it has no durability.");
 
-    public static final Property<String> beacon_drop_added = newProperty("root.beacon-drops.added", "{prefix}<white>You have added a new beacon drop location.");
+    @Comment("A list of available placeholders: {name}")
+    public static final Property<String> beacon_drop_added = newProperty("root.beacon-drops.added", "{prefix}<white>You have added a new beacon drop location with the name <red>{name}.");
 
-    public static final Property<String> beacon_drop_exists = newProperty("root.beacon-drops.exists", "{prefix}<white>A beacon drop already exists at this location!");
+    @Comment("A list of available placeholders: {name}")
+    public static final Property<String> beacon_drop_exists = newProperty("root.beacon-drops.exists", "{prefix}<red>{name} <white>is already a beacon drop location.");
 
-    public static final Property<String> beacon_drop_removed = newProperty("root.beacon-drops.removed", "{prefix}<white>You have removed a beacon drop location.");
+    @Comment("A list of available placeholders: {name}")
+    public static final Property<String> beacon_drop_removed = newProperty("root.beacon-drops.removed", "{prefix}<white>You have removed a beacon drop location with the name <red>{name}.");
 
-    public static final Property<String> beacon_drop_invalid = newProperty("root.beacon-drops.invalid", "{prefix}<white>There is no beacon drop at this location.");
+    @Comment("A list of available placeholders: {name}")
+    public static final Property<String> beacon_drop_invalid = newProperty("root.beacon-drops.invalid", "{prefix}<white>There is no beacon drop with the name {name}.");
 }
