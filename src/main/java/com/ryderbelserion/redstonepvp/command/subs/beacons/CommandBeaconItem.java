@@ -57,13 +57,25 @@ public class CommandBeaconItem extends Command {
             return;
         }
 
-        if (BeaconManager.hasValue(name)) {
+        if (!BeaconManager.hasValue(name)) {
             Messages.beacon_drop_doesnt_exist.sendMessage(player, "{name}", name);
 
             return;
         }
 
+        final Beacon beacon = BeaconManager.getDrop(name);
+
+        final BeaconDrop drop = beacon.getDrop();
+
         final String base64 = Base64.getEncoder().encodeToString(itemStack.serializeAsBytes());
+
+        if (drop.containsItem(base64)) {
+            //todo() add message saying it already exists.
+
+            return;
+        }
+
+        drop.addItem(base64, stack.getArgument("weight", Double.class));
     }
 
     @Override
@@ -76,6 +88,7 @@ public class CommandBeaconItem extends Command {
         return Commands.literal("item")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .then(argument("name", StringArgumentType.string())
+                .then(argument("weight", DoubleArgumentType.doubleArg(0.1)))
                 .suggests((context, builder) -> {
                     BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
 
