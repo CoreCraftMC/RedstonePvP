@@ -29,7 +29,7 @@ public enum Messages {
     beacon_drop_added(Locale.beacon_drop_added),
     beacon_drop_removed(Locale.beacon_drop_removed),
     beacon_drop_exists(Locale.beacon_drop_exists),
-    beacon_drop_invalid(Locale.beacon_drop_invalid);
+    beacon_drop_doesnt_exist(Locale.beacon_drop_doesnt_exist);
 
     private Property<String> property;
 

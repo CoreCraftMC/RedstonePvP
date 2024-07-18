@@ -36,13 +36,11 @@ public class CommandBeaconRemove extends Command {
         final String name = stack.getArgument("name", String.class);
 
         if (name == null || name.isEmpty() || name.isBlank()) {
-            //todo() tell them the arg is invalid.
-
             return;
         }
 
         if (!BeaconManager.hasValue(name)) {
-            Messages.beacon_drop_invalid.sendMessage(player, "{name}", name);
+            Messages.beacon_drop_doesnt_exist.sendMessage(player, "{name}", name);
 
             return;
         }

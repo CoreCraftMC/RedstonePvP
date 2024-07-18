@@ -52,5 +52,5 @@ public class Locale implements SettingsHolder {
     public static final Property<String> beacon_drop_removed = newProperty("root.beacon-drops.removed", "{prefix}<white>You have removed a beacon drop location with the name <red>{name}.");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_drop_invalid = newProperty("root.beacon-drops.invalid", "{prefix}<white>There is no beacon drop with the name {name}.");
+    public static final Property<String> beacon_drop_doesnt_exist = newProperty("root.beacon-drops.doesnt-exist", "{prefix}<white>There is no beacon drop with the name {name}.");
 }
