@@ -36,7 +36,7 @@ public class BeaconManager {
         beaconDrops.put(uuid, new BeaconDrop(uuid, location, time));
 
         // run off the main thread.
-        /*CompletableFuture.runAsync(() -> {
+        CompletableFuture.runAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement("insert into beacon_locations(id, location, time) values (?, ?, ?)")) {
                     statement.setString(1, String.valueOf(uuid));
@@ -56,7 +56,7 @@ public class BeaconManager {
 
                 exception.printStackTrace();
             }
-        });*/
+        });
     }
 
     /**
@@ -117,7 +117,7 @@ public class BeaconManager {
         }
 
         // Remove from the database as well.
-        /*CompletableFuture.runAsync(() -> {
+        CompletableFuture.runAsync(() -> {
             try (Connection connection = dataManager.getConnector().getConnection()) {
                 try (PreparedStatement statement = connection.prepareStatement("delete from beacon_locations where location = ?")) {
                     statement.setString(1, location);
@@ -129,7 +129,7 @@ public class BeaconManager {
 
                 exception.printStackTrace();
             }
-        });*/
+        });
     }
 
     /**
@@ -139,27 +139,25 @@ public class BeaconManager {
      * @return a list of uuids
      */
     public static List<UUID> getLocations(final boolean queryDirectly) {
-//        if (!queryDirectly) {
-//            return beaconDrops.keySet().stream().toList();
-//        }
+        if (queryDirectly) {
+            return CompletableFuture.supplyAsync(() -> {
+                List<UUID> uuids = new ArrayList<>();
 
-        /*return CompletableFuture.supplyAsync(() -> {
-            List<UUID> uuids = new ArrayList<>();
+                try (Connection connection = dataManager.getConnector().getConnection()) {
+                    try (final PreparedStatement statement = connection.prepareStatement("select * from beacon_locations")) {
+                        final ResultSet resultSet = statement.executeQuery();
 
-            try (Connection connection = dataManager.getConnector().getConnection()) {
-                try (final PreparedStatement statement = connection.prepareStatement("select * from beacon_locations")) {
-                    final ResultSet resultSet = statement.executeQuery();
-
-                    while (resultSet.next()) {
-                        uuids.add(UUID.fromString(resultSet.getString("id")));
+                        while (resultSet.next()) {
+                            uuids.add(UUID.fromString(resultSet.getString("id")));
+                        }
                     }
+                } catch (SQLException exception) {
+                    plugin.getComponentLogger().warn("Failed to fetch locations", exception);
                 }
-            } catch (SQLException exception) {
-                plugin.getComponentLogger().warn("Failed to fetch locations", exception);
-            }
 
-            return uuids;
-        }).join();*/
+                return uuids;
+            }).join();
+        }
 
         return beaconDrops.keySet().stream().toList();
     }
@@ -172,15 +170,24 @@ public class BeaconManager {
      * @return true or false
      */
     public static boolean hasLocation(final String location, final boolean queryDirectly) {
-        /*if (!queryDirectly) {
-            for (BeaconDrop drop : beaconDrops.values()) {
-                if (location.equalsIgnoreCase(MiscUtils.location(drop.getLocation()))) {
-                    return true;
-                }
-            }
+        if (queryDirectly) {
+            // Only query the database directly if in a command.
+            return CompletableFuture.supplyAsync(() -> {
+                try (Connection connection = dataManager.getConnector().getConnection()) {
+                    try (final PreparedStatement statement = connection.prepareStatement("select id from beacon_locations where location = ?")) {
+                        statement.setString(1, location);
 
-            return false;
-        }*/
+                        final ResultSet resultSet = statement.executeQuery();
+
+                        return resultSet.next();
+                    }
+                } catch (SQLException exception) {
+                    plugin.getComponentLogger().warn("Failed to fetch locations", exception);
+
+                    return false;
+                }
+            }).join();
+        }
 
         for (BeaconDrop drop : beaconDrops.values()) {
             if (location.equalsIgnoreCase(drop.getRawLocation())) {
@@ -189,23 +196,6 @@ public class BeaconManager {
         }
 
         return false;
-
-        // Only query the database directly if in a command.
-        /*return CompletableFuture.supplyAsync(() -> {
-            try (Connection connection = dataManager.getConnector().getConnection()) {
-                try (final PreparedStatement statement = connection.prepareStatement("select id from beacon_locations where location = ?")) {
-                    statement.setString(1, location);
-
-                    final ResultSet resultSet = statement.executeQuery();
-
-                    return resultSet.next();
-                }
-            } catch (SQLException exception) {
-                plugin.getComponentLogger().warn("Failed to fetch locations", exception);
-
-                return false;
-            }
-        }).join();*/
     }
 
     public static Map<UUID, BeaconDrop> getBeaconData() {
