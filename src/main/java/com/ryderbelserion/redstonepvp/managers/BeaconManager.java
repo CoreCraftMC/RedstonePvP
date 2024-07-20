@@ -2,6 +2,7 @@ package com.ryderbelserion.redstonepvp.managers;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
+import com.ryderbelserion.redstonepvp.api.objects.beacons.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.data.Connector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,6 +22,8 @@ public class BeaconManager {
     private static final DataManager dataManager = plugin.getDataManager();
 
     private static Map<String, Beacon> beaconDrops = new HashMap<>();
+
+    private static List<Integer> positions = new ArrayList<>();
 
     /**
      * Adds a location to the cache and the database.
@@ -74,6 +77,23 @@ public class BeaconManager {
 
                         while (resultSet.next()) {
                             final Beacon drop = new Beacon(resultSet.getString("id"), resultSet.getString("location"), resultSet.getInt("time"));
+
+                            try (PreparedStatement next = connection.prepareStatement("select * from beacon_items where id = ?")) {
+                                next.setString(1, drop.getName());
+
+                                final ResultSet query = next.executeQuery();
+
+                                while (query.next()) {
+                                    int position = query.getInt("position");
+
+                                    float weight = query.getFloat("weight");
+                                    String item = query.getString("item");
+
+                                    final BeaconDrop beaconDrop = drop.getDrop();
+
+                                    beaconDrop.addItem(item, weight);
+                                }
+                            }
 
                             beaconDrops.put(drop.getName(), drop);
                         }
