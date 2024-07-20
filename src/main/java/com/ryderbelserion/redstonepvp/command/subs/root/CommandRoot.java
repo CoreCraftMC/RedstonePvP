@@ -76,7 +76,7 @@ public class CommandRoot extends BaseCommand {
 
         @Command("item")
         @Permission(value = "redstonepvp.beacon.item", def = PermissionDefault.OP)
-        public void item(Player player, @ArgName("beacon_id") @Suggestion("beacons") String name, @ArgName("weight") @Suggestion("numbers") int weight) {
+        public void item(Player player, @ArgName("beacon_id") @Suggestion("beacons") String name, @ArgName("weight") @Suggestion("weight") double weight) {
             final ItemStack itemStack = player.getInventory().getItemInMainHand();
 
             if (itemStack.getType() == Material.AIR) {

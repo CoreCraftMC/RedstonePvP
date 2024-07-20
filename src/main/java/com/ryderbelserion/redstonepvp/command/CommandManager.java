@@ -31,7 +31,15 @@ public class CommandManager {
         commandManager.registerSuggestion(SuggestionKey.of("numbers"), (sender, context) -> {
             final List<String> numbers = new ArrayList<>();
 
-            for (int i = 1; i <= 100; i++) numbers.add(String.valueOf(i));
+            for (int i = 1; i <= 64; i++) numbers.add(String.valueOf(i));
+
+            return numbers;
+        });
+
+       commandManager.registerSuggestion(SuggestionKey.of("weight"), (sender, context) -> {
+            final List<String> numbers = new ArrayList<>();
+
+            for (double i = 0.1; i <= 64.0; i++) numbers.add(String.valueOf(i));
 
             return numbers;
         });
