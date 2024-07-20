@@ -74,7 +74,7 @@ public class CommandRoot extends BaseCommand {
             BeaconManager.addLocation(name, location, time);
         }
 
-        @Command("item")
+        @Command(value = "additem")
         @Permission(value = "redstonepvp.beacon.item", def = PermissionDefault.OP)
         public void item(Player player, @ArgName("beacon_id") @Suggestion("beacons") String name, @ArgName("weight") @Suggestion("weight") double weight) {
             final ItemStack itemStack = player.getInventory().getItemInMainHand();

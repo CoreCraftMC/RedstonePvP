@@ -17,9 +17,9 @@ public class ArgumentRelations extends MessageManager {
         String usage = null;
 
         switch (command) {
+            case "additem" -> usage = order + " <beacon_id> <weight>";
             case "add" -> usage = order + " <beacon_id> <time>";
             case "remove" -> usage = order + " <beacon_id>";
-            case "item" -> usage = order + " <beacon_id> <weight>";
         }
 
         return usage;
