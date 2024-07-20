@@ -17,9 +17,9 @@ public class ArgumentRelations extends MessageManager {
         String usage = null;
 
         switch (command) {
-            case "beacon add" -> usage = order + " <beacon_id> <time>";
-            case "beacon remove" -> usage = order + " <beacon_id>";
-            case "beacon item" -> usage = order + " <beacon_id> <weight>";
+            case "add" -> usage = order + " <beacon_id> <time>";
+            case "remove" -> usage = order + " <beacon_id>";
+            case "item" -> usage = order + " <beacon_id> <weight>";
         }
 
         return usage;
@@ -32,13 +32,29 @@ public class ArgumentRelations extends MessageManager {
         this.commandManager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
             Optional<String> meta = context.getMeta().get(MetaKey.NAME);
 
-            meta.ifPresent(key -> send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/redstonepvp " + key))));
+            meta.ifPresent(key -> {
+                if (key.equalsIgnoreCase("add") || key.equalsIgnoreCase("remove") || key.equalsIgnoreCase("item")) {
+                    send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/redstonepvp beacon " + key)));
+
+                    return;
+                }
+
+                send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/redstonepvp " + key)));
+            });
         });
 
         this.commandManager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
             Optional<String> meta = context.getMeta().get(MetaKey.NAME);
 
-            meta.ifPresent(key -> send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/redstonepvp " + key))));
+            meta.ifPresent(key -> {
+                if (key.equalsIgnoreCase("add") || key.equalsIgnoreCase("remove") || key.equalsIgnoreCase("item")) {
+                    send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/redstonepvp beacon " + key)));
+
+                    return;
+                }
+
+                send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/redstonepvp " + key)));
+            });
         });
 
         this.commandManager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> send(sender, Messages.correct_usage.getMessage(sender, "{usage}", context.getSyntax())));
