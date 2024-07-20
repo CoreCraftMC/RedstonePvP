@@ -86,7 +86,7 @@ public class BeaconMenu extends InventoryBuilder {
                     if (location != null) {
                         BeaconManager.removeLocation(location);
 
-                        Messages.beacon_drop_removed.sendMessage(player, "{name}", container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING));
+                        Messages.beacon_location_removed.sendMessage(player, "{name}", container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING));
 
                         player.openInventory(new BeaconMenu(player).build().getInventory());
                     }
