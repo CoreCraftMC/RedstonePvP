@@ -30,10 +30,10 @@ public enum Messages {
     anvil_repair_not_enough(Locale.anvil_repair_not_enough),
     anvil_repair_no_damage(Locale.anvil_repair_no_damage),
     anvil_repair_not_valid(Locale.anvil_repair_not_valid),
-    beacon_drop_added(Locale.beacon_drop_added),
-    beacon_drop_removed(Locale.beacon_drop_removed),
-    beacon_drop_exists(Locale.beacon_drop_exists),
-    beacon_drop_doesnt_exist(Locale.beacon_drop_doesnt_exist);
+    beacon_location_added(Locale.beacon_location_added),
+    beacon_location_removed(Locale.beacon_location_removed),
+    beacon_location_exists(Locale.beacon_location_exists),
+    beacon_location_doesnt_exist(Locale.beacon_location_doesnt_exist);
 
     private Property<String> property;
 

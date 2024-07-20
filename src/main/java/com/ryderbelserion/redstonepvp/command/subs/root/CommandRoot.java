@@ -64,12 +64,12 @@ public class CommandRoot extends BaseCommand {
             final String location = MiscUtils.location(block.getLocation());
 
             if (BeaconManager.hasValue(name) || BeaconManager.hasLocation(location)) {
-                Messages.beacon_drop_exists.sendMessage(player, "{name}", name);
+                Messages.beacon_location_exists.sendMessage(player, "{name}", name);
 
                 return;
             }
 
-            Messages.beacon_drop_added.sendMessage(player, "{name}", name);
+            Messages.beacon_location_added.sendMessage(player, "{name}", name);
 
             BeaconManager.addLocation(name, location, time);
         }
@@ -86,7 +86,7 @@ public class CommandRoot extends BaseCommand {
             }
 
             if (!BeaconManager.hasValue(name)) {
-                Messages.beacon_drop_doesnt_exist.sendMessage(player, "{name}", name);
+                Messages.beacon_location_doesnt_exist.sendMessage(player, "{name}", name);
 
                 return;
             }
@@ -108,12 +108,12 @@ public class CommandRoot extends BaseCommand {
         @Permission(value = "redstonepvp.beacon.remove", def = PermissionDefault.OP)
         public void reload(Player player, @ArgName("beacon_id") @Suggestion("beacons") String name) {
             if (!BeaconManager.hasValue(name)) {
-                Messages.beacon_drop_doesnt_exist.sendMessage(player, "{name}", name);
+                Messages.beacon_location_doesnt_exist.sendMessage(player, "{name}", name);
 
                 return;
             }
 
-            Messages.beacon_drop_removed.sendMessage(player, "{name}", name);
+            Messages.beacon_location_removed.sendMessage(player, "{name}", name);
 
             BeaconManager.removeLocation(name);
         }

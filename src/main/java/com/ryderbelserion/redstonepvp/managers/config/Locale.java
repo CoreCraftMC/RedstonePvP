@@ -53,14 +53,14 @@ public class Locale implements SettingsHolder {
     public static final Property<String> anvil_repair_not_valid = newProperty("root.anvil-repair.not-valid", "{prefix}<white>Cannot repair this item as it has no durability.");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_drop_added = newProperty("root.beacon-drops.added", "{prefix}<white>You have added a new beacon drop location with the name <red>{name}.");
+    public static final Property<String> beacon_location_added = newProperty("root.beacon.location.added", "{prefix}<white>You have added a new beacon drop location with the name <red>{name}.");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_drop_exists = newProperty("root.beacon-drops.exists", "{prefix}<red>{name} <white>is already a beacon drop location.");
+    public static final Property<String> beacon_location_exists = newProperty("root.beacon.location.exists", "{prefix}<red>{name} <white>is already a beacon drop location.");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_drop_removed = newProperty("root.beacon-drops.removed", "{prefix}<white>You have removed a beacon drop location with the name <red>{name}.");
+    public static final Property<String> beacon_location_removed = newProperty("root.beacon.location.removed", "{prefix}<white>You have removed a beacon drop location with the name <red>{name}.");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_drop_doesnt_exist = newProperty("root.beacon-drops.doesnt-exist", "{prefix}<white>There is no beacon drop with the name {name}.");
+    public static final Property<String> beacon_location_doesnt_exist = newProperty("root.beacon.location.doesnt-exist", "{prefix}<white>There is no beacon drop with the name {name}.");
 }
