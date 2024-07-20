@@ -24,21 +24,27 @@ public class BeaconDrop {
     }
 
     public void addItem(final String item, final double weight) {
+        addItem(item, 1, weight, false);
+    }
+
+    public void addItem(final String item, final int position, final double weight, final boolean insertData) {
         this.items.put(item, weight);
 
-        CompletableFuture.runAsync(() -> {
-            try (Connection connection = this.connector.getConnection()) {
-                try (PreparedStatement statement = connection.prepareStatement("update beacon_items set item = ?, weight = ? where id = ?")) {
-                    statement.setString(1, item);
-                    statement.setDouble(2, weight);
-                    statement.setString(3, this.name);
+        if (insertData) {
+            CompletableFuture.runAsync(() -> {
+                try (Connection connection = this.connector.getConnection()) {
+                    try (PreparedStatement statement = connection.prepareStatement("update beacon_items set item = ?, weight = ? where position = ?")) {
+                        statement.setString(1, item);
+                        statement.setDouble(2, weight);
+                        statement.setInt(3, position);
 
-                    statement.executeUpdate();
+                        statement.executeUpdate();
+                    }
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
                 }
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
-        });
+            });
+        }
     }
 
     public boolean containsItem(final String item) {
@@ -63,7 +69,11 @@ public class BeaconDrop {
         });
     }
 
-    public Map<String, Double> getItems() {
+    public final Map<String, Double> getItems() {
         return Collections.unmodifiableMap(this.items);
+    }
+
+    public final String getName() {
+        return this.name;
     }
 }

@@ -91,17 +91,7 @@ public class CommandRoot extends BaseCommand {
                 return;
             }
 
-            final BeaconDrop beacon = BeaconManager.getBeacon(name).getDrop();
-
-            final String base64 = Base64.getEncoder().encodeToString(itemStack.serializeAsBytes());
-
-            if (beacon.containsItem(base64)) {
-                player.sendMessage("The drop already exists.");
-
-                return;
-            }
-
-            beacon.addItem(base64, weight);
+            BeaconManager.getBeacon(name).getDrop().addItem(ItemUtil.toBase64(itemStack), position, weight, true);
         }
 
         @Command("remove")
