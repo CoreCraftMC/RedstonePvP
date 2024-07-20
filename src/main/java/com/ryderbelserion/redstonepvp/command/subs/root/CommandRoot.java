@@ -1,6 +1,5 @@
 package com.ryderbelserion.redstonepvp.command.subs.root;
 
-import com.ryderbelserion.redstonepvp.api.core.builders.types.BeaconMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.BeaconDrop;
@@ -8,6 +7,7 @@ import com.ryderbelserion.redstonepvp.command.subs.BaseCommand;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.managers.ConfigManager;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
+import com.ryderbelserion.vital.paper.util.ItemUtil;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -18,7 +18,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
-import java.util.Base64;
 
 public class CommandRoot extends BaseCommand {
 
@@ -47,7 +46,23 @@ public class CommandRoot extends BaseCommand {
         @Command
         @Permission(value = "redstonepvp.beacon.access", def = PermissionDefault.OP)
         public void beacon(Player player) {
-            player.openInventory(new BeaconMenu(player).build().getInventory());
+            BeaconManager.getBeaconData().forEach((key, beacon) -> {
+                this.plugin.getComponentLogger().info("Name: {}", key);
+
+                final BeaconDrop beaconDrop = beacon.getDrop();
+
+                this.plugin.getComponentLogger().info("Size: {}", beaconDrop.getItems().size());
+
+                beaconDrop.getItems().forEach((item, weight) -> {
+                    this.plugin.getComponentLogger().info("Weight: {}", weight);
+
+                    final ItemStack itemStack = ItemUtil.fromBase64(item);
+
+                    this.plugin.getComponentLogger().info("Item Type: {}", itemStack.getType());
+                });
+            });
+
+            //player.openInventory(new BeaconMenu(player).build().getInventory());
         }
 
         @Command(value = "add")
