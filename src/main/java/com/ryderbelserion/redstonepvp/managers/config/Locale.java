@@ -63,4 +63,6 @@ public class Locale implements SettingsHolder {
 
     @Comment("A list of available placeholders: {name}")
     public static final Property<String> beacon_location_doesnt_exist = newProperty("root.beacon.location.doesnt-exist", "{prefix}<white>There is no beacon drop with the name {name}.");
+
+    public static final Property<String> beacon_drop_exists = newProperty("root.beacon.drops.exists", "{prefix}<white>The item you are holding is already added.");
 }
