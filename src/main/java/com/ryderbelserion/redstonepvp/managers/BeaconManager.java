@@ -3,7 +3,6 @@ package com.ryderbelserion.redstonepvp.managers;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.redstonepvp.managers.data.Connector;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -165,7 +164,7 @@ public class BeaconManager {
      * @param name the name of the drop location
      * @return the {@link Beacon}
      */
-    public static Beacon getDrop(final String name) {
+    public static Beacon getBeacon(final String name) {
         return beaconDrops.get(name);
     }
 

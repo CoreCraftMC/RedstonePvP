@@ -18,8 +18,12 @@ import java.util.Map;
 
 public enum Messages {
 
+    no_permission(Locale.no_permission),
+    unknown_command(Locale.unknown_command),
+    correct_usage(Locale.correct_usage),
     reloaded_plugin(Locale.reloaded_plugin),
     no_item_in_hand(Locale.no_item_in_hand),
+    must_be_console_sender(Locale.must_be_console_sender),
     not_a_player(Locale.not_a_player),
     not_a_block(Locale.not_a_block),
     item_frame_bypass(Locale.item_frame_bypass),

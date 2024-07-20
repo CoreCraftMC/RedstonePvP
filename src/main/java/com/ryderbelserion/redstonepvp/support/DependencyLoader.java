@@ -12,12 +12,13 @@ public class DependencyLoader implements PluginLoader {
 
     @Override
     public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {
-
         final MavenLibraryResolver resolver = new MavenLibraryResolver();
 
+        resolver.addDependency(new Dependency(new DefaultArtifact("dev.triumphteam:triumph-cmd-bukkit:2.0.0-ALPHA-10"), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("com.ryderbelserion.vital:paper:1.9.15"), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:4.0.3"), null));
 
+        resolver.addRepository(new RemoteRepository.Builder("reposilite-repository-snapshots", "default", "https://repo.triumphteam.dev/snapshots/").build());
         resolver.addRepository(new RemoteRepository.Builder("paper", "default", "https://repo.papermc.io/repository/maven-public/").build());
         resolver.addRepository(new RemoteRepository.Builder("crazycrewReleases", "default", "https://repo.crazycrew.us/releases/").build());
 

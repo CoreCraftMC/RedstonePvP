@@ -24,7 +24,17 @@ public class Locale implements SettingsHolder {
         conf.setComment("root", header);
     }
 
+    @Comment("A list of available placeholders: {command}")
+    public static final Property<String> unknown_command = newProperty("root.unknown-command", "{prefix}<red>{command} <white>is not a known command.");
+
+    @Comment("A list of available placeholders: {usage}")
+    public static final Property<String> correct_usage = newProperty("root.correct-usage", "{prefix}<white>The correct usage for this command is <red>{usage}");
+
+    public static final Property<String> no_permission = newProperty("root.no-permission", "{prefix}<white>You do not have permission to use that command!");
+
     public static final Property<String> reloaded_plugin = newProperty("root.reload-plugin", "{prefix}<white>You have reloaded <red>Redstone<white>PvP");
+
+    public static final Property<String> must_be_console_sender = newProperty("root.not-console-sender", "{prefix}<white>You must be using console to use this command.");
 
     public static final Property<String> not_a_player = newProperty("root.not-a-player", "{prefix}<white>You must be a player to run this command.");
 
