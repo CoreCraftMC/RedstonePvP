@@ -25,6 +25,7 @@ import com.ryderbelserion.vital.paper.plugins.interfaces.Plugin;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
+import java.util.Locale;
 
 public class RedstonePvP extends JavaPlugin {
 
@@ -33,9 +34,12 @@ public class RedstonePvP extends JavaPlugin {
     }
 
     private ModuleLoader loader;
+    private long startTime;
 
     @Override
     public void onLoad() {
+        this.startTime = System.nanoTime();
+
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this, new PacketEventsSettings().checkForUpdates(false)));
         PacketEvents.getAPI().load();
     }
@@ -87,6 +91,8 @@ public class RedstonePvP extends JavaPlugin {
                 new BeaconMenu(),
                 new ItemMenu()
         ).forEach(clazz -> getServer().getPluginManager().registerEvents(clazz, this));
+
+        getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
     }
 
     @Override
