@@ -78,14 +78,12 @@ public class BeaconManager {
                         while (resultSet.next()) {
                             final Beacon drop = new Beacon(resultSet.getString("id"), resultSet.getString("location"), resultSet.getInt("time"));
 
-                            try (PreparedStatement next = connection.prepareStatement("select * from beacon_items where id = ?")) {
+                            try (PreparedStatement next = connection.prepareStatement("select weight, item from beacon_items where id = ?")) {
                                 next.setString(1, drop.getName());
 
                                 final ResultSet query = next.executeQuery();
 
                                 while (query.next()) {
-                                    int position = query.getInt("position");
-
                                     float weight = query.getFloat("weight");
                                     String item = query.getString("item");
 
@@ -112,35 +110,23 @@ public class BeaconManager {
     /**
      * Removes a location from the cache and the database.
      *
-     * @param location the location to remove
+     * @param name the name of the location
      */
-    public static void removeLocation(final String location) {
-        String name = null;
-
-        // Loop through current beacon drops, compare if the key matches the location. if yes, grab uuid.
-        for (Beacon drop : beaconDrops.values()) {
-            if (drop.getRawLocation().equalsIgnoreCase(location)) {
-                name = drop.getName();
-
-                break;
-            }
-        }
-
-        // if uuid is not null, we remove from the cache.
+    public static void removeLocation(final String name) {
+        // if name is not null, we remove from the cache.
         if (name != null) {
             beaconDrops.remove(name);
-
-            final String finalName = name;
+            positions.remove(name);
 
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = dataManager.getConnector().getConnection()) {
                     try (PreparedStatement statement = connection.prepareStatement("delete from beacon_locations where id = ?")) {
-                        statement.setString(1, finalName);
+                        statement.setString(1, name);
 
                         statement.executeUpdate();
                     }
                 } catch (SQLException exception) {
-                    plugin.getComponentLogger().warn("Failed to delete location {}", finalName);
+                    plugin.getComponentLogger().warn("Failed to delete location {}", name);
 
                     exception.printStackTrace();
                 }
@@ -160,11 +146,11 @@ public class BeaconManager {
                 List<String> names = new ArrayList<>();
 
                 try (Connection connection = dataManager.getConnector().getConnection()) {
-                    try (final PreparedStatement statement = connection.prepareStatement("select * from beacon_locations")) {
+                    try (final PreparedStatement statement = connection.prepareStatement("select id from beacon_locations")) {
                         final ResultSet resultSet = statement.executeQuery();
 
                         while (resultSet.next()) {
-                            names.add(resultSet.getString("id"));
+                            names.add(resultSet.getString(1));
                         }
                     }
                 } catch (SQLException exception) {

@@ -36,15 +36,9 @@ public class CommandManager {
             return numbers;
         });
 
-        commandManager.registerSuggestion(SuggestionKey.of("positions"), (sender, context) -> {
-            final List<String> numbers = new ArrayList<>();
+        commandManager.registerSuggestion(SuggestionKey.of("positions"), (sender, context) -> BeaconManager.getPositions().values().stream().toList());
 
-            for (int i = 1; i <= 64; i++) numbers.add(String.valueOf(i));
-
-            return numbers;
-        });
-
-       commandManager.registerSuggestion(SuggestionKey.of("weights"), (sender, context) -> {
+        commandManager.registerSuggestion(SuggestionKey.of("weights"), (sender, context) -> {
             final List<String> numbers = new ArrayList<>();
 
             for (double i = 0.1; i <= 64.0; i++) numbers.add(String.valueOf(i));
@@ -52,9 +46,7 @@ public class CommandManager {
             return numbers;
         });
 
-        commandManager.registerSuggestion(SuggestionKey.of("beacons"), ((sender, arguments) -> new ArrayList<>() {{
-            addAll(BeaconManager.getBeaconData().keySet().stream().toList());
-        }}));
+        commandManager.registerSuggestion(SuggestionKey.of("beacons"), ((sender, arguments) -> BeaconManager.getLocations(false)));
 
         commandManager.registerSuggestion(SuggestionKey.of("names"), ((sender, arguments) -> new ArrayList<>() {{
             for (int i = 0; i < 7; i++) {
