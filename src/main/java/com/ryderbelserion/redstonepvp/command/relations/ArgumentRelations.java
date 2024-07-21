@@ -18,7 +18,7 @@ public class ArgumentRelations extends MessageManager {
 
         switch (command) {
             case "additem" -> usage = order + " <beacon_id> <weight>";
-            case "add" -> usage = order + " <beacon_id> <time>";
+            case "set" -> usage = order + " <beacon_id> <time>";
             case "remove" -> usage = order + " <beacon_id>";
         }
 

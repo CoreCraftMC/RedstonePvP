@@ -65,8 +65,8 @@ public class CommandRoot extends BaseCommand {
             //player.openInventory(new BeaconMenu(player).build().getInventory());
         }
 
-        @Command(value = "add")
-        @Permission(value = "redstonepvp.beacon.add", def = PermissionDefault.OP)
+        @Command(value = "set")
+        @Permission(value = "redstonepvp.beacon.set", def = PermissionDefault.OP)
         public void add(Player player, @ArgName("beacon_id") @Suggestion("names") String name, @ArgName("time") @Suggestion("numbers") int time) {
             final Block block = player.getTargetBlock(null, 5);
 
@@ -91,7 +91,7 @@ public class CommandRoot extends BaseCommand {
 
         @Command(value = "additem")
         @Permission(value = "redstonepvp.beacon.item", def = PermissionDefault.OP)
-        public void item(Player player, @ArgName("beacon_id") @Suggestion("beacons") String name, @ArgName("position") @Suggestion("positions") int position, @ArgName("weights") @Suggestion("weight") double weight) {
+        public void item(Player player, @ArgName("beacon_id") @Suggestion("beacons") String name, @ArgName("position") @Suggestion("positions") int position, @ArgName("weights") @Suggestion("weights") double weight) {
             final ItemStack itemStack = player.getInventory().getItemInMainHand();
 
             if (itemStack.getType() == Material.AIR) {
