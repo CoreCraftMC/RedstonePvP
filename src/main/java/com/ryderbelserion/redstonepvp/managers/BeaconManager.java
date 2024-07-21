@@ -23,7 +23,7 @@ public class BeaconManager {
 
     private static Map<String, Beacon> beaconDrops = new HashMap<>();
 
-    private static List<Integer> positions = new ArrayList<>();
+    private static Map<String, String> positions = new HashMap<>();
 
     /**
      * Adds a location to the cache and the database.
@@ -102,6 +102,28 @@ public class BeaconManager {
             }
 
             return beaconDrops;
+        }).join();
+
+        positions = CompletableFuture.supplyAsync(() -> {
+            final Map<String, String> positions = new HashMap<>();
+
+            final Connector connector = dataManager.getConnector();
+
+            try (Connection connection = connector.getConnection()) {
+                if (connector.tableExists(connection, "beacon_items")) {
+                    try (PreparedStatement statement = connection.prepareStatement("select position,id from beacon_items")) {
+                        final ResultSet query = statement.executeQuery();
+
+                        while (query.next()) {
+                            positions.put(query.getString("id"), String.valueOf(query.getInt("position")));
+                        }
+                    }
+                }
+            } catch (SQLException exception) {
+                plugin.getComponentLogger().warn("Failed to fetch the position ids.", exception);
+            }
+
+            return positions;
         }).join();
 
         //todo() run tasks to start drops.
@@ -202,5 +224,9 @@ public class BeaconManager {
 
     public static Map<String, Beacon> getBeaconData() {
         return Collections.unmodifiableMap(beaconDrops);
+    }
+
+    public static Map<String, String> getPositions() {
+        return Collections.unmodifiableMap(positions);
     }
 }
