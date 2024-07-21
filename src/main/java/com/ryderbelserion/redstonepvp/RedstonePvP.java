@@ -2,11 +2,16 @@ package com.ryderbelserion.redstonepvp;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.settings.PacketEventsSettings;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.BeaconMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.ItemMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleLoader;
 import com.ryderbelserion.redstonepvp.command.CommandManager;
+import com.ryderbelserion.redstonepvp.command.v2.BaseCommand;
+import com.ryderbelserion.redstonepvp.command.v2.subs.CommandBypass;
+import com.ryderbelserion.redstonepvp.command.v2.subs.CommandReload;
+import com.ryderbelserion.redstonepvp.command.v2.subs.beacons.CommandBeacon;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.PlayerDropsModule;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.managers.ConfigManager;
@@ -23,6 +28,8 @@ import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.plugins.PluginManager;
 import com.ryderbelserion.vital.paper.plugins.interfaces.Plugin;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.Locale;
@@ -64,7 +71,20 @@ public class RedstonePvP extends JavaPlugin {
         BeaconManager.populate(this.dataManager);
 
         // Register commands.
-        CommandManager.load();
+        //CommandManager.load();
+
+        // Register commands.
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            LiteralArgumentBuilder<CommandSourceStack> root = new BaseCommand().registerPermission().literal().createBuilder();
+
+            List.of(
+                    new CommandBeacon(),
+                    new CommandReload(),
+                    new CommandBypass()
+            ).forEach(command -> root.then(command.registerPermission().literal()));
+
+            event.registrar().register(root.build(), "the base command for RedstonePvP");
+        });
 
         // Register packets support.
         PluginManager.registerPlugin(new PacketEventsSupport());
