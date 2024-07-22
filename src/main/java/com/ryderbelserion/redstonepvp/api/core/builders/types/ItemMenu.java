@@ -37,9 +37,7 @@ public class ItemMenu extends InventoryBuilder {
     public void run(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
-        final Inventory inventory = event.getClickedInventory();
-
-        if (inventory == null) return;
+        final Inventory inventory = event.getInventory();
 
         if (!(inventory.getHolder(false) instanceof ItemMenu)) return;
 
