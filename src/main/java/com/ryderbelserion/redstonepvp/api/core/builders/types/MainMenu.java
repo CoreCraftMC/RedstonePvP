@@ -36,6 +36,10 @@ public class MainMenu extends InventoryBuilder {
     public void run(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
+        final Inventory inventory = event.getInventory();
+
+        if (!(inventory.getHolder(false) instanceof MainMenu)) return;
+
         final ItemStack itemStack = event.getCurrentItem();
 
         if (itemStack == null || !itemStack.hasItemMeta()) return;
