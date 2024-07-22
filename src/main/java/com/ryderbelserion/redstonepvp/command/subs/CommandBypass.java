@@ -1,48 +1,56 @@
-package com.ryderbelserion.redstonepvp.command.v2.subs.beacons;
+package com.ryderbelserion.redstonepvp.command.subs;
 
-import com.mojang.brigadier.arguments.DoubleArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.Command;
+import com.ryderbelserion.redstonepvp.api.cache.CacheManager;
 import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
-import com.ryderbelserion.redstonepvp.managers.BeaconManager;
+import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
-import static io.papermc.paper.command.brigadier.Commands.argument;
 
-public class CommandBeaconItem extends Command {
+public class CommandBypass extends Command {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
     public void execute(final CommandData data) {
+        if (!data.isPlayer()) {
+            Messages.not_a_player.sendMessage(data.getCommandSender());
 
+            return;
+        }
+
+        final Player player = data.getPlayer();
+
+        final boolean hasPlayer = CacheManager.containsPlayer(player);
+
+        if (hasPlayer) {
+            CacheManager.removePlayer(player);
+        } else {
+            CacheManager.addPlayer(player);
+        }
+
+        Messages.item_frame_bypass.sendMessage(player, "{toggle}", hasPlayer ? "enabled" : "disabled");
     }
 
     @Override
     public final String getPermission() {
-        return "redstonepvp.beacon.add";
+        return "redstonepvp.frame.bypass";
     }
 
     @Override
     public final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("item")
+        return Commands.literal("bypass")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
-                .then(argument("name", StringArgumentType.string())
-                .then(argument("weight", DoubleArgumentType.doubleArg(0.1)))
-                .suggests((context, builder) -> {
-                    BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
-
-                    return builder.buildFuture();
-                })
                 .executes(context -> {
                     execute(new CommandData(context));
 
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                })).build();
+                }).build();
     }
 
     @Override

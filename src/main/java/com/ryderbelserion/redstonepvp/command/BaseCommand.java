@@ -1,46 +1,48 @@
-package com.ryderbelserion.redstonepvp.command.v2.subs.beacons;
+package com.ryderbelserion.redstonepvp.command;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.Command;
 import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
-import com.ryderbelserion.redstonepvp.managers.BeaconManager;
+import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
-import static io.papermc.paper.command.brigadier.Commands.argument;
 
-public class CommandBeaconRemove extends Command {
+public class BaseCommand extends Command {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public void execute(final CommandData data) {
+    public void execute(CommandData data) {
+        if (!data.isPlayer()) {
+            Messages.not_a_player.sendMessage(data.getCommandSender());
 
+            return;
+        }
+
+        final Player player = data.getPlayer();
+
+        player.openInventory(new MainMenu(player).build().getInventory());
     }
 
     @Override
-    public final String getPermission() {
-        return "redstonepvp.beacon.remove";
+    public String getPermission() {
+        return "redstonepvp.access";
     }
 
     @Override
-    public final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("remove")
+    public LiteralCommandNode<CommandSourceStack> literal() {
+        return Commands.literal("redstonepvp")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
-                .then(argument("name", StringArgumentType.string())
-                .suggests((context, builder) -> {
-                    BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
-
-                    return builder.buildFuture();
-                })
                 .executes(context -> {
                     execute(new CommandData(context));
 
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                })).build();
+                }).build();
     }
 
     @Override

@@ -17,6 +17,22 @@ public class CommandData {
         return this.context.getSource();
     }
 
+    public final String getStringArgument(final String key) {
+        return this.context.getArgument(key, String.class);
+    }
+
+    public final int getIntegerArgument(final String key) {
+        return this.context.getArgument(key, Integer.class);
+    }
+
+    public final float getFloatArgument(final String key) {
+        return this.context.getArgument(key, Float.class);
+    }
+
+    public final double getDoubleArgument(final String key) {
+        return this.context.getArgument(key, Double.class);
+    }
+
     public final CommandSender getCommandSender() {
         return getSource().getSender();
     }

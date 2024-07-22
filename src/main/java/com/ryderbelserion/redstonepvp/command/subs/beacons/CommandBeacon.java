@@ -1,4 +1,4 @@
-package com.ryderbelserion.redstonepvp.command.v2.subs.beacons;
+package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
@@ -55,9 +55,9 @@ public class CommandBeacon extends Command {
 
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
-                .then(new CommandBeaconAdd().registerPermission().literal())
+                .then(new CommandBeaconSet().registerPermission().literal())
                 .then(new CommandBeaconRemove().registerPermission().literal())
-                .then(new CommandBeaconItem().registerPermission().literal())
+                .then(new CommandBeaconAddItem().registerPermission().literal())
                 .build();
     }
 

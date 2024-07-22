@@ -23,7 +23,7 @@ public class BeaconManager {
 
     private static Map<String, Beacon> beaconDrops = new HashMap<>();
 
-    private static Map<String, String> positions = new HashMap<>();
+    private static Map<String, Integer> positions = new HashMap<>();
 
     /**
      * Adds a location to the cache and the database.
@@ -105,7 +105,7 @@ public class BeaconManager {
         }).join();
 
         positions = CompletableFuture.supplyAsync(() -> {
-            final Map<String, String> positions = new HashMap<>();
+            final Map<String, Integer> positions = new HashMap<>();
 
             final Connector connector = dataManager.getConnector();
 
@@ -115,7 +115,7 @@ public class BeaconManager {
                         final ResultSet query = statement.executeQuery();
 
                         while (query.next()) {
-                            positions.put(query.getString("id"), String.valueOf(query.getInt("position")));
+                            positions.put(query.getString("id"), query.getInt("position"));
                         }
                     }
                 }
@@ -226,7 +226,7 @@ public class BeaconManager {
         return Collections.unmodifiableMap(beaconDrops);
     }
 
-    public static Map<String, String> getPositions() {
+    public static Map<String, Integer> getPositions() {
         return Collections.unmodifiableMap(positions);
     }
 }

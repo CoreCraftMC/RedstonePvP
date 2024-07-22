@@ -7,11 +7,10 @@ import com.ryderbelserion.redstonepvp.api.core.builders.types.BeaconMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.ItemMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleLoader;
-import com.ryderbelserion.redstonepvp.command.CommandManager;
-import com.ryderbelserion.redstonepvp.command.v2.BaseCommand;
-import com.ryderbelserion.redstonepvp.command.v2.subs.CommandBypass;
-import com.ryderbelserion.redstonepvp.command.v2.subs.CommandReload;
-import com.ryderbelserion.redstonepvp.command.v2.subs.beacons.CommandBeacon;
+import com.ryderbelserion.redstonepvp.command.BaseCommand;
+import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
+import com.ryderbelserion.redstonepvp.command.subs.CommandReload;
+import com.ryderbelserion.redstonepvp.command.subs.beacons.CommandBeacon;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.PlayerDropsModule;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.managers.ConfigManager;
@@ -69,9 +68,6 @@ public class RedstonePvP extends JavaPlugin {
 
         // Populate existing beacon drop locations in the cache.
         BeaconManager.populate(this.dataManager);
-
-        // Register commands.
-        //CommandManager.load();
 
         // Register commands.
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {

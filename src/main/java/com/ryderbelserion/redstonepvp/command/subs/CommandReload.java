@@ -1,42 +1,40 @@
-package com.ryderbelserion.redstonepvp.command.v2;
+package com.ryderbelserion.redstonepvp.command.subs;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.Command;
 import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
+import com.ryderbelserion.redstonepvp.managers.ConfigManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
-public class BaseCommand extends Command {
+public class CommandReload extends Command {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public void execute(CommandData data) {
-        if (!data.isPlayer()) {
-            Messages.not_a_player.sendMessage(data.getCommandSender());
+    public void execute(final CommandData data) {
+        // Refresh the config.
+        ConfigManager.refresh();
 
-            return;
-        }
+        // Reload modules.
+        this.plugin.getLoader().reload();
 
-        final Player player = data.getPlayer();
-
-        player.openInventory(new MainMenu(player).build().getInventory());
+        // Send the message.
+        Messages.reloaded_plugin.sendMessage(data.getCommandSender());
     }
 
     @Override
-    public String getPermission() {
-        return "redstonepvp.access";
+    public final String getPermission() {
+        return "redstonepvp.reload";
     }
 
     @Override
-    public LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("redstonepvp")
+    public final LiteralCommandNode<CommandSourceStack> literal() {
+        return Commands.literal("reload")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .executes(context -> {
                     execute(new CommandData(context));

@@ -1,18 +1,23 @@
-package com.ryderbelserion.redstonepvp.command.v2.subs;
+package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.Command;
-import com.ryderbelserion.redstonepvp.api.cache.CacheManager;
 import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
+import com.ryderbelserion.redstonepvp.managers.BeaconManager;
+import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import static io.papermc.paper.command.brigadier.Commands.argument;
 
-public class CommandBypass extends Command {
+public class CommandBeaconSet extends Command {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
@@ -26,26 +31,45 @@ public class CommandBypass extends Command {
 
         final Player player = data.getPlayer();
 
-        final boolean hasPlayer = CacheManager.containsPlayer(player);
+        final Block block = player.getTargetBlock(null, 5);
 
-        if (hasPlayer) {
-            CacheManager.removePlayer(player);
-        } else {
-            CacheManager.addPlayer(player);
+        if (block.isEmpty()) {
+            Messages.not_a_block.sendMessage(player);
+
+            return;
         }
 
-        Messages.item_frame_bypass.sendMessage(player, "{toggle}", hasPlayer ? "enabled" : "disabled");
+        final String location = MiscUtils.location(block.getLocation());
+
+        final String name = data.getStringArgument("name");
+
+        if (BeaconManager.hasValue(name) || BeaconManager.hasLocation(location)) {
+            Messages.beacon_location_exists.sendMessage(player, "{name}", name);
+
+            return;
+        }
+
+        Messages.beacon_location_added.sendMessage(player, "{name}", name);
+
+        BeaconManager.addLocation(name, location, data.getIntegerArgument("time"));
     }
 
     @Override
     public final String getPermission() {
-        return "redstonepvp.frame.bypass";
+        return "redstonepvp.beacon.set";
     }
 
     @Override
     public final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("bypass")
+        return Commands.literal("set")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
+
+                .then(argument("name", StringArgumentType.string())
+                        .suggests((ctx, builder) -> suggestNames(builder)))
+
+                //.then(argument("time", IntegerArgumentType.integer())
+                //        .suggests((ctx, builder) -> suggestIntegers(builder))
+
                 .executes(context -> {
                     execute(new CommandData(context));
 
