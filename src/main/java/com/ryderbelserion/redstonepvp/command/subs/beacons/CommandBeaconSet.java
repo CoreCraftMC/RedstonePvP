@@ -2,6 +2,7 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.Command;
@@ -63,18 +64,15 @@ public class CommandBeaconSet extends Command {
     public final LiteralCommandNode<CommandSourceStack> literal() {
         return Commands.literal("set")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
-
                 .then(argument("name", StringArgumentType.string())
-                        .suggests((ctx, builder) -> suggestNames(builder)))
-
-                //.then(argument("time", IntegerArgumentType.integer())
-                //        .suggests((ctx, builder) -> suggestIntegers(builder))
-
+                        .suggests((ctx, builder) -> suggestNames(builder))
+                .then(argument("time", IntegerArgumentType.integer())
+                        .suggests((ctx, builder) -> suggestIntegers(builder))
                 .executes(context -> {
-                    execute(new CommandData(context));
+                   execute(new CommandData(context));
 
-                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }).build();
+                   return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+                }))).build();
     }
 
     @Override

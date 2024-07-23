@@ -1,5 +1,6 @@
 package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
+import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -64,27 +65,20 @@ public class CommandBeaconAddItem extends Command {
         return Commands.literal("additem")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .then(argument("name", StringArgumentType.string())
-                        .suggests((ctx, builder) -> {
-                            BeaconManager.getLocations(false).forEach(builder::suggest);
-
-                            return builder.buildFuture();
-                        })
-                )
+                        .suggests((ctx, builder) -> suggestNames(builder))
                 .then(argument("position", IntegerArgumentType.integer())
                         .suggests((ctx, builder) -> {
-                            BeaconManager.getPositions().values().forEach(builder::suggest);
+                           BeaconManager.getPositions().values().forEach(builder::suggest);
 
-                            return builder.buildFuture();
+                           return builder.buildFuture();
                         })
-                )
-                .then(argument("weight", IntegerArgumentType.integer(1, 100))
+                .then(argument("weight", FloatArgumentType.floatArg())
                         .suggests((ctx, builder) -> suggestIntegers(builder))
-                )
                 .executes(context -> {
-                    execute(new CommandData(context));
+                   execute(new CommandData(context));
 
-                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }).build();
+                   return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+                })))).build();
     }
 
     @Override
