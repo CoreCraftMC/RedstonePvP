@@ -46,7 +46,7 @@ public class Locale implements SettingsHolder {
     public static final Property<String> item_frame_bypass = newProperty("root.item-frame-bypass", "{prefix}<white> Item Frame Bypass: <red>{toggle}");
 
     @Comment("A list of available placeholders: {type}, {amount}")
-    public static final Property<String> anvil_repair_not_enough = newProperty("root.anvil-repair.not-enough", "{prefix}<white>Not enough {type}, you need {amount} {type}");
+    public static final Property<String> anvil_repair_not_enough = newProperty("root.anvil-repair.not-enough", "{prefix}<white>Not enough <red>{type},<white> you need <red>{amount} {type}");
 
     public static final Property<String> anvil_repair_no_damage = newProperty("root.anvil-repair.no-damage", "{prefix}<white>The item you are trying to repair has no damage.");
 
@@ -65,4 +65,13 @@ public class Locale implements SettingsHolder {
     public static final Property<String> beacon_location_doesnt_exist = newProperty("root.beacon.location.doesnt-exist", "{prefix}<white>There is no beacon drop with the name {name}.");
 
     public static final Property<String> beacon_drop_exists = newProperty("root.beacon.drops.exists", "{prefix}<white>The item you are holding is already added.");
+
+    @Comment("A list of available placeholders: {name}, {position}")
+    public static final Property<String> beacon_drop_doesnt_exist = newProperty("root.beacon.drops.doesnt-exist", "{prefix}<white>Position <red>#{position}<white> that you trying to update doesn't exist for the drop location <red>{name}.");
+
+    @Comment("A list of available placeholders: {name}, {position}")
+    public static final Property<String> beacon_drop_added = newProperty("root.beacon.drops.added", "{prefix}<white>You have updated the item with the position <red>{position}<white> for the drop location <red>{name}");
+
+    @Comment("A list of available placeholders: {name}")
+    public static final Property<String> beacon_drop_set = newProperty("root.beacon.drops.set", "{prefix}<white>You have added a new item to the drop location called <red>{name}");
 }

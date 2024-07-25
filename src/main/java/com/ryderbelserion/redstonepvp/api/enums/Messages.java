@@ -33,7 +33,12 @@ public enum Messages {
     beacon_location_added(Locale.beacon_location_added),
     beacon_location_removed(Locale.beacon_location_removed),
     beacon_location_exists(Locale.beacon_location_exists),
-    beacon_location_doesnt_exist(Locale.beacon_location_doesnt_exist);
+    beacon_location_doesnt_exist(Locale.beacon_location_doesnt_exist),
+
+    beacon_drop_doesnt_exist(Locale.beacon_drop_doesnt_exist),
+    beacon_drop_exists(Locale.beacon_drop_exists),
+    beacon_drop_added(Locale.beacon_drop_added),
+    beacon_drop_set(Locale.beacon_drop_set);
 
     private Property<String> property;
 
