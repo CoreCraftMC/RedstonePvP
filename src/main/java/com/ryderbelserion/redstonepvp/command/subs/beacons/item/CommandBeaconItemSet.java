@@ -1,4 +1,4 @@
-package com.ryderbelserion.redstonepvp.command.subs.beacons;
+package com.ryderbelserion.redstonepvp.command.subs.beacons.item;
 
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -18,9 +18,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
-public class CommandBeaconAddItem extends Command {
+public class CommandBeaconItemSet extends Command {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
@@ -52,33 +53,41 @@ public class CommandBeaconAddItem extends Command {
 
         final BeaconDrop beacon = BeaconManager.getBeacon(name).getDrop();
 
-        beacon.addItem(ItemUtil.toBase64(itemStack), data.getIntegerArgument("position"), data.getFloatArgument("weight"), true);
+        final String item = ItemUtil.toBase64(itemStack);
+
+        if (beacon.containsItem(item)) {
+            Messages.beacon_drop_exists.sendMessage(player);
+
+            return;
+        }
+
+        beacon.setItem(name, item, data.getFloatArgument("weight"), true);
+
+        Messages.beacon_drop_set.sendMessage(player, "{name}", name);
     }
 
     @Override
     public final String getPermission() {
-        return "redstonepvp.beacon.additem";
+        return "redstonepvp.beacon.item.set";
     }
 
     @Override
     public final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("additem")
+        return Commands.literal("set")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .then(argument("name", StringArgumentType.string())
-                        .suggests((ctx, builder) -> suggestNames(builder))
-                .then(argument("position", IntegerArgumentType.integer())
                         .suggests((ctx, builder) -> {
-                           BeaconManager.getPositions().values().forEach(builder::suggest);
+                            BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
 
-                           return builder.buildFuture();
+                            return builder.buildFuture();
                         })
                 .then(argument("weight", FloatArgumentType.floatArg())
-                        .suggests((ctx, builder) -> suggestIntegers(builder))
+                        .suggests((ctx, builder) -> suggestDoubles(builder))
                 .executes(context -> {
                    execute(new CommandData(context));
 
                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                })))).build();
+                }))).build();
     }
 
     @Override

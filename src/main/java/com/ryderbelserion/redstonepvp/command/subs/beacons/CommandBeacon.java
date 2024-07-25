@@ -7,6 +7,7 @@ import com.ryderbelserion.redstonepvp.api.core.command.Command;
 import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
+import com.ryderbelserion.redstonepvp.command.subs.beacons.item.CommandBeaconItem;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -57,7 +58,9 @@ public class CommandBeacon extends Command {
                 })
                 .then(new CommandBeaconSet().registerPermission().literal())
                 .then(new CommandBeaconRemove().registerPermission().literal())
-                .then(new CommandBeaconAddItem().registerPermission().literal())
+
+                // the item subcommand
+                .then(new CommandBeaconItem().registerPermission().literal())
                 .build();
     }
 
