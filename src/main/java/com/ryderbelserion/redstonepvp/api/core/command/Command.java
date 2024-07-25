@@ -28,4 +28,18 @@ public abstract class Command {
 
         return builder.buildFuture();
     }
+
+    public CompletableFuture<Suggestions> suggestDoubles(final SuggestionsBuilder builder) {
+        int count = 0;
+
+        while (count <= 1000) {
+            double x = count / 10.0;
+
+            builder.suggest(String.valueOf(x));
+
+            count++;
+        }
+
+        return builder.buildFuture();
+    }
 }
