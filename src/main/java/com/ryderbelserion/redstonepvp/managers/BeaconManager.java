@@ -23,7 +23,7 @@ public class BeaconManager {
 
     private static Map<String, Beacon> beaconDrops = new HashMap<>();
 
-    private static Map<String, Integer> positions = new HashMap<>();
+    private static Map<String, ArrayList<Integer>> positions = new HashMap<>();
 
     /**
      * Adds a location to the cache and the database.
@@ -105,7 +105,7 @@ public class BeaconManager {
         }).join();
 
         positions = CompletableFuture.supplyAsync(() -> {
-            final Map<String, Integer> positions = new HashMap<>();
+            final Map<String, ArrayList<Integer>> positions = new HashMap<>();
 
             final Connector connector = dataManager.getConnector();
 
@@ -115,7 +115,23 @@ public class BeaconManager {
                         final ResultSet query = statement.executeQuery();
 
                         while (query.next()) {
-                            positions.put(query.getString("id"), query.getInt("position"));
+                            final String id = query.getString("id");
+
+                            final boolean hasName = positions.containsKey(id);
+
+                            if (hasName) {
+                                final ArrayList<Integer> numbers = positions.get(id);
+
+                                numbers.add(query.getInt("position"));
+
+                                positions.put(id, numbers);
+                            } else {
+                                positions.put(id, new ArrayList<>() {{
+                                    add(query.getInt("position"));
+                                }});
+                            }
+
+                            positions.put(query.getString("id"), new ArrayList<>());
                         }
                     }
                 }
@@ -226,7 +242,44 @@ public class BeaconManager {
         return Collections.unmodifiableMap(beaconDrops);
     }
 
-    public static Map<String, Integer> getPositions() {
+    public static boolean hasPosition(final String id) {
+        return positions.containsKey(id);
+    }
+
+    public static void addPosition(final String id, final int position) {
+        plugin.getLogger().warning("Id: " + id);
+        plugin.getLogger().warning("Position: " + position);
+
+        if (hasPosition(id)) {
+            ArrayList<Integer> numbers = positions.get(id);
+
+            numbers.add(position);
+
+            return;
+        }
+
+        positions.put(id, new ArrayList<>() {{
+            add(position);
+        }});
+    }
+
+    public static List<Integer> getPositionsById(final String id) {
+        if (!hasPosition(id)) return Collections.emptyList();
+
+        return positions.get(id);
+    }
+
+    public static void removePosition(final String id, final int position) {
+        if (!hasPosition(id)) return;
+
+        final List<Integer> numbers = positions.get(id);
+
+        if (numbers.contains(position)) {
+            numbers.remove(position);
+        }
+    }
+
+    public static Map<String, ArrayList<Integer>> getPositions() {
         return Collections.unmodifiableMap(positions);
     }
 }

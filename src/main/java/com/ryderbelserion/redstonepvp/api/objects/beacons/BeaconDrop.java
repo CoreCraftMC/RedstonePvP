@@ -1,10 +1,13 @@
 package com.ryderbelserion.redstonepvp.api.objects.beacons;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.managers.data.Connector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +42,36 @@ public class BeaconDrop {
                         statement.setInt(3, position);
 
                         statement.executeUpdate();
+                    }
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            });
+        }
+    }
+
+    public void setItem(final String id, final String item, final double weight, final boolean insertData) {
+        this.items.put(item, weight);
+
+        if (insertData) {
+            CompletableFuture.runAsync(() -> {
+                try (Connection connection = this.connector.getConnection()) {
+                    try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(id, item, weight) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                        statement.setString(1, id);
+                        statement.setString(2, item);
+                        statement.setDouble(3, weight);
+
+                        statement.executeUpdate();
+
+                        final ResultSet generatedKeys = statement.getGeneratedKeys();
+
+                        plugin.getLogger().warning("Size: " + generatedKeys.getFetchSize());
+
+                        if (generatedKeys.next()) {
+                            plugin.getLogger().warning("Are we here?");
+
+                            BeaconManager.addPosition(id, generatedKeys.getInt("position"));
+                        }
                     }
                 } catch (SQLException exception) {
                     exception.printStackTrace();
