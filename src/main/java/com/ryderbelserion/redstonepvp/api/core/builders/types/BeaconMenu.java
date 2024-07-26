@@ -16,14 +16,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
 public class BeaconMenu extends InventoryBuilder {
 
-    public BeaconMenu(@NotNull final Player player) {
-        super(player, "<red>Beacon Menu</red>", 27);
+    public BeaconMenu(final Player player, final String guiName, final int guiSize) {
+        super(player, guiName, guiSize);
     }
 
     public BeaconMenu() {}
@@ -86,7 +85,7 @@ public class BeaconMenu extends InventoryBuilder {
 
                         Messages.beacon_location_removed.sendMessage(player, "{name}", container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING));
 
-                        player.openInventory(new BeaconMenu(player).build().getInventory());
+                        player.openInventory(MiscUtils.buildBeaconMenu(player).build().getInventory());
                     }
                 }
 

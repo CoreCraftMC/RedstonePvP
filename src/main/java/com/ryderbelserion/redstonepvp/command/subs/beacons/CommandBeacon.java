@@ -2,12 +2,12 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.core.builders.types.BeaconMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.Command;
 import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import com.ryderbelserion.redstonepvp.command.subs.beacons.item.CommandBeaconItem;
+import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -39,7 +39,7 @@ public class CommandBeacon extends Command {
 
         final Player player = data.getPlayer();
 
-        player.openInventory(new BeaconMenu(player).build().getInventory());
+        player.openInventory(MiscUtils.buildBeaconMenu(player).build().getInventory());
     }
 
     @Override

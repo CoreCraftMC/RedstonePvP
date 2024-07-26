@@ -3,9 +3,14 @@ package com.ryderbelserion.redstonepvp.managers.config;
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
+import ch.jalu.configme.properties.BeanProperty;
 import ch.jalu.configme.properties.Property;
+import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
+import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+
+import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
@@ -45,4 +50,10 @@ public class Config implements SettingsHolder {
 
     @Comment("The amount of the material required to repair items. -1 is disabled!")
     public static final Property<Integer> anvil_repair_cost = newProperty("feature.anvil-repair.cost", 32);
+
+    @Comment("Settings related to the main menu when opened by running /redstonepvp beacon")
+    public static final Property<GuiProperty> beacon_drop_menu = newBeanProperty(GuiProperty.class, "menus.beacon-drop", new GuiProperty("<red>Beacon Manager</red>", 27));
+
+    @Comment("Settings related to the main menu when opened by running /redstonepvp beacon")
+    public static final Property<ButtonProperty> beacon_drop_locations_button = newBeanProperty(ButtonProperty.class, "menus.beacon-drop.buttons.locations", new ButtonProperty("<red>Current Locations</red>", 10));
 }

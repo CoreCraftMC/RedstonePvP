@@ -2,6 +2,7 @@ package com.ryderbelserion.redstonepvp.api.core.builders.types;
 
 import com.ryderbelserion.redstonepvp.api.core.builders.InventoryBuilder;
 import com.ryderbelserion.redstonepvp.api.enums.PersistentKeys;
+import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -49,7 +50,7 @@ public class MainMenu extends InventoryBuilder {
         final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         if (container.has(PersistentKeys.beacon_item.getNamespacedKey())) {
-            player.openInventory(new BeaconMenu(player).build().getInventory());
+            player.openInventory(MiscUtils.buildBeaconMenu(player).build().getInventory());
         }
 
         event.setCancelled(true);

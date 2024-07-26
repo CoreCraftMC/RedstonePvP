@@ -269,9 +269,6 @@ public class BeaconManager {
      * @param position the integer we actually care about
      */
     public static void addPosition(final String id, final int position) {
-        plugin.getLogger().warning("Position: " + position);
-        plugin.getLogger().warning("Id: " + id);
-
         if (hasPosition(id)) {
             ArrayList<Integer> numbers = positions.get(id);
 
