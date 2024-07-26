@@ -50,14 +50,14 @@ public class BeaconDrop {
         }
     }
 
-    public void setItem(final String id, final String item, final double weight, final boolean insertData) {
+    public void setItem(final String name, final String item, final double weight, final boolean insertData) {
         this.items.put(item, weight);
 
         if (insertData) {
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = this.connector.getConnection()) {
                     try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(id, item, weight) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-                        statement.setString(1, id);
+                        statement.setString(1, name);
                         statement.setString(2, item);
                         statement.setDouble(3, weight);
 
@@ -65,12 +65,8 @@ public class BeaconDrop {
 
                         final ResultSet generatedKeys = statement.getGeneratedKeys();
 
-                        plugin.getLogger().warning("Size: " + generatedKeys.getFetchSize());
-
                         if (generatedKeys.next()) {
-                            plugin.getLogger().warning("Are we here?");
-
-                            BeaconManager.addPosition(id, generatedKeys.getInt("position"));
+                            BeaconManager.addPosition(name, generatedKeys.getInt("position"));
                         }
                     }
                 } catch (SQLException exception) {
