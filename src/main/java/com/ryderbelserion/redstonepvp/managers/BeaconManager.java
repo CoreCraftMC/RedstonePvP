@@ -46,10 +46,16 @@ public class BeaconManager {
                     statement.executeUpdate();
                 }
 
-                try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(id) values (?)")) {
+                try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(id) values (?)", Statement.RETURN_GENERATED_KEYS)) {
                     statement.setString(1, name);
 
                     statement.executeUpdate();
+
+                    final ResultSet generatedKeys = statement.getGeneratedKeys();
+
+                    if (generatedKeys.next()) {
+                        BeaconManager.addPosition(name, generatedKeys.getInt("position"));
+                    }
                 }
             } catch (SQLException exception) {
                 plugin.getComponentLogger().warn("Failed to add {}, {}, {}", name, location, time);
