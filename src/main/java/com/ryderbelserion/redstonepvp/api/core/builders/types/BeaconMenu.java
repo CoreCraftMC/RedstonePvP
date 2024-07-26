@@ -77,12 +77,12 @@ public class BeaconMenu extends InventoryBuilder {
         final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         if (container.has(PersistentKeys.beacon_location.getNamespacedKey())) {
-            final String location = container.get(PersistentKeys.beacon_location.getNamespacedKey(), PersistentDataType.STRING);
+            final String name = container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING);
 
             switch (event.getClick()) {
                 case LEFT -> {
-                    if (location != null) {
-                        BeaconManager.removeLocation(location);
+                    if (name != null) {
+                        BeaconManager.removeLocation(name);
 
                         Messages.beacon_location_removed.sendMessage(player, "{name}", container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING));
 
@@ -91,7 +91,7 @@ public class BeaconMenu extends InventoryBuilder {
                 }
 
                 case RIGHT -> {
-                    player.openInventory(new ItemMenu(player, location).build().getInventory());
+                    player.openInventory(new ItemMenu(player, name).build().getInventory());
                 }
             }
         }
