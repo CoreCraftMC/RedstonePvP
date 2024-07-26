@@ -3,6 +3,8 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons.item;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.command.Command;
@@ -18,6 +20,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
@@ -79,8 +83,9 @@ public class CommandBeaconItemUpdate extends Command {
 
     @Override
     public final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("update")
-                .requires(source -> source.getSender().hasPermission(getPermission()))
+        final @NotNull LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("update");
+
+        return root.requires(source -> source.getSender().hasPermission(getPermission()))
                 .then(argument("name", StringArgumentType.string())
                         .suggests((ctx, builder) -> {
                             BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
@@ -89,7 +94,7 @@ public class CommandBeaconItemUpdate extends Command {
                         })
                 .then(argument("position", IntegerArgumentType.integer())
                         .suggests((ctx, builder) -> {
-                           final String name = ctx.getArgument("name", String.class);
+                           final String name = ctx.getLastChild().getArgument("name", String.class);
 
                            BeaconManager.getPositionsById(name).forEach(builder::suggest);
 
