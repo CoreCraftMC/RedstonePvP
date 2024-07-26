@@ -27,7 +27,7 @@ dependencies {
 
     compileOnly(libs.hikari.cp)
 
-    //compileOnly(libs.jorel)
+    implementation(libs.jorel)
 }
 
 tasks {

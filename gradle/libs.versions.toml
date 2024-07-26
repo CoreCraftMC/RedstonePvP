@@ -22,7 +22,7 @@ runPaper = "2.3.0"
 # Other
 shadowJar = "8.1.8"
 
-jorel = "9.5.0"
+jorel = "9.5.1"
 
 [plugins]
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
@@ -42,7 +42,7 @@ vault = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault" }
 # Libraries
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
 
-jorel = { module = "dev.jorel:commandapi-bukkit-core", version.ref = "jorel" }
+jorel = { module = "dev.jorel:commandapi-bukkit-shade-mojang-mapped", version.ref = "jorel" }
 
 hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 

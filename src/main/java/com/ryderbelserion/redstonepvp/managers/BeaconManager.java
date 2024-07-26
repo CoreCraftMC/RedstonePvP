@@ -245,14 +245,31 @@ public class BeaconManager {
         return false;
     }
 
+    /**
+     * Gets a list of currently available beacon locations.
+     *
+     * @return the map of beacon locations.
+     */
     public static Map<String, Beacon> getBeaconData() {
         return Collections.unmodifiableMap(beaconDrops);
     }
 
+    /**
+     * Checks if a position exists.
+     *
+     * @param id the name of the position.
+     * @return true or false
+     */
     public static boolean hasPosition(final String id) {
         return positions.containsKey(id);
     }
 
+    /**
+     * Adds a position to the cache.
+     *
+     * @param id the name of the position
+     * @param position the integer we actually care about
+     */
     public static void addPosition(final String id, final int position) {
         plugin.getLogger().warning("Position: " + position);
         plugin.getLogger().warning("Id: " + id);
@@ -272,12 +289,24 @@ public class BeaconManager {
         }});
     }
 
-    public static List<Integer> getPositionsById(final String id) {
-        if (!hasPosition(id)) return Collections.emptyList();
+    /**
+     * Get a list of positions by id.
+     *
+     * @param name the name of the location
+     * @return the list of positions
+     */
+    public static List<Integer> getPositionsById(final String name) {
+        if (!hasPosition(name)) return Collections.emptyList();
 
-        return positions.get(id);
+        return positions.get(name);
     }
 
+    /**
+     * Remove a position from the cache.
+     *
+     * @param id the name of the location associated with the position
+     * @param position the position to remove
+     */
     public static void removePosition(final String id, final int position) {
         if (!hasPosition(id)) return;
 
@@ -288,6 +317,11 @@ public class BeaconManager {
         }
     }
 
+    /**
+     * Get a map of positions.
+     *
+     * @return the map of positions
+     */
     public static Map<String, ArrayList<Integer>> getPositions() {
         return Collections.unmodifiableMap(positions);
     }
