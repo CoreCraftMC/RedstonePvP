@@ -26,8 +26,6 @@ dependencies {
     compileOnly(libs.vital.paper)
 
     compileOnly(libs.hikari.cp)
-
-    implementation(libs.jorel)
 }
 
 tasks {

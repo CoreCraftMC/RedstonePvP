@@ -42,8 +42,6 @@ vault = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault" }
 # Libraries
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
 
-jorel = { module = "dev.jorel:commandapi-bukkit-shade-mojang-mapped", version.ref = "jorel" }
-
 hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 
 packet-events = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents" }

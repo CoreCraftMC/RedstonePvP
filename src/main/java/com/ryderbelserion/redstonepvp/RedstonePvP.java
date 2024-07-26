@@ -26,12 +26,6 @@ import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
 import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.plugins.PluginManager;
 import com.ryderbelserion.vital.paper.plugins.interfaces.Plugin;
-import dev.jorel.commandapi.CommandAPI;
-import dev.jorel.commandapi.CommandAPIBukkitConfig;
-import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.ArgumentSuggestions;
-import dev.jorel.commandapi.arguments.IntegerArgument;
-import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -51,11 +45,6 @@ public class RedstonePvP extends JavaPlugin {
     @Override
     public void onLoad() {
         this.startTime = System.nanoTime();
-
-        CommandAPI.onLoad(new CommandAPIBukkitConfig(this)
-                .shouldHookPaperReload(true)
-                .useLatestNMSVersion(true)
-                .usePluginNamespace());
 
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this, new PacketEventsSettings().checkForUpdates(false)));
         PacketEvents.getAPI().load();
@@ -79,23 +68,6 @@ public class RedstonePvP extends JavaPlugin {
 
         // Populate existing beacon drop locations in the cache.
         BeaconManager.populate(this.dataManager);
-
-        CommandAPI.onEnable();
-
-        new CommandAPICommand("example")
-                .withArguments(new StringArgument("name").replaceSuggestions(ArgumentSuggestions.strings(BeaconManager.getBeaconData().keySet())))
-                .withArguments(new IntegerArgument("value").replaceSuggestions((ctx, builder) -> {
-                    final Object name = ctx.previousArgs().get("name");
-
-                    builder.suggest("beans");
-
-                    getComponentLogger().warn("Name: {}", ctx.previousArgs().count());
-
-                    return builder.buildFuture();
-                }))
-                .executes((sender, args) -> {
-
-                }).register();
 
         // Register commands.
         getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
