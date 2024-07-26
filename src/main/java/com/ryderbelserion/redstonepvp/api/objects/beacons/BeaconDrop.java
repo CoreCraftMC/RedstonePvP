@@ -66,7 +66,7 @@ public class BeaconDrop {
                         final ResultSet generatedKeys = statement.getGeneratedKeys();
 
                         if (generatedKeys.next()) {
-                            BeaconManager.addPosition(name, generatedKeys.getInt("position"));
+                            BeaconManager.addPosition(name, generatedKeys.getInt(1));
                         }
                     }
                 } catch (SQLException exception) {

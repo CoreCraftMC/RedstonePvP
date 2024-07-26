@@ -7,6 +7,7 @@ import com.ryderbelserion.redstonepvp.managers.data.Connector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.RowId;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class BeaconManager {
                     final ResultSet generatedKeys = statement.getGeneratedKeys();
 
                     if (generatedKeys.next()) {
-                        BeaconManager.addPosition(name, generatedKeys.getInt("position"));
+                        BeaconManager.addPosition(name, generatedKeys.getInt(1));
                     }
                 }
             } catch (SQLException exception) {
