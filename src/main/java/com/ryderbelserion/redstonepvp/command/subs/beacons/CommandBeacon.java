@@ -59,8 +59,6 @@ public class CommandBeacon extends Command {
                 .then(new CommandBeaconSet().registerPermission().literal())
                 .then(new CommandBeaconRemove().registerPermission().literal())
 
-                .then(new CommandBeaconTest().registerPermission().literal())
-
                 // the item subcommand
                 .then(new CommandBeaconItem().registerPermission().literal())
                 .build();
