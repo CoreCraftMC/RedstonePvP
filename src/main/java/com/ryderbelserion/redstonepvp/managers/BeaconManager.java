@@ -137,8 +137,6 @@ public class BeaconManager {
                                     add(query.getInt("position"));
                                 }});
                             }
-
-                            positions.put(query.getString("id"), new ArrayList<>());
                         }
                     }
                 }
