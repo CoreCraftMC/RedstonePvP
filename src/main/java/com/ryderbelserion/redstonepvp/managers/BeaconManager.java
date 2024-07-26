@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -84,7 +85,7 @@ public class BeaconManager {
                         while (resultSet.next()) {
                             final Beacon drop = new Beacon(resultSet.getString("id"), resultSet.getString("location"), resultSet.getInt("time"));
 
-                            try (PreparedStatement next = connection.prepareStatement("select weight, item from beacon_items where id = ?")) {
+                            try (PreparedStatement next = connection.prepareStatement("select weight,item from beacon_items where id = ?")) {
                                 next.setString(1, drop.getName());
 
                                 final ResultSet query = next.executeQuery();
@@ -253,13 +254,15 @@ public class BeaconManager {
     }
 
     public static void addPosition(final String id, final int position) {
-        plugin.getLogger().warning("Id: " + id);
         plugin.getLogger().warning("Position: " + position);
+        plugin.getLogger().warning("Id: " + id);
 
         if (hasPosition(id)) {
             ArrayList<Integer> numbers = positions.get(id);
 
             numbers.add(position);
+
+            positions.put(id, numbers);
 
             return;
         }
