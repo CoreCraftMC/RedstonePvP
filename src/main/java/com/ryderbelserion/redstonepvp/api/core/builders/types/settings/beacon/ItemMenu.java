@@ -1,4 +1,4 @@
-package com.ryderbelserion.redstonepvp.api.core.builders.types;
+package com.ryderbelserion.redstonepvp.api.core.builders.types.settings.beacon;
 
 import com.ryderbelserion.redstonepvp.api.core.builders.InventoryBuilder;
 import com.ryderbelserion.redstonepvp.api.enums.PersistentKeys;
