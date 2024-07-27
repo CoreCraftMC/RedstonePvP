@@ -2,7 +2,9 @@ package com.ryderbelserion.redstonepvp.utils;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.builders.InventoryBuilder;
-import com.ryderbelserion.redstonepvp.api.core.builders.types.BeaconMenu;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.beacon.BeaconMenu;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.PlayersMenu;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.SettingsMenu;
 import com.ryderbelserion.redstonepvp.managers.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.Config;
 import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
@@ -32,8 +34,20 @@ public class MiscUtils {
     }
 
     public static InventoryBuilder buildBeaconMenu(@NotNull final Player player) {
-        final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.gui_property);
+        final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.beacon_drop_menu);
 
         return new BeaconMenu(player, gui.getTitle(), gui.getSize()).build();
+    }
+
+    public static InventoryBuilder buildPlayerMenu(@NotNull final Player player) {
+        final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.players_menu);
+
+        return new PlayersMenu(player, gui.getTitle(), gui.getSize()).build();
+    }
+
+    public static InventoryBuilder buildSettingsMenu(@NotNull final Player player) {
+        final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.plugin_settings_menu);
+
+        return new SettingsMenu(player, gui.getTitle(), gui.getSize()).build();
     }
 }

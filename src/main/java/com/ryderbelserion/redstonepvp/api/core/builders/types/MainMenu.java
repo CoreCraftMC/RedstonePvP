@@ -1,7 +1,12 @@
 package com.ryderbelserion.redstonepvp.api.core.builders.types;
 
+import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.redstonepvp.api.core.builders.InventoryBuilder;
 import com.ryderbelserion.redstonepvp.api.enums.PersistentKeys;
+import com.ryderbelserion.redstonepvp.managers.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.Config;
+import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
+import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.Material;
@@ -15,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class MainMenu extends InventoryBuilder {
 
+    private final SettingsManager config = ConfigManager.getConfig();
+
     public MainMenu(@NotNull final Player player) {
         super(player, "<red>Main Menu</red>", 27);
     }
@@ -25,10 +32,26 @@ public class MainMenu extends InventoryBuilder {
     public InventoryBuilder build() {
         final Inventory inventory = getInventory();
 
-        inventory.setItem(10, new ItemBuilder().withType(Material.BEACON).setPersistentString(PersistentKeys.beacon_item.getNamespacedKey(), "1").setDisplayName("<red>Current Locations</red>").getStack());
-        inventory.setItem(14, new ItemBuilder().withType(Material.PLAYER_HEAD).setSkull(getPlayer().getUniqueId()).setDisplayName("<green>Online Players</green>").getStack());
-        inventory.setItem(12, new ItemBuilder().withType(Material.EMERALD).setDisplayName("<yellow>Plugin Settings</yellow>").getStack());
-        inventory.setItem(16, new ItemBuilder().withType(Material.ENDER_CHEST).setDisplayName("<blue>Plugin Reload</blue>").getStack());
+        final ButtonProperty drop_item = this.config.getProperty(Config.beacon_drop_item);
+
+        inventory.setItem(drop_item.getSlot(),
+                new ItemBuilder().withType(drop_item.getMaterial())
+                        .setPersistentString(PersistentKeys.beacon_item.getNamespacedKey(), "1")
+                        .setDisplayName(drop_item.getName()).getStack());
+
+        final ButtonProperty player_item = this.config.getProperty(Config.online_players_item);
+
+        inventory.setItem(player_item.getSlot(),
+                new ItemBuilder().withType(player_item.getMaterial())
+                        .setPersistentString(PersistentKeys.player_item.getNamespacedKey(), "2")
+                        .setDisplayName(player_item.getName()).getStack());
+
+        final ButtonProperty settings_item = this.config.getProperty(Config.plugin_settings_item);
+
+        inventory.setItem(settings_item.getSlot(),
+                new ItemBuilder().withType(settings_item.getMaterial())
+                        .setPersistentString(PersistentKeys.setting_item.getNamespacedKey(), "3")
+                        .setDisplayName(settings_item.getName()).getStack());
 
         return this;
     }
@@ -51,6 +74,14 @@ public class MainMenu extends InventoryBuilder {
 
         if (container.has(PersistentKeys.beacon_item.getNamespacedKey())) {
             player.openInventory(MiscUtils.buildBeaconMenu(player).build().getInventory());
+        }
+
+        if (container.has(PersistentKeys.player_item.getNamespacedKey())) {
+            player.openInventory(MiscUtils.buildPlayerMenu(player).build().getInventory());
+        }
+
+        if (container.has(PersistentKeys.setting_item.getNamespacedKey())) {
+            player.openInventory(MiscUtils.buildSettingsMenu(player).build().getInventory());
         }
 
         event.setCancelled(true);

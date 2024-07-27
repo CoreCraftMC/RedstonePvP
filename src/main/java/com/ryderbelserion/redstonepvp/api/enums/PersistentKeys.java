@@ -8,7 +8,9 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("rawtypes")
 public enum PersistentKeys {
 
-    beacon_item("beacon_item", PersistentDataType.BOOLEAN),
+    beacon_item("beacon_item", PersistentDataType.STRING),
+    player_item("players_item", PersistentDataType.STRING),
+    setting_item("settings_item", PersistentDataType.STRING),
     beacon_nuke("beacon_nuke", PersistentDataType.STRING),
     beacon_drop("beacon_drop", PersistentDataType.STRING),
     beacon_location("beacon_location", PersistentDataType.STRING),

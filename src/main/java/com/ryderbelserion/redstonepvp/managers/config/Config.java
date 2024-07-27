@@ -51,9 +51,28 @@ public class Config implements SettingsHolder {
     @Comment("The amount of the material required to repair items. -1 is disabled!")
     public static final Property<Integer> anvil_repair_cost = newProperty("feature.anvil-repair.cost", 32);
 
-    @Comment("Settings related to the main menu when opened by running /redstonepvp beacon")
-    public static final Property<GuiProperty> beacon_drop_menu = newBeanProperty(GuiProperty.class, "menus.beacon-drop", new GuiProperty("<red>Beacon Manager</red>", 27));
+    @Comment("The beacon manager menu.")
+    public static final Property<GuiProperty> beacon_drop_menu = newBeanProperty(GuiProperty.class, "menus.beacons", new GuiProperty("<red>Beacon Manager</red>", 27));
 
-    @Comment("Settings related to the main menu when opened by running /redstonepvp beacon")
-    public static final Property<ButtonProperty> beacon_drop_locations_button = newBeanProperty(ButtonProperty.class, "menus.beacon-drop.buttons.locations", new ButtonProperty("<red>Current Locations</red>", 10));
+    @Comment("The button in the main menu to view active locations.")
+    public static final Property<ButtonProperty> beacon_drop_item = newBeanProperty(ButtonProperty.class, "menu.buttons.beacons",
+            new ButtonProperty("<red>Current Locations</red>", "beacon", 11));
+
+
+    @Comment("The online players menu.")
+    public static final Property<GuiProperty> players_menu = newBeanProperty(GuiProperty.class, "menus.online-players",
+            new GuiProperty("<green>Online Players</green>", 27));
+
+    @Comment("The button in the main menu to view online players.")
+    public static final Property<ButtonProperty> online_players_item = newBeanProperty(ButtonProperty.class, "menu.buttons.online-players",
+            new ButtonProperty("<green>Online Players</green>", "player_head", 13));
+
+    @Comment("The plugin settings menu.")
+    public static final Property<GuiProperty> plugin_settings_menu = newBeanProperty(GuiProperty.class, "menus.plugin-settings",
+            new GuiProperty("<yellow>Plugin Settings</yellow>", 27));
+
+
+    @Comment("The button in the main menu to handle plugin settings.")
+    public static final Property<ButtonProperty> plugin_settings_item = newBeanProperty(ButtonProperty.class, "menu.buttons.plugin-settings",
+            new ButtonProperty("<yellow>Plugin Settings</yellow>", "emerald_block", 15));
 }
