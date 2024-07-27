@@ -10,6 +10,11 @@ public class ButtonProperty {
         this.slot = slot;
     }
 
+    public ButtonProperty() {
+        this.name = "";
+        this.slot = -1;
+    }
+
     public void setName(final String name) {
         this.name = name;
     }

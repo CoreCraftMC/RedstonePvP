@@ -10,6 +10,11 @@ public class GuiProperty {
         this.size = size;
     }
 
+    public GuiProperty() {
+        this.title = "";
+        this.size = 9;
+    }
+
     public void setTitle(final String title) {
         this.title = title;
     }
