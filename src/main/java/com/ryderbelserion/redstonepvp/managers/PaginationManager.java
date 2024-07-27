@@ -1,6 +1,7 @@
 package com.ryderbelserion.redstonepvp.managers;
 
 import ch.jalu.configme.SettingsManager;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.SettingsMenu;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public class PaginationManager {
 
     private final SettingsManager config = ConfigManager.getConfig();
 
-    private final Map<UUID, Integer> pages = new HashMap<>();
+    private static final Map<UUID, Integer> pages = new HashMap<>();
 
     /**
      * Goes to the next page
@@ -23,7 +24,7 @@ public class PaginationManager {
      * @param perPage max per page
      * @param size list size
      */
-    public void nextPage(final Player player, final int currentPage, final int perPage, final int size) {
+    public static void nextPage(final Player player, final int currentPage, final int perPage, final int size) {
         setPage(player, currentPage, perPage, size);
     }
 
@@ -35,8 +36,23 @@ public class PaginationManager {
      * @param perPage max per page
      * @param size list size
      */
-    public void backPage(final Player player, final int currentPage, final int perPage, final int size) {
+    public static void backPage(final Player player, final int currentPage, final int perPage, final int size) {
         setPage(player, currentPage, perPage, size);
+    }
+
+    /**
+     * Build the tier menu
+     *
+     * @param player {@link Player}
+     * @param page page number
+     */
+    public void buildInventory(final Player player, final int page) {
+        player.openInventory(new SettingsMenu(
+                player,
+                "",
+                27,
+                page <= 0 ? getPage(player) : page
+        ).build().getInventory());
     }
 
     /**
@@ -44,8 +60,8 @@ public class PaginationManager {
      *
      * @param player {@link Player}
      */
-    public void remove(final Player player) {
-        this.pages.remove(player.getUniqueId());
+    public static void remove(final Player player) {
+        pages.remove(player.getUniqueId());
     }
 
     /**
@@ -54,8 +70,8 @@ public class PaginationManager {
      * @param player {@link Player}
      * @return the page
      */
-    public int getPage(final Player player) {
-        return this.pages.getOrDefault(player.getUniqueId(), 1);
+    public static int getPage(final Player player) {
+        return pages.getOrDefault(player.getUniqueId(), 1);
     }
 
     /**
@@ -66,14 +82,14 @@ public class PaginationManager {
      * @param perPage max per page
      * @param size list size
      */
-    public void setPage(final Player player, int currentPage, final int perPage, final int size) {
+    public static void setPage(final Player player, int currentPage, final int perPage, final int size) {
         int max = getMaxPages(size, perPage);
 
         if (currentPage > max) {
             currentPage = max;
         }
 
-        this.pages.put(player.getUniqueId(), currentPage);
+        pages.put(player.getUniqueId(), currentPage);
     }
 
     public static int getMaxPages(final int size, final int perPage) {

@@ -14,7 +14,10 @@ public enum PersistentKeys {
     beacon_nuke("beacon_nuke", PersistentDataType.STRING),
     beacon_drop("beacon_drop", PersistentDataType.STRING),
     beacon_location("beacon_location", PersistentDataType.STRING),
-    beacon_uuid("beacon_uuid", PersistentDataType.STRING);
+    beacon_uuid("beacon_uuid", PersistentDataType.STRING),
+
+    next_page("next_page", PersistentDataType.INTEGER),
+    back_page("back_page", PersistentDataType.INTEGER);
 
     private @NotNull final RedstonePvP plugin = RedstonePvP.getPlugin();
 

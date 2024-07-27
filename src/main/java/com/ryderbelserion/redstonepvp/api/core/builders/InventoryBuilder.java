@@ -33,9 +33,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     private int size;
     private int page;
 
-    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size) {
+    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, final int page) {
         this.player = player;
         this.title = title;
+        this.page = page;
         this.size = size;
 
         final String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;

@@ -24,12 +24,17 @@ import com.ryderbelserion.redstonepvp.listeners.modules.items.ItemFrameListener;
 import com.ryderbelserion.redstonepvp.managers.data.Connector;
 import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
 import com.ryderbelserion.vital.paper.VitalPaper;
+import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.plugins.PluginManager;
 import com.ryderbelserion.vital.paper.plugins.interfaces.Plugin;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +44,7 @@ public class RedstonePvP extends JavaPlugin {
         return JavaPlugin.getPlugin(RedstonePvP.class);
     }
 
+    private List<ItemStack> items;
     private ModuleLoader loader;
     private long startTime;
 
@@ -108,6 +114,14 @@ public class RedstonePvP extends JavaPlugin {
                 new ItemMenu()
         ).forEach(clazz -> getServer().getPluginManager().registerEvents(clazz, this));
 
+        this.items = new ArrayList<>();
+
+        for (int count = 0; count < 100; count++) {
+            this.items.add(new ItemBuilder().withType(Material.CHEST).setDisplayName(String.valueOf(count)).getStack());
+
+            count++;
+        }
+
         getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
     }
 
@@ -138,5 +152,9 @@ public class RedstonePvP extends JavaPlugin {
 
     public final DataManager getDataManager() {
         return this.dataManager;
+    }
+
+    public final List<ItemStack> getItems() {
+        return this.items;
     }
 }
