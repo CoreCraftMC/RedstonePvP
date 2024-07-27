@@ -17,13 +17,13 @@ public class MiscUtils {
 
     private static final RedstonePvP plugin = RedstonePvP.getPlugin();
 
-    public static @NotNull String location(@NotNull final Location location, boolean getName) {
+    public static String location(@NotNull final Location location, boolean getName) {
         String name = getName ? location.getWorld().getName() : String.valueOf(location.getWorld().getUID());
 
         return name + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
     }
 
-    public static @NotNull String location(@NotNull final Location location) {
+    public static String location(@NotNull final Location location) {
         return location(location, false);
     }
 
