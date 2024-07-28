@@ -1,27 +1,47 @@
 package com.ryderbelserion.redstonepvp.api.core.v2;
 
+import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.IBaseGui;
+import com.ryderbelserion.redstonepvp.api.core.v2.listeners.GuiListener;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
-public class BaseGui implements InventoryHolder, Listener, IBaseGui {
+public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
-    private final Inventory inventory;
+    private static final RedstonePvP plugin = RedstonePvP.getPlugin();
 
-    private final String title;
-    private final int rows;
+    static {
+        plugin.getServer().getPluginManager().registerEvents(new GuiListener(), plugin);
+    }
+
+    private Inventory inventory;
+
+    private String title;
+    private int rows;
 
     public BaseGui(final String title, final int rows) {
         this.title = title;
         this.rows = rows;
 
-        this.inventory = Bukkit.getServer().createInventory(this, this.rows * 9, title());
+        this.inventory = plugin.getServer().createInventory(this, this.rows * 9, title());
     }
+
+    public BaseGui() {}
+
+    public abstract BaseGui build();
+
+    public abstract void click(InventoryClickEvent event);
+
+    public abstract void close(InventoryCloseEvent event);
 
     @Override
     public final String getTitle() {
@@ -41,6 +61,16 @@ public class BaseGui implements InventoryHolder, Listener, IBaseGui {
     @Override
     public final int getSize() {
         return getRows() * 9;
+    }
+
+    @Override
+    public void close(Player player) {
+        new FoliaRunnable(plugin.getServer().getGlobalRegionScheduler()) {
+            @Override
+            public void run() {
+                player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+            }
+        }.runDelayed(plugin, 2);
     }
 
     @Override
