@@ -44,10 +44,4 @@ public class MiscUtils {
 
         return new PlayersMenu(player, gui.getTitle(), gui.getSize()).build();
     }
-
-    public static InventoryBuilder buildSettingsMenu(@NotNull final Player player) {
-        final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.plugin_settings_menu);
-
-        return new SettingsMenu(player, gui.getTitle(), gui.getSize()).build();
-    }
 }

@@ -44,6 +44,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
     }
 
+    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size) {
+        this(player, title, size, 1);
+    }
+
     public InventoryBuilder() {}
 
     public abstract InventoryBuilder build();
@@ -65,6 +69,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     public void setPage(final int page) {
         this.page = page;
+    }
+
+    public final int getMax() {
+        return getSize() - (getSize() != 9 ? 9 : 0);
     }
 
     public final int getPage() {

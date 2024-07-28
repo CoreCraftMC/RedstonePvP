@@ -3,6 +3,8 @@ package com.ryderbelserion.redstonepvp;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.settings.PacketEventsSettings;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.PlayersMenu;
+import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.SettingsMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.beacon.BeaconMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.beacon.ItemMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
@@ -11,6 +13,7 @@ import com.ryderbelserion.redstonepvp.command.BaseCommand;
 import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
 import com.ryderbelserion.redstonepvp.command.subs.CommandReload;
 import com.ryderbelserion.redstonepvp.command.subs.beacons.CommandBeacon;
+import com.ryderbelserion.redstonepvp.listeners.PlayerCacheListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.PlayerDropsModule;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.managers.ConfigManager;
@@ -102,18 +105,6 @@ public class RedstonePvP extends JavaPlugin {
 
         this.loader.load();
 
-        // Register listeners.
-        List.of(
-                new PlayerDamageListener(),
-                new AnvilRepairListener(),
-                new ItemFrameListener(),
-
-                // Menu listeners
-                new MainMenu(),
-                new BeaconMenu(),
-                new ItemMenu()
-        ).forEach(clazz -> getServer().getPluginManager().registerEvents(clazz, this));
-
         this.items = new ArrayList<>();
 
         for (int count = 0; count < 100; count++) {
@@ -121,6 +112,22 @@ public class RedstonePvP extends JavaPlugin {
 
             count++;
         }
+
+        // Register listeners.
+        List.of(
+                new PlayerDamageListener(),
+                new AnvilRepairListener(),
+                new ItemFrameListener(),
+
+                new PlayerCacheListener(),
+
+                // Menu listeners
+                new SettingsMenu(),
+                new PlayersMenu(),
+                new BeaconMenu(),
+                new MainMenu(),
+                new ItemMenu()
+        ).forEach(clazz -> getServer().getPluginManager().registerEvents(clazz, this));
 
         getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
     }

@@ -2,6 +2,8 @@ package com.ryderbelserion.redstonepvp.managers;
 
 import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.SettingsMenu;
+import com.ryderbelserion.redstonepvp.managers.config.Config;
+import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class PaginationManager {
      */
     public static void nextPage(final Player player, final int currentPage, final int perPage, final int size) {
         setPage(player, currentPage, perPage, size);
+
+        buildInventory(player, currentPage);
     }
 
     /**
@@ -38,6 +42,8 @@ public class PaginationManager {
      */
     public static void backPage(final Player player, final int currentPage, final int perPage, final int size) {
         setPage(player, currentPage, perPage, size);
+
+        buildInventory(player, currentPage);
     }
 
     /**
@@ -46,13 +52,10 @@ public class PaginationManager {
      * @param player {@link Player}
      * @param page page number
      */
-    public void buildInventory(final Player player, final int page) {
-        player.openInventory(new SettingsMenu(
-                player,
-                "",
-                27,
-                page <= 0 ? getPage(player) : page
-        ).build().getInventory());
+    public static void buildInventory(final Player player, final int page) {
+        final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.plugin_settings_menu);
+
+        player.openInventory(new SettingsMenu(player, gui.getTitle(), gui.getSize(), page <= 0 ? getPage(player) : page).build().getInventory());
     }
 
     /**
@@ -96,11 +99,13 @@ public class PaginationManager {
         return (int) Math.ceil((double) size / (double) perPage);
     }
 
-    public static List<ItemStack> getPageItems(final List<ItemStack> items, final int currentPage, final int perPage) {
+    public static List<ItemStack> getPageItems(final List<ItemStack> items, int currentPage, int maxSlots) {
         final int size = items.size();
 
-        int startIndex = getStartIndex(currentPage, perPage);
-        int endIndex = getEndIndex(startIndex, perPage, size);
+        if (currentPage <= 0) currentPage = 1;
+
+        int startIndex = getStartIndex(currentPage, maxSlots);
+        int endIndex = getEndIndex(startIndex, maxSlots, size);
 
         final List<ItemStack> availableItems = new ArrayList<>();
 

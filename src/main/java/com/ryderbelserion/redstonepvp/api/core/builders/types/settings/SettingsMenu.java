@@ -12,14 +12,24 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
+import java.util.List;
+
+@SuppressWarnings("DataFlowIssue")
 public class SettingsMenu extends InventoryBuilder {
+
+    private final List<ItemStack> itemStacks;
 
     public SettingsMenu(final Player player, final String guiName, final int guiSize, final int page) {
         super(player, guiName, guiSize, page);
+
+        this.itemStacks = this.plugin.getItems();
     }
 
-    public SettingsMenu() {}
+    public SettingsMenu() {
+        this.itemStacks = this.plugin.getItems();
+    }
 
     @Override
     public InventoryBuilder build() {
@@ -28,18 +38,24 @@ public class SettingsMenu extends InventoryBuilder {
         final int page = PaginationManager.getPage(getPlayer());
 
         if (page > 1) {
-            inventory.setItem(21, new ItemBuilder().withType(Material.ARROW).getStack());
+            inventory.setItem(21, new ItemBuilder().withType(Material.ARROW).setPersistentInteger(PersistentKeys.back_page.getNamespacedKey(), page - 1).getStack());
         }
 
-        final int maxPages = PaginationManager.getMaxPages(this.plugin.getItems().size(), 15);
+        final int maxPages = PaginationManager.getMaxPages(this.itemStacks.size(), getMax());
 
         if (page != maxPages) {
-            inventory.setItem(23, new ItemBuilder().withType(Material.ARROW).getStack());
+            inventory.setItem(23, new ItemBuilder().withType(Material.ARROW).setPersistentInteger(PersistentKeys.next_page.getNamespacedKey(), page + 1).getStack());
         }
 
-        //for (ItemStack item : PaginationManager.getPageItems(this.plugin.getItems(), getPage(), 15)) {
-        //    inventory.setItem(inventory.firstEmpty(), item);
-        //}
+        for (ItemStack item : PaginationManager.getPageItems(this.itemStacks, page, getMax())) {
+            final int nextSlot = inventory.firstEmpty();
+
+            if (nextSlot >= 0) {
+                inventory.setItem(nextSlot, item);
+            } else {
+                break;
+            }
+        }
 
         return this;
     }
@@ -52,6 +68,8 @@ public class SettingsMenu extends InventoryBuilder {
 
         if (!(inventory.getHolder(false) instanceof SettingsMenu)) return;
 
+        event.setCancelled(true);
+
         final ItemStack item = event.getCurrentItem();
 
         if (item == null) return;
@@ -63,11 +81,15 @@ public class SettingsMenu extends InventoryBuilder {
         final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         if (container.has(PersistentKeys.next_page.getNamespacedKey())) {
+            int currentPage = container.get(PersistentKeys.next_page.getNamespacedKey(), PersistentDataType.INTEGER);
 
+            PaginationManager.nextPage(player, currentPage, 18, this.itemStacks.size());
         }
 
         if (container.has(PersistentKeys.back_page.getNamespacedKey())) {
+            int currentPage = container.get(PersistentKeys.back_page.getNamespacedKey(), PersistentDataType.INTEGER);
 
+            PaginationManager.backPage(player, currentPage, 18, this.itemStacks.size());
         }
     }
 }

@@ -4,12 +4,11 @@ import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.redstonepvp.api.core.builders.InventoryBuilder;
 import com.ryderbelserion.redstonepvp.api.enums.PersistentKeys;
 import com.ryderbelserion.redstonepvp.managers.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.PaginationManager;
 import com.ryderbelserion.redstonepvp.managers.config.Config;
 import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
-import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -81,7 +80,7 @@ public class MainMenu extends InventoryBuilder {
         }
 
         if (container.has(PersistentKeys.setting_item.getNamespacedKey())) {
-            player.openInventory(MiscUtils.buildSettingsMenu(player).build().getInventory());
+            PaginationManager.buildInventory(player, 1);
         }
 
         event.setCancelled(true);
