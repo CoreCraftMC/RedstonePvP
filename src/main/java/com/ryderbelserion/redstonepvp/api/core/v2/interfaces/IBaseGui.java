@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -164,11 +165,53 @@ public interface IBaseGui {
     void setItem(final int slot, final GuiItem guiItem);
 
     /**
+     * Alternative {@link #setItem(int, GuiItem)} to set item that uses <i>ROWS</i> and <i>COLUMNS</i> instead of slots.
+     *
+     * @param row the GUI row number
+     * @param col the GUI column number
+     * @param guiItem the {@link GuiItem} to add to the slot
+     */
+    void setItem(final int row, final int col, @NotNull final GuiItem guiItem);
+
+    /**
+     * Alternative {@link #setItem(int, GuiItem)} to set item that takes a {@link List} of slots instead.
+     *
+     * @param slots the slots in which the item should go
+     * @param guiItem the {@link GuiItem} to add to the slots
+     */
+    void setItem(@NotNull final List<Integer> slots, @NotNull final GuiItem guiItem);
+
+    /**
+     * Adds {@link GuiItem}s to the GUI without specific slot.
+     * It'll set the item to the next empty slot available.
+     *
+     * @param items varargs for specifying the {@link GuiItem}'s
+     */
+    void addItem(@NotNull final GuiItem... items);
+
+    /**
+     * Adds {@link GuiItem}s to the GUI without specific slot.
+     * It'll set the item to the next empty slot available.
+     *
+     * @param expandIfFull if true, expands the gui if it is full and there are more items to be added
+     * @param items varargs for specifying the {@link GuiItem}'s
+     */
+    void addItem(final boolean expandIfFull, @NotNull final GuiItem... items);
+
+    /**
      * Removes an item from the gui.
      *
      * @param itemStack {@link ItemStack}
      */
     void removeItem(final ItemStack itemStack);
+
+    /**
+     * Alternative {@link #removeItem(int)} with cols and rows.
+     *
+     * @param row the row
+     * @param col the column
+     */
+    void removeItem(final int row, final int col);
 
     /**
      * Removes an item from the gui.

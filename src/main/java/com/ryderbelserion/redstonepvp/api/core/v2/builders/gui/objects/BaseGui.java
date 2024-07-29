@@ -274,22 +274,24 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     /**
-     * Alternative {@link #setItem(int, GuiItem)} to set item that uses <i>ROWS</i> and <i>COLUMNS</i> instead of slots.
+     * {@inheritDoc}
      *
-     * @param row     The GUI row number.
-     * @param col     The GUI column number.
-     * @param guiItem The {@link GuiItem} to add to the slot.
+     * @param row {@inheritDoc}
+     * @param col {@inheritDoc}
+     * @param guiItem {@inheritDoc}
      */
+    @Override
     public void setItem(final int row, final int col, @NotNull final GuiItem guiItem) {
         setItem(getSlotFromRowColumn(row, col), guiItem);
     }
 
     /**
-     * Alternative {@link #setItem(int, GuiItem)} to set item that takes a {@link List} of slots instead.
+     * {@inheritDoc}
      *
-     * @param slots   The slots in which the item should go.
-     * @param guiItem The {@link GuiItem} to add to the slots.
+     * @param slots {@inheritDoc}
+     * @param guiItem {@inheritDoc}
      */
+    @Override
     public void setItem(@NotNull final List<Integer> slots, @NotNull final GuiItem guiItem) {
         for (final int slot : slots) {
             setItem(slot, guiItem);
@@ -297,23 +299,22 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     /**
-     * Adds {@link GuiItem}s to the GUI without specific slot.
-     * It'll set the item to the next empty slot available.
+     * {@inheritDoc}
      *
-     * @param items Varargs for specifying the {@link GuiItem}s.
+     * @param items {@inheritDoc}
      */
+    @Override
     public void addItem(@NotNull final GuiItem... items) {
-        this.addItem(false, items);
+        addItem(false, items);
     }
 
     /**
-     * Adds {@link GuiItem}s to the GUI without specific slot.
-     * It'll set the item to the next empty slot available.
+     * {@inheritDoc}
      *
-     * @param items        Varargs for specifying the {@link GuiItem}s.
-     * @param expandIfFull If true, expands the gui if it is full
-     *                     and there are more items to be added
+     * @param expandIfFull {@inheritDoc}
+     * @param items {@inheritDoc}
      */
+    @Override
     public void addItem(final boolean expandIfFull, @NotNull final GuiItem... items) {
         final List<GuiItem> notAddedItems = new ArrayList<>();
 
@@ -369,11 +370,12 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     /**
-     * Alternative {@link #removeItem(int)} with cols and rows.
+     * {@inheritDoc}
      *
-     * @param row The row.
-     * @param col The column.
+     * @param row {@inheritDoc}
+     * @param col {@inheritDoc}
      */
+    @Override
     public void removeItem(final int row, final int col) {
         removeItem(getSlotFromRowColumn(row, col));
     }
