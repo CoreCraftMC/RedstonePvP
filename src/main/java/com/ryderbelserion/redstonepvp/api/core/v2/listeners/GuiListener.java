@@ -2,7 +2,9 @@ package com.ryderbelserion.redstonepvp.api.core.v2.listeners;
 
 import com.google.common.base.Preconditions;
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.BaseGui;
+import com.ryderbelserion.redstonepvp.api.core.v2.enums.GuiKeys;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiAction;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiItem;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +14,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
@@ -96,6 +100,21 @@ public class GuiListener implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         if (!(event.getInventory().getHolder(false) instanceof BaseGui gui)) return;
+    }
+
+    /**
+     * Checks if the item is or not a GUI item.
+     *
+     * @param currentItem the current item clicked
+     * @param guiItem the GUI item in the slot
+     * @return true or false
+     */
+    private boolean isGuiItem(@Nullable final ItemStack currentItem, @Nullable final GuiItem guiItem) {
+        if (currentItem == null || guiItem == null) return false;
+
+        final String nbt = GuiKeys.getName(currentItem);
+
+        return nbt.equalsIgnoreCase(guiItem.getUuid().toString());
     }
 
     /**

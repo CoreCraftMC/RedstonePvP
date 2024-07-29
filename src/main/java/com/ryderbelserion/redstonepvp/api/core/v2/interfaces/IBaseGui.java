@@ -7,47 +7,155 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.EnumSet;
 import java.util.Set;
 
 public interface IBaseGui {
 
+    /**
+     * @return {@link String}
+     */
     String getTitle();
 
-    void setTitle(String title);
+    /**
+     * Sets the new title.
+     *
+     * @param title the new title
+     */
+    void setTitle(final String title);
 
+    /**
+     * @return {@link Component}
+     */
     Component title();
 
+    /**
+     * @return the amount of rows
+     */
     int getRows();
 
-    void setRows(int rows);
+    /**
+     * Set how many rows a gui should have.
+     *
+     * @param rows the number of rows
+     */
+    void setRows(final int rows);
 
+    /**
+     * @return the inventory size
+     */
     int getSize();
 
-    void close(Player player);
+    /**
+     * Close an inventory for a player.
+     *
+     * @param player {@link Player}
+     */
+    void close(final Player player);
 
-    void updateTitle(Player player);
+    /**
+     * Update the inventory title for a single player.
+     *
+     * @param player {@link Player}
+     */
+    void updateTitle(final Player player);
 
+    /**
+     * Update the inventory titles for all players!
+     */
     void updateTitles();
 
-    void addInteractionComponent(InteractionComponent... components);
+    /**
+     * Adds multiple interaction components
+     *
+     * @param components {@link InteractionComponent}
+     */
+    void addInteractionComponent(final InteractionComponent... components);
 
-    void removeInteractionComponent(InteractionComponent component);
+    /**
+     * Removes an interaction component
+     *
+     * @param component {@link InteractionComponent}
+     */
+    void removeInteractionComponent(final InteractionComponent component);
 
+    /**
+     * @return true or false
+     */
     boolean canPerformOtherActions();
 
+    /**
+     * @return true or false
+     */
     boolean isInteractionsDisabled();
 
+    /**
+     * @return true or false
+     */
     boolean canPlaceItems();
 
+    /**
+     * @return true or false
+     */
     boolean canTakeItems();
 
+    /**
+     * @return true or false
+     */
     boolean canSwapItems();
 
+    /**
+     * @return true or false
+     */
     boolean canDropItems();
+
+    /**
+     * Gives an item to a player while stripping the pdc tag.
+     *
+     * @param player {@link Player}
+     * @param itemStack {@link ItemStack}
+     */
+    void giveItem(final Player player, final ItemStack itemStack);
+
+    /**
+     * Gives multiple items to a player while stripping the pdc tag.
+     *
+     * @param player {@link Player}
+     * @param itemStacks {@link ItemStack}
+     */
+    void giveItem(final Player player, final ItemStack... itemStacks);
+
+    /**
+     * Sets an item to a specific slot.
+     *
+     * @param slot the slot number
+     * @param guiItem {@link GuiItem}
+     */
+    void setItem(final int slot, final GuiItem guiItem);
+
+    /**
+     * Removes an item from the gui.
+     *
+     * @param itemStack {@link ItemStack}
+     */
+    void removeItem(final ItemStack itemStack);
+
+    /**
+     * Removes an item from the gui.
+     *
+     * @param guiItem {@link GuiItem}
+     */
+    void removeItem(final GuiItem guiItem);
+
+    /**
+     * Removes an item from the inventory based on the slot.
+     *
+     * @param slot the slot number
+     */
+    void removeItem(final int slot);
 
     /**
      * Sets the {@link GuiAction} of a default click on any item.
@@ -55,7 +163,31 @@ public interface IBaseGui {
      *
      * @param defaultClickAction {@link GuiAction} to resolve when any item is clicked
      */
-    void setDefaultClickAction(@Nullable GuiAction<@NotNull InventoryClickEvent> defaultClickAction);
+    void setDefaultClickAction(final @Nullable GuiAction<@NotNull InventoryClickEvent> defaultClickAction);
+
+    /**
+     * Gets a specific {@link GuiItem} on the slot.
+     *
+     * @param slot the slot of the item.
+     * @return the {@link GuiItem} on the introduced slot or {@code null} if it doesn't exist
+     */
+    @Nullable GuiItem getGuiItem(final int slot);
+
+    /**
+     * Adds a {@link GuiAction} for when clicking on a specific slot.
+     * See {@link InventoryClickEvent}.
+     *
+     * @param slot the slot that will trigger the {@link GuiAction}.
+     * @param slotAction {@link GuiAction} to resolve when clicking on specific slots.
+     */
+    void addSlotAction(final int slot, @Nullable final GuiAction<@NotNull InventoryClickEvent> slotAction);
+
+    /**
+     * Gets the action for the specified slot.
+     *
+     * @param slot the slot clicked.
+     */
+    @Nullable GuiAction<InventoryClickEvent> getSlotAction(final int slot);
 
     /**
      * Gets the default top click resolver.
@@ -64,12 +196,12 @@ public interface IBaseGui {
 
     /**
      * Sets the {@link GuiAction} of a default click on any item on the top part of the GUI.
-     * Top inventory being for example chests etc, instead of the {@link Player} inventory.
+     * Top inventory being for example chests etc., instead of the {@link Player} inventory.
      * See {@link InventoryClickEvent}.
      *
      * @param defaultTopClickAction {@link GuiAction} to resolve when clicking on the top inventory
      */
-    void setDefaultTopClickAction(@Nullable GuiAction<@NotNull InventoryClickEvent> defaultTopClickAction);
+    void setDefaultTopClickAction(final @Nullable GuiAction<@NotNull InventoryClickEvent> defaultTopClickAction);
 
     /**
      * Gets the player inventory action.
@@ -82,8 +214,11 @@ public interface IBaseGui {
      *
      * @param openGuiAction {@link GuiAction} to resolve when opening the inventory
      */
-    void setOpenGuiAction(@Nullable GuiAction<@NotNull InventoryOpenEvent> openGuiAction);
+    void setOpenGuiAction(final @Nullable GuiAction<@NotNull InventoryOpenEvent> openGuiAction);
 
+    /**
+     * Gets the outside click resolver.
+     */
     GuiAction<InventoryClickEvent> getOutsideClickAction();
 
     /**
@@ -97,7 +232,7 @@ public interface IBaseGui {
      *
      * @param dragAction {@link GuiAction} to resolve
      */
-    void setDragAction(@Nullable GuiAction<@NotNull InventoryDragEvent> dragAction);
+    void setDragAction(final @Nullable GuiAction<@NotNull InventoryDragEvent> dragAction);
 
     /**
      * Gets the close gui resolver.
@@ -110,7 +245,7 @@ public interface IBaseGui {
      *
      * @param closeGuiAction {@link GuiAction} to resolve when the inventory is closed
      */
-    void setCloseGuiAction(@Nullable GuiAction<@NotNull InventoryCloseEvent> closeGuiAction);
+    void setCloseGuiAction(final @Nullable GuiAction<@NotNull InventoryCloseEvent> closeGuiAction);
 
     /**
      * Gets the open gui resolver.
@@ -123,7 +258,7 @@ public interface IBaseGui {
      *
      * @param playerInventoryAction {@link GuiAction} to resolve when clicking in the inventory
      */
-    void setPlayerInventoryAction(@Nullable GuiAction<@NotNull InventoryClickEvent> playerInventoryAction);
+    void setPlayerInventoryAction(final @Nullable GuiAction<@NotNull InventoryClickEvent> playerInventoryAction);
 
     /**
      * Gets the default drag resolver.
@@ -136,8 +271,14 @@ public interface IBaseGui {
      *
      * @param outsideClickAction {@link GuiAction} to resolve when clicking outside the inventory.
      */
-    void setOutsideClickAction(@Nullable GuiAction<@NotNull InventoryClickEvent> outsideClickAction);
+    void setOutsideClickAction(final @Nullable GuiAction<@NotNull InventoryClickEvent> outsideClickAction);
 
+    /**
+     * Safely copies an enum set.
+     *
+     * @param components {@link Set<InteractionComponent>}
+     * @return {@link Set<InteractionComponent>}
+     */
     default Set<InteractionComponent> safeCopy(final Set<InteractionComponent> components) {
         return components.isEmpty() ? EnumSet.noneOf(InteractionComponent.class) : EnumSet.copyOf(components);
     }
