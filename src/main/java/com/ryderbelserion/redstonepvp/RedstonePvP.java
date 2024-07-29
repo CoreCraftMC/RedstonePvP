@@ -9,6 +9,7 @@ import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.beacon.Be
 import com.ryderbelserion.redstonepvp.api.core.builders.types.settings.beacon.ItemMenu;
 import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleLoader;
+import com.ryderbelserion.redstonepvp.api.core.v2.test.BasicCommand;
 import com.ryderbelserion.redstonepvp.command.BaseCommand;
 import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
 import com.ryderbelserion.redstonepvp.command.subs.CommandReload;
@@ -89,6 +90,8 @@ public class RedstonePvP extends JavaPlugin {
             ).forEach(command -> root.then(command.registerPermission().literal()));
 
             event.registrar().register(root.build(), "the base command for RedstonePvP");
+
+            event.registrar().register("gui", "basic gui command", new BasicCommand());
         });
 
         // Register packets support.
