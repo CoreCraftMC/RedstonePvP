@@ -27,7 +27,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
@@ -212,9 +211,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      */
     @Override
     public void giveItem(final Player player, final ItemStack itemStack) {
-        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().remove(new NamespacedKey(plugin, "mf-gui")));
-
-        player.getInventory().addItem(itemStack);
+        player.getInventory().addItem(GuiKeys.strip(itemStack));
     }
 
     /**
@@ -247,7 +244,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      */
     @Override
     public void removeItem(final ItemStack itemStack) {
-        final String key = GuiKeys.getName(itemStack);
+        final String key = GuiKeys.getUUID(itemStack);
 
         final Optional<Map.Entry<Integer, GuiItem>> entry = guiItems.entrySet()
                 .stream()
