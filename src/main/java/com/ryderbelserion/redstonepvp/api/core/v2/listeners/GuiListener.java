@@ -112,7 +112,9 @@ public class GuiListener implements Listener {
     private boolean isGuiItem(@Nullable final ItemStack currentItem, @Nullable final GuiItem guiItem) {
         if (currentItem == null || guiItem == null) return false;
 
-        final String nbt = GuiKeys.getName(currentItem);
+        final String nbt = GuiKeys.getUUID(currentItem);
+
+        if (nbt.isEmpty() || nbt.isBlank()) return false;
 
         return nbt.equalsIgnoreCase(guiItem.getUuid().toString());
     }
