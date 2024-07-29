@@ -2,12 +2,38 @@ package com.ryderbelserion.redstonepvp.api.core.v2.builders;
 
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.BaseGuiBuilder;
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.GuiBuilder;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
 import org.jetbrains.annotations.NotNull;
 
-public class SimpleBuilder extends BaseGuiBuilder<GuiBuilder, SimpleBuilder> {
+public final class SimpleBuilder extends BaseGuiBuilder<GuiBuilder, SimpleBuilder> {
 
+    private GuiType guiType;
+
+    /**
+     * Creates a new {@link GuiBuilder}
+     *
+     * @return a new {@link GuiBuilder}
+     */
     @Override
     public @NotNull GuiBuilder create() {
-        return new GuiBuilder(getTitle(), getRows(), getInteractionComponents());
+        final GuiBuilder gui;
+
+        gui = this.guiType == null || this.guiType == GuiType.CHEST ? new GuiBuilder(getTitle(), getRows(), getInteractionComponents())
+                : new GuiBuilder(getTitle(), this.guiType, getInteractionComponents());
+
+        return gui;
+    }
+
+    /**
+     * Sets the {@link GuiType} to use on the GUI
+     * This method is unique to the simple GUI
+     *
+     * @param guiType the {@link GuiType}
+     * @return the current builder
+     */
+    public @NotNull SimpleBuilder type(final GuiType guiType) {
+        this.guiType = guiType;
+
+        return this;
     }
 }

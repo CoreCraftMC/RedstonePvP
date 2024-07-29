@@ -6,7 +6,7 @@ import com.ryderbelserion.redstonepvp.api.core.v2.enums.GuiKeys;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiAction;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiItem;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
-import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.IBaseGui;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.types.IBaseGui;
 import com.ryderbelserion.redstonepvp.api.core.v2.listeners.GuiListener;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
@@ -474,7 +474,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     public void updateInventory(final Player player) {
         this.inventory.clear();
 
-        populate(this.inventory, this.guiItems);
+        populate();
 
         player.updateInventory();
     }
@@ -676,7 +676,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
         this.inventory.clear();
 
-        populate(this.inventory, this.guiItems);
+        populate();
 
         player.openInventory(this.inventory);
     }
@@ -708,6 +708,15 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      */
     public @NotNull final GuiItem asGuiItem(final ItemStack itemStack, @Nullable final GuiAction<InventoryClickEvent> action) {
         return new GuiItem(itemStack, action);
+    }
+
+    /**
+     * Populates an inventory with items.
+     */
+    public void populate() {
+        for (final Map.Entry<Integer, GuiItem> entry : this.guiItems.entrySet()) {
+            this.inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
+        }
     }
 
     /**
