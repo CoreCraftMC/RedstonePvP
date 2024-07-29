@@ -1,20 +1,19 @@
-package com.ryderbelserion.redstonepvp.api.core.v2.interfaces;
+package com.ryderbelserion.redstonepvp.api.core.v2.interfaces.types;
 
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.components.InteractionComponent;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiAction;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiItem;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface IBaseGui {
@@ -358,17 +357,5 @@ public interface IBaseGui {
      */
     default Set<InteractionComponent> safeCopy(final Set<InteractionComponent> components) {
         return components.isEmpty() ? EnumSet.noneOf(InteractionComponent.class) : EnumSet.copyOf(components);
-    }
-
-    /**
-     * Populates an inventory with items.
-     *
-     * @param inventory {@link Inventory}
-     * @param guiItems {@link Map}
-     */
-    default void populate(final Inventory inventory, final Map<Integer, GuiItem> guiItems) {
-        for (final Map.Entry<Integer, GuiItem> entry : guiItems.entrySet()) {
-            inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
-        }
     }
 }
