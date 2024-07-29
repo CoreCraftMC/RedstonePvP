@@ -1,19 +1,21 @@
 package com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects;
 
+import com.ryderbelserion.redstonepvp.api.core.v2.builders.exception.GuiException;
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.components.InteractionComponent;
 import com.ryderbelserion.redstonepvp.api.core.v2.enums.GuiKeys;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiAction;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiItem;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.IBaseGui;
 import com.ryderbelserion.redstonepvp.api.core.v2.listeners.GuiListener;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
-import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.inventory.CraftContainer;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
@@ -29,8 +31,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -65,30 +69,60 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     // Action to execute when dragging the item on the GUI.
     private GuiAction<InventoryDragEvent> dragAction;
 
+    private GuiType guiType = GuiType.CHEST;
+
     private final Inventory inventory;
+    private boolean isUpdating;
     private String title;
     private int rows;
 
-    public BaseGui(final String title, final int rows, final Set<InteractionComponent> components) {
-        this.interactionComponents = safeCopy(components);
-
+    /**
+     * The main constructor, using {@link String}.
+     *
+     * @param rows the amount of rows
+     * @param title {@link String}
+     * @param components modifiers to select which interactions are allowed
+     */
+    public BaseGui(@NotNull final String title, final int rows, final Set<InteractionComponent> components) {
         this.title = title;
         this.rows = rows;
 
         int size = this.rows * 9;
 
-        this.inventory = plugin.getServer().createInventory(this, size, title());
-
         this.slotActions = new LinkedHashMap<>(size);
         this.guiItems = new LinkedHashMap<>(size);
+
+        this.interactionComponents = safeCopy(components);
+
+        this.inventory = plugin.getServer().createInventory(this, size, title());
+    }
+
+    /**
+     * Alternative constructor that takes {@link GuiType} instead of rows number.
+     *
+     * @param guiType the {@link GuiType}
+     * @param title {@link String}
+     * @param components modifiers to select which interactions are allowed
+     */
+    public BaseGui(@NotNull final String title, final GuiType guiType, final Set<InteractionComponent> components) {
+        this.title = title;
+
+        this.slotActions = new LinkedHashMap<>(guiType.getLimit());
+        this.guiItems = new LinkedHashMap<>(guiType.getLimit());
+
+        this.interactionComponents = safeCopy(components);
+
+        this.inventory = plugin.getServer().createInventory(this, guiType.getInventoryType(), title());
+
+        this.guiType = guiType;
     }
 
     /**
      * @return {@inheritDoc}
      */
     @Override
-    public final String getTitle() {
-        return this.title;
+    public @NotNull final String getTitle() {
+        return PlainTextComponentSerializer.plainText().serialize(title());
     }
 
     /**
@@ -97,7 +131,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      * @param title {@inheritDoc}
      */
     @Override
-    public void setTitle(final String title) {
+    public void setTitle(@NotNull final String title) {
         this.title = title;
     }
 
@@ -105,8 +139,8 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      * @return {@inheritDoc}
      */
     @Override
-    public final Component title() {
-        return AdvUtil.parse(getTitle());
+    public @NotNull final Component title() {
+        return AdvUtil.parse(this.title);
     }
 
     /**
@@ -233,8 +267,81 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      */
     @Override
     public void setItem(final int slot, final GuiItem guiItem) {
+        validateSlot(slot);
+
         this.guiItems.put(slot, guiItem);
         this.inventory.setItem(slot, guiItem.getItemStack());
+    }
+
+    /**
+     * Alternative {@link #setItem(int, GuiItem)} to set item that uses <i>ROWS</i> and <i>COLUMNS</i> instead of slots.
+     *
+     * @param row     The GUI row number.
+     * @param col     The GUI column number.
+     * @param guiItem The {@link GuiItem} to add to the slot.
+     */
+    public void setItem(final int row, final int col, @NotNull final GuiItem guiItem) {
+        setItem(getSlotFromRowColumn(row, col), guiItem);
+    }
+
+    /**
+     * Alternative {@link #setItem(int, GuiItem)} to set item that takes a {@link List} of slots instead.
+     *
+     * @param slots   The slots in which the item should go.
+     * @param guiItem The {@link GuiItem} to add to the slots.
+     */
+    public void setItem(@NotNull final List<Integer> slots, @NotNull final GuiItem guiItem) {
+        for (final int slot : slots) {
+            setItem(slot, guiItem);
+        }
+    }
+
+    /**
+     * Adds {@link GuiItem}s to the GUI without specific slot.
+     * It'll set the item to the next empty slot available.
+     *
+     * @param items Varargs for specifying the {@link GuiItem}s.
+     */
+    public void addItem(@NotNull final GuiItem... items) {
+        this.addItem(false, items);
+    }
+
+    /**
+     * Adds {@link GuiItem}s to the GUI without specific slot.
+     * It'll set the item to the next empty slot available.
+     *
+     * @param items        Varargs for specifying the {@link GuiItem}s.
+     * @param expandIfFull If true, expands the gui if it is full
+     *                     and there are more items to be added
+     */
+    public void addItem(final boolean expandIfFull, @NotNull final GuiItem... items) {
+        final List<GuiItem> notAddedItems = new ArrayList<>();
+
+        for (final GuiItem guiItem : items) {
+            for (int slot = 0; slot < this.rows * 9; slot++) {
+                if (this.guiItems.get(slot) != null) {
+
+                    if (slot == this.rows * 9 - 1) {
+                        notAddedItems.add(guiItem);
+                    }
+
+                    continue;
+                }
+
+                this.guiItems.put(slot, guiItem);
+
+                break;
+            }
+        }
+
+        if (!expandIfFull || this.rows >= 6 || notAddedItems.isEmpty() || (this.guiType != null && this.guiType != GuiType.CHEST)) {
+            return;
+        }
+
+        this.rows++;
+        this.updateInventories();
+
+        this.addItem(true, notAddedItems.toArray(new GuiItem[0]));
     }
 
     /**
@@ -262,6 +369,16 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     /**
+     * Alternative {@link #removeItem(int)} with cols and rows.
+     *
+     * @param row The row.
+     * @param col The column.
+     */
+    public void removeItem(final int row, final int col) {
+        removeItem(getSlotFromRowColumn(row, col));
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @param guiItem {@inheritDoc}
@@ -278,8 +395,9 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      */
     @Override
     public void removeItem(final int slot) {
+        validateSlot(slot);
+
         this.guiItems.remove(slot);
-        this.inventory.setItem(slot, null);
     }
 
     /**
@@ -347,6 +465,20 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     /**
      * {@inheritDoc}
+     *
+     * @param player {@inheritDoc}
+     */
+    @Override
+    public void updateInventory(final Player player) {
+        this.inventory.clear();
+
+        populate(this.inventory, this.guiItems);
+
+        player.updateInventory();
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void updateTitles() {
@@ -361,11 +493,43 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     /**
      * {@inheritDoc}
+     */
+    @Override
+    public void updateInventories() {
+        final Inventory inventory = this.inventory;
+
+        inventory.getViewers().forEach(humanEntity -> {
+            if (humanEntity instanceof Player player) {
+                updateInventory(player);
+            }
+        });
+    }
+
+    /**
+     * @return {@inheritDoc}
+     */
+    @Override
+    public final boolean isUpdating() {
+        return this.isUpdating;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param updating {@inheritDoc}
+     */
+    @Override
+    public void setUpdating(final boolean updating) {
+        this.isUpdating = updating;
+    }
+
+    /**
+     * {@inheritDoc}
      *
      * @return {@inheritDoc}
      */
     @Override
-    public final @Nullable GuiAction<InventoryClickEvent> getDefaultClickAction() {
+    public @Nullable final GuiAction<InventoryClickEvent> getDefaultClickAction() {
         return this.defaultClickAction;
     }
 
@@ -385,7 +549,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      * @return {@inheritDoc}
      */
     @Override
-    public final @Nullable GuiAction<InventoryClickEvent> getDefaultTopClickAction() {
+    public @Nullable final GuiAction<InventoryClickEvent> getDefaultTopClickAction() {
         return this.defaultTopClickAction;
     }
 
@@ -405,7 +569,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      * @return {@inheritDoc}
      */
     @Override
-    public final @Nullable GuiAction<InventoryClickEvent> getPlayerInventoryAction() {
+    public @Nullable final GuiAction<InventoryClickEvent> getPlayerInventoryAction() {
         return this.playerInventoryAction;
     }
 
@@ -425,7 +589,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      * @return {@inheritDoc}
      */
     @Override
-    public final @Nullable GuiAction<InventoryDragEvent> getDragAction() {
+    public @Nullable final GuiAction<InventoryDragEvent> getDragAction() {
         return this.dragAction;
     }
 
@@ -445,7 +609,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      * @return {@inheritDoc}
      */
     @Override
-    public final @Nullable GuiAction<InventoryCloseEvent> getCloseGuiAction() {
+    public @Nullable final GuiAction<InventoryCloseEvent> getCloseGuiAction() {
         return this.closeGuiAction;
     }
 
@@ -465,7 +629,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      * @return {@inheritDoc}
      */
     @Override
-    public final @Nullable GuiAction<InventoryOpenEvent> getOpenGuiAction() {
+    public @Nullable final GuiAction<InventoryOpenEvent> getOpenGuiAction() {
         return this.openGuiAction;
     }
 
@@ -485,7 +649,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      * @return {@inheritDoc}
      */
     @Override
-    public final @Nullable GuiAction<InventoryClickEvent> getOutsideClickAction() {
+    public @Nullable final GuiAction<InventoryClickEvent> getOutsideClickAction() {
         return this.outsideClickAction;
     }
 
@@ -502,10 +666,26 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     /**
      * {@inheritDoc}
      *
+     * @param player {@inheritDoc}
+     */
+    @Override
+    public void open(final Player player) {
+        if (player.isSleeping()) return;
+
+        this.inventory.clear();
+
+        populate(this.inventory, this.guiItems);
+
+        player.openInventory(this.inventory);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @return {@inheritDoc}
      */
     @Override
-    public @NotNull Inventory getInventory() {
+    public @NotNull final Inventory getInventory() {
         return this.inventory;
     }
 
@@ -526,5 +706,46 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
      */
     public @NotNull final GuiItem asGuiItem(final ItemStack itemStack, @Nullable final GuiAction<InventoryClickEvent> action) {
         return new GuiItem(itemStack, action);
+    }
+
+    /**
+     * Gets the slot from the row and column passed.
+     *
+     * @param row The row.
+     * @param col The column.
+     * @return The slot needed.
+     */
+    public final int getSlotFromRowColumn(final int row, final int col) {
+        return (col + (row - 1) * 9) - 1;
+    }
+
+    /**
+     * Checks if the slot introduces is a valid slot.
+     *
+     * @param slot The slot to check.
+     */
+    private void validateSlot(final int slot) {
+        final int limit = this.guiType.getLimit();
+
+        if (this.guiType == GuiType.CHEST) {
+            if (slot < 0 || slot >= this.rows * limit) throwInvalidSlot(slot);
+
+            return;
+        }
+
+        if (slot < 0 || slot > limit) throwInvalidSlot(slot);
+    }
+
+    /**
+     * Throws an exception if the slot is invalid.
+     *
+     * @param slot The specific slot to display in the error message.
+     */
+    private void throwInvalidSlot(final int slot) {
+        if (this.guiType == GuiType.CHEST) {
+            throw new GuiException("Slot " + slot + " is not valid for the gui type - " + this.guiType.name() + " and rows - " + this.rows + "!");
+        }
+
+        throw new GuiException("Slot " + slot + " is not valid for the gui type - " + this.guiType.name() + "!");
     }
 }

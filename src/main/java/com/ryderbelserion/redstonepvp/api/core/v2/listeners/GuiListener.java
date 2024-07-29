@@ -100,6 +100,10 @@ public class GuiListener implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         if (!(event.getInventory().getHolder(false) instanceof BaseGui gui)) return;
+
+        final GuiAction<InventoryCloseEvent> closeAction = gui.getCloseGuiAction();
+
+        if (closeAction != null) closeAction.execute(event);
     }
 
     /**

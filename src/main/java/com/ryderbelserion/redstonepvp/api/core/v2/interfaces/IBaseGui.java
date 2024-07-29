@@ -2,15 +2,18 @@ package com.ryderbelserion.redstonepvp.api.core.v2.interfaces;
 
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.components.InteractionComponent;
 import net.kyori.adventure.text.Component;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.Set;
 
 public interface IBaseGui {
@@ -64,9 +67,33 @@ public interface IBaseGui {
     void updateTitle(final Player player);
 
     /**
+     * Update the inventory for a single player.
+     *
+     * @param player {@link Player}
+     */
+    void updateInventory(final Player player);
+
+    /**
      * Update the inventory titles for all players!
      */
     void updateTitles();
+
+    /**
+     * Update the inventories for all players!
+     */
+    void updateInventories();
+
+    /**
+     * @return true or false
+     */
+    boolean isUpdating();
+
+    /**
+     * Sets the updating status of the gui.
+     *
+     * @param isUpdating true or false
+     */
+    void setUpdating(final boolean isUpdating);
 
     /**
      * Adds multiple interaction components
@@ -274,6 +301,13 @@ public interface IBaseGui {
     void setOutsideClickAction(final @Nullable GuiAction<@NotNull InventoryClickEvent> outsideClickAction);
 
     /**
+     * Opens an inventory for {@link Player}
+     *
+     * @param player {@link Player}
+     */
+    void open(final Player player);
+
+    /**
      * Safely copies an enum set.
      *
      * @param components {@link Set<InteractionComponent>}
@@ -281,5 +315,17 @@ public interface IBaseGui {
      */
     default Set<InteractionComponent> safeCopy(final Set<InteractionComponent> components) {
         return components.isEmpty() ? EnumSet.noneOf(InteractionComponent.class) : EnumSet.copyOf(components);
+    }
+
+    /**
+     * Populates an inventory with items.
+     *
+     * @param inventory {@link Inventory}
+     * @param guiItems {@link Map}
+     */
+    default void populate(final Inventory inventory, final Map<Integer, GuiItem> guiItems) {
+        for (final Map.Entry<Integer, GuiItem> entry : guiItems.entrySet()) {
+            inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
+        }
     }
 }
