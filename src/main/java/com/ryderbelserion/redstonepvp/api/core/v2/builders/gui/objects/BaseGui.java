@@ -4,6 +4,7 @@ import com.ryderbelserion.redstonepvp.api.core.v2.builders.exception.GuiExceptio
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.components.InteractionComponent;
 import com.ryderbelserion.redstonepvp.api.core.v2.enums.GuiKeys;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiAction;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiFiller;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiItem;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.types.IBaseGui;
@@ -33,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,8 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
         plugin.getServer().getPluginManager().registerEvents(new GuiListener(), plugin);
     }
 
+    // Gui filler.
+    private final GuiFiller filler = new GuiFiller(this);
     // Actions for specific slots.
     private final Map<Integer, GuiAction<InventoryClickEvent>> slotActions;
     // Contains all items the GUI will have.
@@ -121,6 +125,16 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public final Map<Integer, GuiItem> getGuiItems() {
+        return Collections.unmodifiableMap(this.guiItems);
+    }
+
+    /**
      * @return {@inheritDoc}
      */
     @Override
@@ -170,6 +184,24 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     @Override
     public final int getSize() {
         return getRows() * 9;
+    }
+
+    /**
+     * @return {@inheritDoc}
+     */
+    @Override
+    public final GuiType getGuiType() {
+        return this.guiType;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public final GuiFiller getFiller() {
+        return this.filler;
     }
 
     /**

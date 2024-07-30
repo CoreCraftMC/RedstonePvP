@@ -2,7 +2,9 @@ package com.ryderbelserion.redstonepvp.api.core.v2.interfaces.types;
 
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.components.InteractionComponent;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiAction;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiFiller;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiItem;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,12 +16,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * @author ryderbelserion
  */
 public interface IBaseGui {
+
+    /**
+     * Gets an immutable {@link Map} with all the GUI items
+     *
+     * @return the {@link Map} with all the items
+     */
+    Map<@NotNull Integer, @NotNull GuiItem> getGuiItems();
 
     /**
      * @return {@link String}
@@ -54,6 +64,18 @@ public interface IBaseGui {
      * @return the inventory size
      */
     int getSize();
+
+    /**
+     * @return {@link GuiType}
+     */
+    GuiType getGuiType();
+
+    /**
+     * Gets the {@link GuiFiller} that it's used for filling up the GUI in specific ways.
+     *
+     * @return the {@link GuiFiller}
+     */
+    GuiFiller getFiller();
 
     /**
      * Close an inventory for a player.
