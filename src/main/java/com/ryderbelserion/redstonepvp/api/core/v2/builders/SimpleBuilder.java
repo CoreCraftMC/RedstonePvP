@@ -4,6 +4,7 @@ import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.BaseGuiBuilder;
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.GuiBuilder;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
 import org.jetbrains.annotations.NotNull;
+import java.util.function.Consumer;
 
 public final class SimpleBuilder extends BaseGuiBuilder<GuiBuilder, SimpleBuilder> {
 
@@ -20,6 +21,9 @@ public final class SimpleBuilder extends BaseGuiBuilder<GuiBuilder, SimpleBuilde
 
         gui = this.guiType == null || this.guiType == GuiType.CHEST ? new GuiBuilder(getTitle(), getRows(), getInteractionComponents())
                 : new GuiBuilder(getTitle(), this.guiType, getInteractionComponents());
+
+        final Consumer<GuiBuilder> consumer = getConsumer();
+        if (consumer != null) consumer.accept(gui);
 
         return gui;
     }
