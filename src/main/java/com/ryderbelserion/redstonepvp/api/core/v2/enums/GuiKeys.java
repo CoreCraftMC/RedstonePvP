@@ -7,6 +7,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author ryderbelserion
+ */
 public class GuiKeys {
 
     private static final JavaPlugin plugin = JavaPlugin.getProvidingPlugin(GuiKeys.class);

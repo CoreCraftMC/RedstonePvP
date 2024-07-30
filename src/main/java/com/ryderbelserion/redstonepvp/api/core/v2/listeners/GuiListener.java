@@ -20,6 +20,9 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
+/**
+ * @author Matt
+ */
 public class GuiListener implements Listener {
 
     @EventHandler

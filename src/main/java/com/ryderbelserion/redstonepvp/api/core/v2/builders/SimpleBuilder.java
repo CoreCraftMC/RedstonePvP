@@ -6,6 +6,9 @@ import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
 import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
+/**
+ * @author Matt
+ */
 public final class SimpleBuilder extends BaseGuiBuilder<GuiBuilder, SimpleBuilder> {
 
     private GuiType guiType;

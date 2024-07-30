@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
+/**
+ * @author Matt
+ */
 public class PaginatedBuilder extends BaseGuiBuilder<PaginatedGui, PaginatedBuilder> {
 
     private int pageSize = 0;

@@ -16,6 +16,9 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author ryderbelserion
+ */
 public interface IBaseGui {
 
     /**

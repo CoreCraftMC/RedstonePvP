@@ -3,6 +3,9 @@ package com.ryderbelserion.redstonepvp.api.core.v2.interfaces;
 import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Matt
+ */
 public enum GuiType {
 
     CHEST(InventoryType.CHEST, 9),

@@ -8,6 +8,9 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
+/**
+ * @author Matt
+ */
 @SuppressWarnings("unchecked")
 public abstract class BaseGuiBuilder<G extends BaseGui, B extends BaseGuiBuilder<G, B>> {
 

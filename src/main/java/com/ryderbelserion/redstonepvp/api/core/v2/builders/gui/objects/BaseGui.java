@@ -39,6 +39,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * @author Matt
+ */
 public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     private static final JavaPlugin plugin = JavaPlugin.getProvidingPlugin(BaseGui.class);

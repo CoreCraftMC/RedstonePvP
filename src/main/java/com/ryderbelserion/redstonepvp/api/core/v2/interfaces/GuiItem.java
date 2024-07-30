@@ -16,6 +16,8 @@ import java.util.UUID;
 
 /**
  * GuiItem represents the {@link ItemStack} on the {@link Inventory}
+ *
+ * @author Matt
  */
 @SuppressWarnings("unused")
 public class GuiItem {
