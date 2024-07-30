@@ -14,6 +14,15 @@ public final class SimpleBuilder extends BaseGuiBuilder<GuiBuilder, SimpleBuilde
     private GuiType guiType;
 
     /**
+     * Main constructor
+     *
+     * @param guiType the {@link GuiType} to default to
+     */
+    public SimpleBuilder(@NotNull final GuiType guiType) {
+        this.guiType = guiType;
+    }
+
+    /**
      * Creates a new {@link GuiBuilder}
      *
      * @return a new {@link GuiBuilder}
