@@ -2,11 +2,14 @@ package com.ryderbelserion.redstonepvp.api.core.v2.builders;
 
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.BaseGuiBuilder;
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.GuiBuilder;
+import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.PaginatedGui;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-public class PaginatedBuilder extends BaseGuiBuilder<GuiBuilder, PaginatedBuilder> {
+import java.util.function.Consumer;
+
+public class PaginatedBuilder extends BaseGuiBuilder<PaginatedGui, PaginatedBuilder> {
 
     private int pageSize = 0;
 
@@ -30,9 +33,12 @@ public class PaginatedBuilder extends BaseGuiBuilder<GuiBuilder, PaginatedBuilde
      * @return a new {@link GuiBuilder}
      */
     @Override
-    public final @NotNull GuiBuilder create() {
-        final GuiBuilder gui;
+    public final @NotNull PaginatedGui create() {
+        final PaginatedGui gui = new PaginatedGui(getTitle(), this.pageSize, getRows(), getInteractionComponents());
 
-        return null;
+        final Consumer<PaginatedGui> consumer = getConsumer();
+        if (consumer != null) consumer.accept(gui);
+
+        return gui;
     }
 }
