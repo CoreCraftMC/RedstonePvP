@@ -2,13 +2,12 @@ package com.ryderbelserion.redstonepvp.command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.core.builders.types.MainMenu;
 import com.ryderbelserion.redstonepvp.api.core.command.Command;
 import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
+import com.ryderbelserion.redstonepvp.api.gui.MainMenuGui;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 
@@ -24,9 +23,7 @@ public class BaseCommand extends Command {
             return;
         }
 
-        final Player player = data.getPlayer();
-
-        player.openInventory(new MainMenu(player).build().getInventory());
+        MainMenuGui.build(data.getPlayer());
     }
 
     @Override

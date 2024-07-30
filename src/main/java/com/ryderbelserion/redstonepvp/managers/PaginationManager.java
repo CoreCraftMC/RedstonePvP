@@ -53,9 +53,9 @@ public class PaginationManager {
      * @param page page number
      */
     public static void buildInventory(final Player player, final int page) {
-        final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.plugin_settings_menu);
+        //final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.plugin_settings_menu);
 
-        player.openInventory(new SettingsMenu(player, gui.getTitle(), gui.getSize(), page <= 0 ? getPage(player) : page).build().getInventory());
+        //player.openInventory(new SettingsMenu(player, gui.getTitle(), gui.getSize(), page <= 0 ? getPage(player) : page).build().getInventory());
     }
 
     /**

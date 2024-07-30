@@ -1,10 +1,6 @@
 package com.ryderbelserion.redstonepvp.api.objects.beacons;
 
-import com.ryderbelserion.redstonepvp.RedstonePvP;
-
 public class Beacon {
-
-    private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     private final String rawLocation;
     private final BeaconDrop drop;

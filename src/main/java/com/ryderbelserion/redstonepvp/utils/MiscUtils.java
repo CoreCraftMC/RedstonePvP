@@ -34,14 +34,16 @@ public class MiscUtils {
     }
 
     public static InventoryBuilder buildBeaconMenu(@NotNull final Player player) {
-        final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.beacon_drop_menu);
+        /*final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.beacon_drop_menu);
 
-        return new BeaconMenu(player, gui.getTitle(), gui.getSize()).build();
+        return new BeaconMenu(player, gui.getTitle(), gui.getSize()).build();*/
+        return null;
     }
 
     public static InventoryBuilder buildPlayerMenu(@NotNull final Player player) {
-        final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.players_menu);
+        /*final GuiProperty gui = ConfigManager.getConfig().getProperty(Config.players_menu);
 
-        return new PlayersMenu(player, gui.getTitle(), gui.getSize()).build();
+        return new PlayersMenu(player, gui.getTitle(), gui.getSize()).build();*/
+        return null;
     }
 }

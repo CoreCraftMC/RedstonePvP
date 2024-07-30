@@ -31,7 +31,7 @@ public class MainMenu extends InventoryBuilder {
     public InventoryBuilder build() {
         final Inventory inventory = getInventory();
 
-        final ButtonProperty drop_item = this.config.getProperty(Config.beacon_drop_item);
+        /*final ButtonProperty drop_item = this.config.getProperty(Config.beacon_drop_item);
 
         inventory.setItem(drop_item.getSlot(),
                 new ItemBuilder().withType(drop_item.getMaterial())
@@ -50,7 +50,7 @@ public class MainMenu extends InventoryBuilder {
         inventory.setItem(settings_item.getSlot(),
                 new ItemBuilder().withType(settings_item.getMaterial())
                         .setPersistentString(PersistentKeys.setting_item.getNamespacedKey(), "3")
-                        .setDisplayName(settings_item.getName()).getStack());
+                        .setDisplayName(settings_item.getName()).getStack());*/
 
         return this;
     }

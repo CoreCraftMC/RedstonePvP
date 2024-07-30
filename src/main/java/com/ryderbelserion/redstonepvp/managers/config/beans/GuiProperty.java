@@ -1,33 +1,50 @@
 package com.ryderbelserion.redstonepvp.managers.config.beans;
 
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
+
 public class GuiProperty {
 
+    private GuiType guiType;
     private String title;
-    private int size;
+    private int rows;
 
-    public GuiProperty(final String title, final int size) {
+    public GuiProperty(final GuiType guiType, final String title, final int rows) {
+        this.guiType = guiType;
         this.title = title;
-        this.size = size;
+        this.rows = rows;
+    }
+
+    public GuiProperty(final String title, final int rows) {
+        this(GuiType.CHEST, title, rows);
     }
 
     public GuiProperty() {
+        this.guiType = GuiType.CHEST;
         this.title = "";
-        this.size = 9;
+        this.rows = 6;
+    }
+
+    public void setGuiType(final GuiType guiType) {
+        this.guiType = guiType;
     }
 
     public void setTitle(final String title) {
         this.title = title;
     }
 
-    public void setSize(final int size) {
-        this.size = size;
+    public void setRows(final int rows) {
+        this.rows = rows;
+    }
+
+    public final GuiType getGuiType() {
+        return this.guiType;
     }
 
     public final String getTitle() {
         return this.title;
     }
 
-    public final int getSize() {
-        return this.size;
+    public final int getRows() {
+        return this.rows;
     }
 }
