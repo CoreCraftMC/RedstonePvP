@@ -1,4 +1,4 @@
-package com.ryderbelserion.redstonepvp.api.core.v2.enums;
+package com.ryderbelserion.redstonepvp.api.core.v2.keys;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;

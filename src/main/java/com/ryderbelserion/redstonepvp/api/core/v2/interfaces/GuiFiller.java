@@ -1,8 +1,8 @@
 package com.ryderbelserion.redstonepvp.api.core.v2.interfaces;
 
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.exception.GuiException;
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.BaseGui;
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.PaginatedGui;
+import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.BaseGui;
+import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.PaginatedGui;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;

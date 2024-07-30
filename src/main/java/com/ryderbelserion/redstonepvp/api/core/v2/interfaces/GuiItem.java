@@ -1,15 +1,13 @@
 package com.ryderbelserion.redstonepvp.api.core.v2.interfaces;
 
 import com.google.common.base.Preconditions;
-import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.core.v2.keys.GuiKeys;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
@@ -80,7 +78,7 @@ public class GuiItem {
      * @return The {@link ItemStack}
      */
     public @NotNull final ItemStack getItemStack() {
-        return itemStack;
+        return this.itemStack;
     }
 
     /**
@@ -102,7 +100,7 @@ public class GuiItem {
         item.editMeta(itemMeta -> {
             final PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
 
-            pdc.set(new NamespacedKey(JavaPlugin.getProvidingPlugin(RedstonePvP.class), "mf-gui"), PersistentDataType.STRING, this.uuid.toString());
+            pdc.set(GuiKeys.key, PersistentDataType.STRING, uuid.toString());
         });
 
         this.itemStack = item;

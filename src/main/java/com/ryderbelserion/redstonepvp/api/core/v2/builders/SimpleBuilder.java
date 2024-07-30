@@ -1,7 +1,6 @@
 package com.ryderbelserion.redstonepvp.api.core.v2.builders;
 
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.BaseGuiBuilder;
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.GuiBuilder;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.Gui;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
 import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
@@ -9,7 +8,7 @@ import java.util.function.Consumer;
 /**
  * @author Matt
  */
-public final class SimpleBuilder extends BaseGuiBuilder<GuiBuilder, SimpleBuilder> {
+public final class SimpleBuilder extends BaseGuiBuilder<Gui, SimpleBuilder> {
 
     private GuiType guiType;
 
@@ -23,18 +22,18 @@ public final class SimpleBuilder extends BaseGuiBuilder<GuiBuilder, SimpleBuilde
     }
 
     /**
-     * Creates a new {@link GuiBuilder}
+     * Creates a new {@link Gui}
      *
-     * @return a new {@link GuiBuilder}
+     * @return a new {@link Gui}
      */
     @Override
-    public @NotNull GuiBuilder create() {
-        final GuiBuilder gui;
+    public @NotNull Gui create() {
+        final Gui gui;
 
-        gui = this.guiType == null || this.guiType == GuiType.CHEST ? new GuiBuilder(getTitle(), getRows(), getInteractionComponents())
-                : new GuiBuilder(getTitle(), this.guiType, getInteractionComponents());
+        gui = this.guiType == null || this.guiType == GuiType.CHEST ? new Gui(getTitle(), getRows(), getInteractionComponents())
+                : new Gui(getTitle(), this.guiType, getInteractionComponents());
 
-        final Consumer<GuiBuilder> consumer = getConsumer();
+        final Consumer<Gui> consumer = getConsumer();
         if (consumer != null) consumer.accept(gui);
 
         return gui;

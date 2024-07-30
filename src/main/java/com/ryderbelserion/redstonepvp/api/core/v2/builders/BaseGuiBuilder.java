@@ -1,6 +1,6 @@
-package com.ryderbelserion.redstonepvp.api.core.v2.builders.gui;
+package com.ryderbelserion.redstonepvp.api.core.v2.builders;
 
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.BaseGui;
+import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.BaseGui;
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.components.InteractionComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

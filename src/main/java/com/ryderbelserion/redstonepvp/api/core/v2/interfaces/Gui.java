@@ -1,17 +1,17 @@
-package com.ryderbelserion.redstonepvp.api.core.v2.builders.gui;
+package com.ryderbelserion.redstonepvp.api.core.v2.interfaces;
 
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.PaginatedBuilder;
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.SimpleBuilder;
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.BaseGui;
+import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.PaginatedGui;
+import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.BaseGui;
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.components.InteractionComponent;
-import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
 import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 /**
  * @author Matt
  */
-public class GuiBuilder extends BaseGui {
+public class Gui extends BaseGui {
 
     /**
      * Main constructor for the GUI.
@@ -21,7 +21,7 @@ public class GuiBuilder extends BaseGui {
      * @param components a set containing the {@link InteractionComponent} this GUI should use
      * @author SecretX
      */
-    public GuiBuilder(final String title, final int rows, final Set<InteractionComponent> components) {
+    public Gui(final String title, final int rows, final Set<InteractionComponent> components) {
         super(title, rows, components);
     }
 
@@ -33,12 +33,12 @@ public class GuiBuilder extends BaseGui {
      * @param components a set containing the {@link InteractionComponent} this GUI should use
      * @author SecretX
      */
-    public GuiBuilder(final String title, final GuiType guiType, final Set<InteractionComponent> components) {
+    public Gui(final String title, final GuiType guiType, final Set<InteractionComponent> components) {
         super(title, guiType, components);
     }
 
     /**
-     * Creates a {@link SimpleBuilder} to build a {@link GuiBuilder}
+     * Creates a {@link SimpleBuilder} to build a {@link Gui}
      *
      * @param type the {@link GuiType} to be used
      * @return a {@link SimpleBuilder}
@@ -57,7 +57,7 @@ public class GuiBuilder extends BaseGui {
     }
 
     /**
-     * Creates a {@link PaginatedBuilder} to build a {@link com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.PaginatedGui}.
+     * Creates a {@link PaginatedBuilder} to build a {@link PaginatedGui}.
      *
      * @return a {@link PaginatedBuilder}
      */

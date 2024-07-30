@@ -1,8 +1,8 @@
-package com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects;
+package com.ryderbelserion.redstonepvp.api.core.v2.builders.gui;
 
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.exception.GuiException;
 import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.components.InteractionComponent;
-import com.ryderbelserion.redstonepvp.api.core.v2.enums.GuiKeys;
+import com.ryderbelserion.redstonepvp.api.core.v2.keys.GuiKeys;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiAction;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiFiller;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiItem;

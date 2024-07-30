@@ -1,9 +1,7 @@
 package com.ryderbelserion.redstonepvp.api.core.v2.builders;
 
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.BaseGuiBuilder;
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.GuiBuilder;
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.PaginatedGui;
-import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.Gui;
+import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.PaginatedGui;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,9 +29,9 @@ public class PaginatedBuilder extends BaseGuiBuilder<PaginatedGui, PaginatedBuil
     }
 
     /**
-     * Creates a new {@link GuiBuilder}
+     * Creates a new {@link Gui}
      *
-     * @return a new {@link GuiBuilder}
+     * @return a new {@link Gui}
      */
     @Override
     public final @NotNull PaginatedGui create() {

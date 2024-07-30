@@ -1,6 +1,6 @@
 package com.ryderbelserion.redstonepvp.api.core.v2.test;
 
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.GuiBuilder;
+import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.Gui;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiItem;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Material;
@@ -15,7 +15,7 @@ public class BasicCommand implements io.papermc.paper.command.brigadier.BasicCom
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (!(stack.getSender() instanceof Player player)) return;
 
-        final GuiBuilder gui = GuiBuilder.gui().setTitle("<red>Beans!")
+        final Gui gui = Gui.gui().setTitle("<red>Beans!")
                 .disableItemTake()
                 .disableItemDrop()
                 .disableItemSwap()

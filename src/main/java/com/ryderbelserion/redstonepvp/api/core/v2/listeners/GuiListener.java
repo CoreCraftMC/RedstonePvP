@@ -1,8 +1,8 @@
 package com.ryderbelserion.redstonepvp.api.core.v2.listeners;
 
 import com.google.common.base.Preconditions;
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.BaseGui;
-import com.ryderbelserion.redstonepvp.api.core.v2.enums.GuiKeys;
+import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.BaseGui;
+import com.ryderbelserion.redstonepvp.api.core.v2.keys.GuiKeys;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiAction;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiItem;
 import org.bukkit.event.Event;
@@ -304,6 +304,11 @@ public class GuiListener implements Listener {
     private static final Set<InventoryAction> ITEM_TAKE_ACTIONS = Collections.unmodifiableSet(EnumSet.of(InventoryAction.PICKUP_ONE, InventoryAction.PICKUP_SOME, InventoryAction.PICKUP_HALF, InventoryAction.PICKUP_ALL, InventoryAction.COLLECT_TO_CURSOR, InventoryAction.HOTBAR_SWAP, InventoryAction.MOVE_TO_OTHER_INVENTORY));
 
     /**
+     * Holds all actions relating to dropping items
+     */
+    private static final Set<InventoryAction> ITEM_DROP_ACTIONS = Collections.unmodifiableSet(EnumSet.of(InventoryAction.DROP_ONE_SLOT, InventoryAction.DROP_ALL_SLOT, InventoryAction.DROP_ONE_CURSOR, InventoryAction.DROP_ALL_CURSOR));
+
+    /**
      * Holds all the actions that should be considered "place" actions
      */
     private static final Set<InventoryAction> ITEM_PLACE_ACTIONS = Collections.unmodifiableSet(EnumSet.of(InventoryAction.PLACE_ONE, InventoryAction.PLACE_SOME, InventoryAction.PLACE_ALL));
@@ -311,10 +316,5 @@ public class GuiListener implements Listener {
     /**
      * Holds all actions relating to swapping items
      */
-    private static final Set<InventoryAction> ITEM_SWAP_ACTIONS = Collections.unmodifiableSet(EnumSet.of(InventoryAction.HOTBAR_SWAP, InventoryAction.SWAP_WITH_CURSOR, InventoryAction.HOTBAR_MOVE_AND_READD));
-
-    /**
-     * Holds all actions relating to dropping items
-     */
-    private static final Set<InventoryAction> ITEM_DROP_ACTIONS = Collections.unmodifiableSet(EnumSet.of(InventoryAction.DROP_ONE_SLOT, InventoryAction.DROP_ALL_SLOT, InventoryAction.DROP_ONE_CURSOR, InventoryAction.DROP_ALL_CURSOR));
+    private static final Set<InventoryAction> ITEM_SWAP_ACTIONS = Collections.unmodifiableSet(EnumSet.of(InventoryAction.HOTBAR_SWAP, InventoryAction.SWAP_WITH_CURSOR));
 }

@@ -1,6 +1,6 @@
 package com.ryderbelserion.redstonepvp.api.core.v2.interfaces.types;
 
-import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.objects.PaginatedGui;
+import com.ryderbelserion.redstonepvp.api.core.v2.builders.gui.PaginatedGui;
 import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
