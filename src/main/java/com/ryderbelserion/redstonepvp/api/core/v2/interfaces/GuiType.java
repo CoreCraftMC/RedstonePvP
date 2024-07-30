@@ -8,14 +8,29 @@ import org.jetbrains.annotations.NotNull;
  */
 public enum GuiType {
 
+    /**
+     * Chest Inventory
+     */
     CHEST(InventoryType.CHEST, 9),
 
+    /**
+     * Workbench Inventory
+     */
     WORKBENCH(InventoryType.WORKBENCH, 9),
 
+    /**
+     * Hopper Inventory
+     */
     HOPPER(InventoryType.HOPPER, 5),
 
+    /**
+     * Dispenser Inventory
+     */
     DISPENSER(InventoryType.DISPENSER, 8),
 
+    /**
+     * Brewing Inventory
+     */
     BREWING(InventoryType.BREWING, 4);
 
     private @NotNull final InventoryType inventoryType;
