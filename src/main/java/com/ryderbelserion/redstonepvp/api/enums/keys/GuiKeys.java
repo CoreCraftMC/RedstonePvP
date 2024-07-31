@@ -27,6 +27,16 @@ public class GuiKeys {
     }
 
     /**
+     * Builds a {@link NamespacedKey}
+     *
+     * @param key the key value
+     * @return {@link NamespacedKey}
+     */
+    public static @NotNull NamespacedKey build(final String key) {
+        return new NamespacedKey(plugin, key);
+    }
+
+    /**
      * Strip the {@link NamespacedKey} from the ItemStack.
      *
      * @param itemStack {@link ItemStack}

@@ -1,6 +1,6 @@
 package com.ryderbelserion.redstonepvp.managers.config.beans;
 
-import com.ryderbelserion.redstonepvp.api.keys.ItemKeys;
+import com.ryderbelserion.redstonepvp.api.enums.keys.GuiKeys;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -85,7 +85,7 @@ public class ButtonProperty {
         if (!tag.isEmpty()) {
             final String[] split = tag.split(";");
 
-            final NamespacedKey key = ItemKeys.build(split[1]);
+            final NamespacedKey key = GuiKeys.build(split[1]);
 
             switch (split[0]) {
                 case "string" -> item.setPersistentString(key, "1");
