@@ -2,54 +2,99 @@ package com.ryderbelserion.redstonepvp.managers.config.beans;
 
 import com.ryderbelserion.redstonepvp.api.keys.ItemKeys;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
+import java.util.List;
 
 public class ButtonProperty {
 
-    private String name;
-    private String material;
-    private int slot;
+    private final ConfigurationSection section;
 
-    public ButtonProperty(final String name, final String material, final int slot) {
-        this.name = name;
-        this.material = material;
-        this.slot = slot;
+    /**
+     * Constructs the button
+     *
+     * @param section {@link ConfigurationSection} for the button
+     */
+    public ButtonProperty(ConfigurationSection section) {
+        this.section = section;
     }
 
-    public ButtonProperty() {
-        this.name = "";
-        this.material = "stone";
-        this.slot = -1;
+    /**
+     * Gets the material from the config file!
+     *
+     * @return the material to build {@link org.bukkit.Material}
+     */
+    public final String getDisplayMaterial() {
+        return this.section.getString("preview.display_material", "compass");
     }
 
-    public void setMaterial(final String material) {
-        this.material = material;
+    /**
+     * Gets the display name from the config file!
+     *
+     * @return {@link String} display name
+     */
+    public final String getDisplayName() {
+        return this.section.getString("preview.display_name", "");
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    /**
+     * Gets the display lore from the config file!
+     *
+     * @return {@link List<String>} list of strings
+     */
+    public final List<String> getDisplayLore() {
+        return this.section.getStringList("preview.display_lore");
     }
 
-    public void setSlot(final int slot) {
-        this.slot = slot;
+    /**
+     * @return list of commands to send
+     */
+    public final List<String> getCommands() {
+        return this.section.getStringList("commands");
     }
 
-    public final String getMaterial() {
-        return this.material;
+    /**
+     * @return list of messages to send
+     */
+    public final List<String> getMessages() {
+        return this.section.getStringList("messages");
     }
 
-    public final String getName() {
-        return this.name;
+    /**
+     * @return the custom tag to apply to the item
+     */
+    public final String getCustomTag() {
+        return this.section.getString("custom_tag", "");
     }
 
-    public final int getSlot() {
-        return this.slot;
+    /**
+     * @return {@link SoundProperty}
+     */
+    public final SoundProperty getSoundProperty() {
+        return new SoundProperty(this.section.getConfigurationSection("sound"));
     }
 
-    // not config options
-    /*public ItemBuilder build(final String id) {
-        return new ItemBuilder()
-                .withType(getMaterial())
-                .setDisplayName(getName())
-                .setPersistentString(ItemKeys.item_key, id);
-    }*/
+    /**
+     * @return {@link ItemBuilder}
+     */
+    public ItemBuilder build() {
+        final ItemBuilder item = new ItemBuilder().withType(getDisplayMaterial()).setDisplayName(getDisplayName()).setDisplayLore(getDisplayLore());
+
+        final String tag = getCustomTag();
+
+        if (!tag.isEmpty()) {
+            final String[] split = tag.split(";");
+
+            final NamespacedKey key = ItemKeys.build(split[1]);
+
+            switch (split[0]) {
+                case "string" -> item.setPersistentString(key, "1");
+                case "integer" -> item.setPersistentInteger(key, 1);
+                case "boolean" -> item.setPersistentBoolean(key, true);
+                case "double" -> item.setPersistentDouble(key, 1.0);
+            }
+        }
+
+        return item;
+    }
 }
