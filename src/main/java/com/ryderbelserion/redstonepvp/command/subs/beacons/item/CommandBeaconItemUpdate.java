@@ -4,11 +4,10 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.core.command.Command;
-import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
+import com.ryderbelserion.vital.paper.commands.Command;
+import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
@@ -21,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
@@ -77,13 +75,13 @@ public class CommandBeaconItemUpdate extends Command {
     }
 
     @Override
-    public final String getPermission() {
+    public @NotNull final String getPermission() {
         return "redstonepvp.beacon.item.update";
     }
 
     @Override
-    public final LiteralCommandNode<CommandSourceStack> literal() {
-        final @NotNull LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("update");
+    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
+        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("update");
 
         return root.requires(source -> source.getSender().hasPermission(getPermission()))
                 .then(argument("name", StringArgumentType.string())
@@ -110,7 +108,7 @@ public class CommandBeaconItemUpdate extends Command {
     }
 
     @Override
-    public Command registerPermission() {
+    public @NotNull final Command registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

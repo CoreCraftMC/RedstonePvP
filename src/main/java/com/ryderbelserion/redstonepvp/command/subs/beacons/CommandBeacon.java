@@ -2,8 +2,8 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.core.command.Command;
-import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
+import com.ryderbelserion.vital.paper.commands.Command;
+import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import com.ryderbelserion.redstonepvp.command.subs.beacons.item.CommandBeaconItem;
@@ -21,6 +21,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -39,16 +41,16 @@ public class CommandBeacon extends Command {
 
         final Player player = data.getPlayer();
 
-        player.openInventory(MiscUtils.buildBeaconMenu(player).build().getInventory());
+        //player.openInventory(MiscUtils.buildBeaconMenu(player).build().getInventory());
     }
 
     @Override
-    public final String getPermission() {
+    public @NotNull final String getPermission() {
         return "redstonepvp.beacon.access";
     }
 
     @Override
-    public final LiteralCommandNode<CommandSourceStack> literal() {
+    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
         return Commands.literal("beacon")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .executes(context -> {
@@ -65,7 +67,7 @@ public class CommandBeacon extends Command {
     }
 
     @Override
-    public Command registerPermission() {
+    public @NotNull final Command registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

@@ -2,14 +2,14 @@ package com.ryderbelserion.redstonepvp.command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.core.command.Command;
-import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
+import com.ryderbelserion.vital.paper.commands.Command;
+import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
-import com.ryderbelserion.redstonepvp.api.gui.MainMenuGui;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
 
 public class BaseCommand extends Command {
 
@@ -23,16 +23,16 @@ public class BaseCommand extends Command {
             return;
         }
 
-        MainMenuGui.build(data.getPlayer());
+        //MainMenuGui.build(data.getPlayer());
     }
 
     @Override
-    public String getPermission() {
+    public @NotNull final String getPermission() {
         return "redstonepvp.access";
     }
 
     @Override
-    public LiteralCommandNode<CommandSourceStack> literal() {
+    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
         return Commands.literal("redstonepvp")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .executes(context -> {
@@ -43,7 +43,7 @@ public class BaseCommand extends Command {
     }
 
     @Override
-    public Command registerPermission() {
+    public @NotNull final Command registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

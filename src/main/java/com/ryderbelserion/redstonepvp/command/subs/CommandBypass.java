@@ -2,15 +2,16 @@ package com.ryderbelserion.redstonepvp.command.subs;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.core.command.Command;
 import com.ryderbelserion.redstonepvp.api.cache.CacheManager;
-import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
+import com.ryderbelserion.vital.paper.commands.Command;
+import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
 
 public class CommandBypass extends Command {
 
@@ -38,12 +39,12 @@ public class CommandBypass extends Command {
     }
 
     @Override
-    public final String getPermission() {
+    public @NotNull final String getPermission() {
         return "redstonepvp.frame.bypass";
     }
 
     @Override
-    public final LiteralCommandNode<CommandSourceStack> literal() {
+    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
         return Commands.literal("bypass")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .executes(context -> {
@@ -54,7 +55,7 @@ public class CommandBypass extends Command {
     }
 
     @Override
-    public Command registerPermission() {
+    public @NotNull final Command registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

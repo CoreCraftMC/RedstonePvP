@@ -3,8 +3,8 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.core.command.Command;
-import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
+import com.ryderbelserion.vital.paper.commands.Command;
+import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -12,6 +12,8 @@ import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
+
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconRemove extends Command {
@@ -36,12 +38,12 @@ public class CommandBeaconRemove extends Command {
     }
 
     @Override
-    public final String getPermission() {
+    public @NotNull final String getPermission() {
         return "redstonepvp.beacon.remove";
     }
 
     @Override
-    public final LiteralCommandNode<CommandSourceStack> literal() {
+    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
         return Commands.literal("remove")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .then(argument("name", StringArgumentType.string())
@@ -58,7 +60,7 @@ public class CommandBeaconRemove extends Command {
     }
 
     @Override
-    public Command registerPermission() {
+    public @NotNull final Command registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

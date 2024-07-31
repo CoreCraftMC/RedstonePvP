@@ -1,15 +1,14 @@
 package com.ryderbelserion.redstonepvp.command.subs.beacons.item;
 
 import com.mojang.brigadier.arguments.FloatArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.core.command.Command;
-import com.ryderbelserion.redstonepvp.api.core.command.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
+import com.ryderbelserion.vital.paper.commands.Command;
+import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -18,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
 
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
@@ -67,12 +67,12 @@ public class CommandBeaconItemSet extends Command {
     }
 
     @Override
-    public final String getPermission() {
+    public @NotNull final String getPermission() {
         return "redstonepvp.beacon.item.set";
     }
 
     @Override
-    public final LiteralCommandNode<CommandSourceStack> literal() {
+    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
         return Commands.literal("set")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .then(argument("name", StringArgumentType.string())
@@ -91,7 +91,7 @@ public class CommandBeaconItemSet extends Command {
     }
 
     @Override
-    public Command registerPermission() {
+    public @NotNull final Command registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {
