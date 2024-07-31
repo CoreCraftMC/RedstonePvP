@@ -1,50 +1,28 @@
 package com.ryderbelserion.redstonepvp.managers.config.beans;
 
-import com.ryderbelserion.redstonepvp.api.core.v2.interfaces.GuiType;
+import com.ryderbelserion.redstonepvp.api.interfaces.GuiType;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import java.io.File;
+import java.io.IOException;
 
-public class GuiProperty {
+public class GuiProperty extends YamlConfiguration {
 
-    private GuiType guiType;
-    private String title;
-    private int rows;
+    private final File file;
 
-    public GuiProperty(final GuiType guiType, final String title, final int rows) {
-        this.guiType = guiType;
-        this.title = title;
-        this.rows = rows;
+    public GuiProperty(final File file) {
+        this.file = file;
     }
 
-    public GuiProperty(final String title, final int rows) {
-        this(GuiType.CHEST, title, rows);
-    }
-
-    public GuiProperty() {
-        this.guiType = GuiType.CHEST;
-        this.title = "";
-        this.rows = 6;
-    }
-
-    public void setGuiType(final GuiType guiType) {
-        this.guiType = guiType;
-    }
-
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
-    public void setRows(final int rows) {
-        this.rows = rows;
+    public void load() throws IOException, InvalidConfigurationException {
+        load(this.file);
     }
 
     public final GuiType getGuiType() {
-        return this.guiType;
+        return GuiType.valueOf(getString("menu.type", "chest").toUpperCase());
     }
 
-    public final String getTitle() {
-        return this.title;
-    }
-
-    public final int getRows() {
-        return this.rows;
+    public final String getGuiTitle() {
+        return getString("menu.title", "<red>Basic Title</red>");
     }
 }

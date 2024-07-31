@@ -1,0 +1,43 @@
+menu:
+  # The title of the inventory
+  title: '<red>Redstone PvP</red>'
+  # The type of menu the gui will be, each type has size restrictions.
+  # You can view a list of the types below.
+  #
+  # Available:
+  # chest -> the default type, 9 slots at minimal
+  # workbench -> the crafting table, 9 slots at maximum
+  # hopper -> the hopper, 5 slots at maximum
+  # dispenser -> the dispenser, 8 slots at maximum
+  # brewing -> the brewing stand, 4 slots at maximum
+  type: 'chest'
+  # All buttons in the gui
+  buttons:
+    reload_plugin:
+      # Settings related to how the items will look.
+      preview:
+        # The name to display.
+        display_name: '<yellow>Reload Plugin</yellow>'
+        # The lore to display.
+        display_lore: []
+        # The material to display.
+        display_material: 'compass'
+      # The custom tag to add to the item, the format is key_type;key_value
+      custom_tag: 'string;reload_plugin'
+      # Run any commands on click.
+      commands:
+        - 'redstonepvp reload'
+      # Send any messages on click.
+      messages: []
+      # Settings related to sending a sound.
+      sound:
+        # Whether to send a sound at all.
+        toggle: false
+        # The sound to send.
+        sound: 'block.note_block.xylophone'
+        # The volume of the sound.
+        volume: '1.0'
+        # The pitch of the sound.
+        pitch: '1.0'
+        # The sound source, i.e. respects the client's sound settings.
+        source: 'player'
