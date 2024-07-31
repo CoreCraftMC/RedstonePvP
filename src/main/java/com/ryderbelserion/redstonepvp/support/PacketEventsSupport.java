@@ -6,18 +6,19 @@ import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.listeners.modules.PlayerPacketModule;
 import com.ryderbelserion.vital.paper.plugins.interfaces.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public class PacketEventsSupport implements Plugin {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public boolean isEnabled() {
+    public final boolean isEnabled() {
         return this.plugin.getServer().getPluginManager().isPluginEnabled("packetevents");
     }
 
     @Override
-    public String getName() {
+    public @NotNull final String getName() {
         return "packetevents";
     }
 

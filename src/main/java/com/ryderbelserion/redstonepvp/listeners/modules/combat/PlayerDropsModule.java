@@ -1,6 +1,6 @@
 package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 
-import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleHandler;
+import com.ryderbelserion.vital.paper.commands.modules.ModuleHandler;
 import com.ryderbelserion.redstonepvp.api.enums.Files;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import org.bukkit.configuration.ConfigurationSection;
@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,17 +18,22 @@ public class PlayerDropsModule extends ModuleHandler {
     private final List<ItemDrop> drops = new ArrayList<>();
 
     public PlayerDropsModule() {
-        reload();
+        enable();
     }
 
     @Override
-    public String getName() {
+    public @NotNull final String getName() {
         return "Player Drops Module";
     }
 
     @Override
-    public boolean isEnabled() {
+    public final boolean isEnabled() {
         return Files.player_drops.getConfiguration().getBoolean("settings.player-drops", false);
+    }
+
+    @Override
+    public void enable() {
+        reload();
     }
 
     @Override
@@ -50,6 +56,9 @@ public class PlayerDropsModule extends ModuleHandler {
             this.drops.add(new ItemDrop(subSection));
         });
     }
+
+    @Override
+    public void disable() {}
 
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event) {

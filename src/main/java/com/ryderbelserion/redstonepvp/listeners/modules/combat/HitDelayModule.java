@@ -1,7 +1,7 @@
 package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.core.command.modules.ModuleHandler;
+import com.ryderbelserion.vital.paper.commands.modules.ModuleHandler;
 import com.ryderbelserion.redstonepvp.managers.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.Config;
 import org.bukkit.entity.Player;
@@ -9,25 +9,32 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class HitDelayModule extends ModuleHandler {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public String getName() {
+    public @NotNull final String getName() {
         return "Combat Module";
     }
 
     @Override
-    public boolean isEnabled() {
+    public final boolean isEnabled() {
         return ConfigManager.getConfig().getProperty(Config.hit_delay) != -1;
     }
+
+    @Override
+    public void enable() {}
 
     @Override
     public void reload() {
         this.plugin.getServer().getOnlinePlayers().forEach(this::adjustHitDelay);
     }
+
+    @Override
+    public void disable() {}
 
     @EventHandler
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
@@ -44,7 +51,7 @@ public class HitDelayModule extends ModuleHandler {
         adjustHitDelay(event.getPlayer());
     }
 
-    private void adjustHitDelay(final Player player) {
+    private void adjustHitDelay(@NotNull final Player player) {
         if (!isEnabled()) {
             if (player.getMaximumNoDamageTicks() < 20) {
                 player.setMaximumNoDamageTicks(20);
