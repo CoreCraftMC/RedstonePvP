@@ -21,8 +21,6 @@ dependencies {
 
     compileOnly(libs.packet.events)
 
-    compileOnly(libs.triumph.cmds)
-
     compileOnly(libs.vital.paper)
 
     compileOnly(libs.hikari.cp)

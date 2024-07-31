@@ -5,15 +5,11 @@ minecraft = "1.21"
 
 # Plugins
 placeholderapi = "2.11.6"
-fancyholograms = "2.2.0"
-vault = "1.7.1"
 
 # Libraries
 packetevents = "2.4.0"
-triumph-cmd = "2.0.0-ALPHA-10"
-tirumph-gui = "3.1.7"
 hikari = "4.0.3"
-vital = "2.0.1"
+vital = "2.4.5"
 
 # Paper
 paperweight = "1.7.1"
@@ -22,8 +18,6 @@ runPaper = "2.3.0"
 # Other
 shadowJar = "8.1.8"
 
-jorel = "9.5.1"
-
 [plugins]
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
 shadowJar = { id = "io.github.goooler.shadow", version.ref = "shadowJar" }
@@ -31,23 +25,14 @@ runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
 
 [libraries]
 # Servers
-minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 
 # Plugins
-fancy-holograms = { module = "de.oliver:FancyHolograms", version.ref = "fancyholograms" }
-placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
-vault = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault" }
-
-# Libraries
-triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
-
-hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
-
 packet-events = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents" }
+
+placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
 
 vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital" }
 vital-core = { module = "com.ryderbelserion.vital:core", version.ref = "vital" }
 
-[bundles]
-triumph = ["triumph-cmds"]
+hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
