@@ -58,7 +58,9 @@ public class PlayerDropsModule extends ModuleHandler {
     }
 
     @Override
-    public void disable() {}
+    public void disable() {
+        reload();
+    }
 
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event) {

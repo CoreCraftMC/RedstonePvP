@@ -9,7 +9,7 @@ placeholderapi = "2.11.6"
 # Libraries
 packetevents = "2.4.0"
 hikari = "4.0.3"
-vital = "2.4.5"
+vital = "2.4.6"
 
 # Paper
 paperweight = "1.7.1"

@@ -2,8 +2,8 @@ package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.vital.paper.commands.modules.ModuleHandler;
-import com.ryderbelserion.redstonepvp.managers.ConfigManager;
-import com.ryderbelserion.redstonepvp.managers.config.Config;
+import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -34,7 +34,9 @@ public class HitDelayModule extends ModuleHandler {
     }
 
     @Override
-    public void disable() {}
+    public void disable() {
+        reload();
+    }
 
     @EventHandler
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
