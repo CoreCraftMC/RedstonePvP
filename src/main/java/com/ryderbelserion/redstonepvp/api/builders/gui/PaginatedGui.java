@@ -75,6 +75,8 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     @Override
     public void removePageItem(@NotNull final GuiItem guiItem) {
         this.pageItems.remove(guiItem);
+        getInventory().remove(guiItem.getItemStack());
+
     }
 
     /**
