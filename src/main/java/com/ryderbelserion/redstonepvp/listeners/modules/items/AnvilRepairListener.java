@@ -2,8 +2,8 @@ package com.ryderbelserion.redstonepvp.listeners.modules.items;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
-import com.ryderbelserion.redstonepvp.managers.ConfigManager;
-import com.ryderbelserion.redstonepvp.managers.config.Config;
+import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;

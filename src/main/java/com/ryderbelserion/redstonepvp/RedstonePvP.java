@@ -11,13 +11,13 @@ import com.ryderbelserion.redstonepvp.listeners.modules.combat.AttackCooldownMod
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.HitDelayModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.PlayerDropsModule;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
-import com.ryderbelserion.redstonepvp.managers.ConfigManager;
-import com.ryderbelserion.redstonepvp.managers.DataManager;
+import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.data.DataManager;
 import com.ryderbelserion.redstonepvp.listeners.PlayerDamageListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.AnvilRepairListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.ItemFrameListener;
 import com.ryderbelserion.redstonepvp.managers.RedstoneManager;
-import com.ryderbelserion.redstonepvp.managers.data.Connector;
+import com.ryderbelserion.redstonepvp.managers.data.types.Connector;
 import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
 import com.ryderbelserion.vital.paper.commands.modules.ModuleHandler;
 import com.ryderbelserion.vital.paper.commands.modules.ModuleLoader;
@@ -135,5 +135,9 @@ public class RedstonePvP extends JavaPlugin {
 
     public final DataManager getDataManager() {
         return this.dataManager;
+    }
+
+    public final RedstoneManager getRedstone() {
+        return this.redstone;
     }
 }

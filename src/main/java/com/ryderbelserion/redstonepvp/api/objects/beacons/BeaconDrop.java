@@ -2,7 +2,7 @@ package com.ryderbelserion.redstonepvp.api.objects.beacons;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
-import com.ryderbelserion.redstonepvp.managers.data.Connector;
+import com.ryderbelserion.redstonepvp.managers.data.types.Connector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

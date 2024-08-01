@@ -1,8 +1,8 @@
-package com.ryderbelserion.redstonepvp.managers;
+package com.ryderbelserion.redstonepvp.managers.data;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.managers.data.Connector;
-import com.ryderbelserion.redstonepvp.managers.data.SqliteConnector;
+import com.ryderbelserion.redstonepvp.managers.data.types.Connector;
+import com.ryderbelserion.redstonepvp.managers.data.types.SqliteConnector;
 import java.io.File;
 
 public class DataManager {

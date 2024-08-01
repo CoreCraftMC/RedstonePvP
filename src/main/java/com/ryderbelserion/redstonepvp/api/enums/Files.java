@@ -1,6 +1,6 @@
 package com.ryderbelserion.redstonepvp.api.enums;
 
-import com.ryderbelserion.redstonepvp.managers.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public enum Files {

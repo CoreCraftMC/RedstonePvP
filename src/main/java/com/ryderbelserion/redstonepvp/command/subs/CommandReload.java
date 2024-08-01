@@ -5,7 +5,8 @@ import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
-import com.ryderbelserion.redstonepvp.managers.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
+import com.ryderbelserion.vital.paper.commands.modules.ModuleLoader;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.permissions.Permission;
@@ -22,7 +23,11 @@ public class CommandReload extends Command {
         ConfigManager.refresh();
 
         // Reload modules.
-        //this.plugin.getLoader().reload();
+        this.plugin.getRedstone().apply(redstone -> {
+            final ModuleLoader loader = redstone.getModuleLoader();
+
+            loader.reload();
+        });
 
         // Send the message.
         Messages.reloaded_plugin.sendMessage(data.getCommandSender());

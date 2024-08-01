@@ -1,7 +1,7 @@
 package com.ryderbelserion.redstonepvp.listeners;
 
-import com.ryderbelserion.redstonepvp.managers.ConfigManager;
-import com.ryderbelserion.redstonepvp.managers.config.Config;
+import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;

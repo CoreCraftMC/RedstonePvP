@@ -60,12 +60,11 @@ public class ButtonProperty {
         return this.section.getStringList("messages");
     }
 
-    /**
+    /*
      * @return the custom tag to apply to the item
-     */
     public final String getCustomTag() {
         return this.section.getString("custom_tag", "");
-    }
+    }*/
 
     /**
      * @return {@link SoundProperty}
@@ -80,7 +79,7 @@ public class ButtonProperty {
     public ItemBuilder build() {
         final ItemBuilder item = new ItemBuilder().withType(getDisplayMaterial()).setDisplayName(getDisplayName()).setDisplayLore(getDisplayLore());
 
-        final String tag = getCustomTag();
+        /*final String tag = getCustomTag();
 
         if (!tag.isEmpty()) {
             final String[] split = tag.split(";");
@@ -93,7 +92,7 @@ public class ButtonProperty {
                 case "boolean" -> item.setPersistentBoolean(key, true);
                 case "double" -> item.setPersistentDouble(key, 1.0);
             }
-        }
+        }*/
 
         return item;
     }

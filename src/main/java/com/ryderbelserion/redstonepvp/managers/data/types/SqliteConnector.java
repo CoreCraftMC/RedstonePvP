@@ -1,4 +1,4 @@
-package com.ryderbelserion.redstonepvp.managers.data;
+package com.ryderbelserion.redstonepvp.managers.data.types;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.zaxxer.hikari.HikariConfig;
