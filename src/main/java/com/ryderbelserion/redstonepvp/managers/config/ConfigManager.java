@@ -3,6 +3,7 @@ package com.ryderbelserion.redstonepvp.managers.config;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
+import com.ryderbelserion.redstonepvp.managers.MenuManager;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.managers.config.types.Locale;
 import com.ryderbelserion.vital.paper.files.config.FileManager;

@@ -11,7 +11,6 @@ import com.ryderbelserion.redstonepvp.listeners.modules.combat.AttackCooldownMod
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.HitDelayModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.PlayerDropsModule;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
-import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.data.DataManager;
 import com.ryderbelserion.redstonepvp.listeners.PlayerDamageListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.AnvilRepairListener;

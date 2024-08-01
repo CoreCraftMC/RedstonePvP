@@ -1,8 +1,6 @@
 package com.ryderbelserion.redstonepvp.managers.config.beans;
 
-import com.ryderbelserion.redstonepvp.api.enums.keys.GuiKeys;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import java.util.List;
 

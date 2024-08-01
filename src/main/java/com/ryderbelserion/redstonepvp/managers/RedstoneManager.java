@@ -1,11 +1,11 @@
 package com.ryderbelserion.redstonepvp.managers;
 
-import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.vital.core.Vital;
 import com.ryderbelserion.vital.paper.commands.modules.ModuleLoader;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
