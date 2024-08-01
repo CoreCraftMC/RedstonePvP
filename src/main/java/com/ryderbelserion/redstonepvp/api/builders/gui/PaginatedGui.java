@@ -77,6 +77,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
         this.pageItems.remove(guiItem);
         getInventory().remove(guiItem.getItemStack());
 
+        updatePage();
     }
 
     /**
@@ -244,7 +245,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
      */
     @Override
     public final GuiItem getPageItem(final int slot) {
-        return currentPage.get(slot);
+        return this.currentPage.get(slot);
     }
 
     /**
