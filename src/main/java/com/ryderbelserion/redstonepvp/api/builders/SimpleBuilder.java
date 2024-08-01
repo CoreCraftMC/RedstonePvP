@@ -30,8 +30,7 @@ public final class SimpleBuilder extends BaseGuiBuilder<Gui, SimpleBuilder> {
     public @NotNull Gui create() {
         final Gui gui;
 
-        gui = this.guiType == null || this.guiType == GuiType.CHEST ? new Gui(getTitle(), getRows(), getInteractionComponents())
-                : new Gui(getTitle(), this.guiType, getInteractionComponents());
+        gui = this.guiType == null || this.guiType == GuiType.CHEST ? new Gui(getTitle(), getRows(), getInteractionComponents()) : new Gui(getTitle(), this.guiType, getInteractionComponents());
 
         final Consumer<Gui> consumer = getConsumer();
         if (consumer != null) consumer.accept(gui);
@@ -46,7 +45,7 @@ public final class SimpleBuilder extends BaseGuiBuilder<Gui, SimpleBuilder> {
      * @param guiType the {@link GuiType}
      * @return the current builder
      */
-    public @NotNull SimpleBuilder type(final GuiType guiType) {
+    public @NotNull SimpleBuilder setType(final GuiType guiType) {
         this.guiType = guiType;
 
         return this;
