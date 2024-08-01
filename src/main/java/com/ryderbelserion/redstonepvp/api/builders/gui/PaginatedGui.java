@@ -165,6 +165,17 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
         if (player.isSleeping()) return;
 
         if (openPage <= getMaxPages() || openPage > 0) this.pageNumber = openPage;
+
+        getInventory().clear();
+        this.currentPage.clear();
+
+        populate();
+
+        if (this.pageSize == 0) this.pageSize = calculatePageSize();
+
+        populatePage();
+
+        player.openInventory(getInventory());
     }
 
     /**
