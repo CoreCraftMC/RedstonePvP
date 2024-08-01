@@ -22,8 +22,8 @@ menu:
         display_lore: []
         # The material to display.
         display_material: 'compass'
-      # The custom tag to add to the item, the format is key_type;key_value
-      custom_tag: 'string;reload_plugin'
+        # The slot in the gui.
+        display_slot: 5
       # Run any commands on click.
       commands:
         - 'redstonepvp reload'
