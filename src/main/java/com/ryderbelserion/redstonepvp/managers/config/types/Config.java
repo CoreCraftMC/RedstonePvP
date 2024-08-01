@@ -24,6 +24,9 @@ public class Config implements SettingsHolder {
     @Comment("Do you want verbose logs in console?")
     public static final Property<Boolean> verbose_logging = newProperty("root.verbose-logging", false);
 
+    @Comment("The name of the main menu for /redstonepvp")
+    public static final Property<String> main_menu_name = newProperty("root.main-menu-name", "main-menu");
+
     @Comment("The amount of particles to show. -1 is disabled!")
     public static final Property<Integer> blood_effect = newProperty("combat.blood-effect.count", 20);
 

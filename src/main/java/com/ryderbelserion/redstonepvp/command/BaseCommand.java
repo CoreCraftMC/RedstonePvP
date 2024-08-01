@@ -5,8 +5,10 @@ import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.interfaces.Gui;
 import com.ryderbelserion.redstonepvp.api.interfaces.GuiItem;
 import com.ryderbelserion.redstonepvp.managers.MenuManager;
+import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
 import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
+import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
@@ -32,7 +34,7 @@ public class BaseCommand extends Command {
             return;
         }
 
-        final GuiProperty property = MenuManager.getGui("main-menu");
+        final GuiProperty property = MenuManager.getGui(ConfigManager.getConfig().getProperty(Config.main_menu_name));
         final Gui gui = Gui.gui().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
                 .setType(property.getGuiType())
                 .setTitle(property.getGuiTitle())
