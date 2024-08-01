@@ -2,6 +2,7 @@ package com.ryderbelserion.redstonepvp.api.listeners;
 
 import com.google.common.base.Preconditions;
 import com.ryderbelserion.redstonepvp.api.builders.gui.BaseGui;
+import com.ryderbelserion.redstonepvp.api.builders.gui.PaginatedGui;
 import com.ryderbelserion.redstonepvp.api.enums.keys.GuiKeys;
 import com.ryderbelserion.redstonepvp.api.interfaces.GuiAction;
 import com.ryderbelserion.redstonepvp.api.interfaces.GuiItem;
@@ -71,13 +72,23 @@ public class GuiListener implements Listener {
             slotAction.execute(event);
         }
 
-        GuiItem guiItem = gui.getGuiItem(event.getSlot());
+        GuiItem guiItem;
+
+        // Checks whether it's a paginated gui or not
+        if (gui instanceof PaginatedGui paginatedGui) {
+            // Gets the gui item from the added items or the page items
+            guiItem = paginatedGui.getGuiItem(event.getSlot());
+
+            if (guiItem == null) guiItem = paginatedGui.getPageItem(event.getSlot());
+        } else {
+            // The clicked GUI Item
+            guiItem = gui.getGuiItem(event.getSlot());
+        }
 
         if (!isGuiItem(event.getCurrentItem(), guiItem)) return;
 
         // Executes the action of the item
         final GuiAction<InventoryClickEvent> itemAction = guiItem.getAction();
-
         if (itemAction != null) itemAction.execute(event);
     }
 
@@ -117,11 +128,15 @@ public class GuiListener implements Listener {
      * @return true or false
      */
     private boolean isGuiItem(@Nullable final ItemStack currentItem, @Nullable final GuiItem guiItem) {
-        if (currentItem == null || guiItem == null) return false;
+        if (currentItem == null || guiItem == null) {
+            return false;
+        }
 
         final String nbt = GuiKeys.getUUID(currentItem);
 
-        if (nbt.isEmpty() || nbt.isBlank()) return false;
+        if (nbt.isEmpty() || nbt.isBlank()) {
+            return false;
+        }
 
         return nbt.equalsIgnoreCase(guiItem.getUuid().toString());
     }

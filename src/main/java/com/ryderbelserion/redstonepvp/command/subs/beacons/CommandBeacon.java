@@ -35,6 +35,8 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,15 +80,17 @@ public class CommandBeacon extends Command {
                     .setAmount(beacon.getTime())
                     .setPersistentString(PersistentKeys.beacon_uuid.getNamespacedKey(), beacon.getName());
 
-            gui.addItem(gui.asGuiItem(itemBuilder.getStack(), event -> {
+            gui.addPageItem(gui.asGuiItem(itemBuilder.getStack(), event -> {
                 if (!(event.getWhoClicked() instanceof Player player)) return;
-
-                final ItemStack itemStack = event.getCurrentItem();
-
-                if (itemStack == null) return;
 
                 switch (event.getClick()) {
                     case LEFT -> {
+                        final GuiItem guiItem = gui.getGuiItem(event.getSlot());
+
+                        if (guiItem == null) return;
+
+                        final ItemStack itemStack = guiItem.getItemStack();
+
                         final PersistentDataContainer container = itemStack.getItemMeta().getPersistentDataContainer();
 
                         final String beaconName = container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING);
@@ -95,13 +99,15 @@ public class CommandBeacon extends Command {
 
                         Messages.beacon_location_removed.sendMessage(player, "{name}", beaconName);
 
+                        button.getSoundProperty().playSound(player);
+
                         gui.removePageItem(itemStack);
                     }
                 }
             }));
         });
 
-        gui.open(data.getPlayer());
+        gui.open(data.getPlayer(), 1);
     }
 
     @Override
