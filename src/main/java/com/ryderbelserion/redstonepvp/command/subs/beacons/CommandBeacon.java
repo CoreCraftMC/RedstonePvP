@@ -40,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommandBeacon extends Command {
@@ -85,11 +86,11 @@ public class CommandBeacon extends Command {
 
                 switch (event.getClick()) {
                     case LEFT -> {
-                        final GuiItem guiItem = gui.getGuiItem(event.getSlot());
+                        final GuiItem item = gui.getPageItem(event.getSlot());
 
-                        if (guiItem == null) return;
+                        if (item == null) return;
 
-                        final ItemStack itemStack = guiItem.getItemStack();
+                        final ItemStack itemStack = item.getItemStack();
 
                         final PersistentDataContainer container = itemStack.getItemMeta().getPersistentDataContainer();
 
@@ -101,7 +102,7 @@ public class CommandBeacon extends Command {
 
                         button.getSoundProperty().playSound(player);
 
-                        gui.removePageItem(itemStack);
+                        gui.removePageItem(item);
                     }
                 }
             }));
