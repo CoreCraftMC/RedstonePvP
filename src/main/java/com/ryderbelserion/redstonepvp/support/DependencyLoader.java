@@ -14,7 +14,6 @@ public class DependencyLoader implements PluginLoader {
     public void classloader(@NotNull PluginClasspathBuilder classpathBuilder) {
         final MavenLibraryResolver resolver = new MavenLibraryResolver();
 
-        resolver.addDependency(new Dependency(new DefaultArtifact("com.ryderbelserion.vital:paper:2.0.1"), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:4.0.3"), null));
 
         resolver.addRepository(new RemoteRepository.Builder("codemc", "default", "https://repo.codemc.org/repository/maven-public/").build());

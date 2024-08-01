@@ -17,11 +17,11 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
+    implementation(libs.vital.paper)
+
     compileOnly(libs.placeholderapi)
 
     compileOnly(libs.packet.events)
-
-    compileOnly(libs.vital.paper)
 
     compileOnly(libs.hikari.cp)
 }
