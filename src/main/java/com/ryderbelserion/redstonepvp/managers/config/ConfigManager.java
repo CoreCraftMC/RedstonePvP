@@ -21,8 +21,6 @@ public class ConfigManager {
      * Loads configuration files.
      */
     public static void load(final File dataFolder) {
-        fileManager = new FileManager();
-
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
         config = SettingsManagerBuilder
@@ -37,7 +35,11 @@ public class ConfigManager {
                 .configurationData(Locale.class)
                 .create();
 
-        fileManager.addFile("player-drops.yml").init();
+        fileManager = new FileManager();
+        fileManager.addFile("player-drops.yml").addFolder("menus").init();
+
+        // Create all the gui's
+        MenuManager.populate();
     }
 
     /**

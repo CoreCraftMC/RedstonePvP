@@ -11,6 +11,8 @@ menu:
   # dispenser -> the dispenser, 8 slots at maximum
   # brewing -> the brewing stand, 4 slots at maximum
   type: 'chest'
+  # The amount of rows for a gui, only is applied if the type is a chest.
+  rows: 6
   # All buttons in the gui
   buttons:
     reload_plugin:
@@ -23,12 +25,41 @@ menu:
         # The material to display.
         display_material: 'compass'
         # The slot in the gui.
-        display_slot: 5
+        display_slot: 12
       # Run any commands on click.
       commands:
         - 'redstonepvp reload'
       # Send any messages on click.
       messages: []
+      # The tag to identify an item.
+      # nbt-tag: 'beacon_drop'
+      # Settings related to sending a sound.
+      sound:
+        # Whether to send a sound at all.
+        toggle: false
+        # The sound to send.
+        sound: 'block.note_block.xylophone'
+        # The volume of the sound.
+        volume: '1.0'
+        # The pitch of the sound.
+        pitch: '1.0'
+        # The sound source, i.e. respects the client's sound settings.
+        source: 'player'
+    beacon_drop:
+      # Settings related to how the items will look.
+      preview:
+        # The name to display.
+        display_name: '<green>Beacon Drops</green>'
+        # The lore to display.
+        display_lore: []
+        # The material to display.
+        display_material: 'beacon'
+        # The slot in the gui.
+        display_slot: 14
+      # Send any messages on click.
+      messages: []
+      # The tag to identify an item.
+      # nbt-tag: 'beacon_drop'
       # Settings related to sending a sound.
       sound:
         # Whether to send a sound at all.

@@ -15,7 +15,7 @@ public class SoundProperty {
      *
      * @param section the configuration section
      */
-    public SoundProperty(ConfigurationSection section) {
+    public SoundProperty(final ConfigurationSection section) {
         this.section = section;
     }
 
@@ -53,7 +53,7 @@ public class SoundProperty {
      * @return {@link Sound.Source}
      */
     public final Sound.Source getSoundSource() {
-        return Sound.Source.valueOf(this.section.getString("source", "player"));
+        return Sound.Source.valueOf(this.section.getString("source", "player").toUpperCase());
     }
 
     /**

@@ -2,18 +2,27 @@ package com.ryderbelserion.redstonepvp.command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.interfaces.Gui;
+import com.ryderbelserion.redstonepvp.api.interfaces.GuiItem;
+import com.ryderbelserion.redstonepvp.managers.MenuManager;
+import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
+import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
 public class BaseCommand extends Command {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
+    private final Server server = this.plugin.getServer();
 
     @Override
     public void execute(CommandData data) {
@@ -23,7 +32,29 @@ public class BaseCommand extends Command {
             return;
         }
 
-        //MainMenuGui.build(data.getPlayer());
+        final GuiProperty property = MenuManager.getGui("main-menu");
+        final Gui gui = Gui.gui().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
+                .setType(property.getGuiType())
+                .setTitle(property.getGuiTitle())
+                .setRows(property.getGuiRows())
+                .create();
+
+        final List<ButtonProperty> buttons = property.getButtons();
+
+        buttons.forEach(button -> {
+            final GuiItem item = gui.asGuiItem(button.build().getStack(), action -> {
+                if (!(action.getWhoClicked() instanceof Player player)) return;
+
+                button.getCommands().forEach(command -> this.server.dispatchCommand(this.server.getConsoleSender(), command));
+                button.getMessages().forEach(player::sendRichMessage);
+
+                button.getSoundProperty().playSound(player);
+            });
+
+            gui.setItem(button.getDisplaySlot(), item);
+        });
+
+        gui.open(data.getPlayer());
     }
 
     @Override

@@ -13,7 +13,7 @@ public class ButtonProperty {
      *
      * @param section {@link ConfigurationSection} for the button
      */
-    public ButtonProperty(ConfigurationSection section) {
+    public ButtonProperty(final ConfigurationSection section) {
         this.section = section;
     }
 
@@ -45,6 +45,15 @@ public class ButtonProperty {
     }
 
     /**
+     * Gets the slot of the button for the gui.
+     *
+     * @return the slot number
+     */
+    public final int getDisplaySlot() {
+        return this.section.getInt("preview.display_slot");
+    }
+
+    /**
      * @return list of commands to send
      */
     public final List<String> getCommands() {
@@ -59,9 +68,9 @@ public class ButtonProperty {
     }
 
     /*
-     * @return the custom tag to apply to the item
-    public final String getCustomTag() {
-        return this.section.getString("custom_tag", "");
+     * @return the nbt tag
+    public final String getNbtTag() {
+        return this.section.getString("nbt-tag", "");
     }*/
 
     /**
@@ -74,24 +83,7 @@ public class ButtonProperty {
     /**
      * @return {@link ItemBuilder}
      */
-    public ItemBuilder build() {
-        final ItemBuilder item = new ItemBuilder().withType(getDisplayMaterial()).setDisplayName(getDisplayName()).setDisplayLore(getDisplayLore());
-
-        /*final String tag = getCustomTag();
-
-        if (!tag.isEmpty()) {
-            final String[] split = tag.split(";");
-
-            final NamespacedKey key = GuiKeys.build(split[1]);
-
-            switch (split[0]) {
-                case "string" -> item.setPersistentString(key, "1");
-                case "integer" -> item.setPersistentInteger(key, 1);
-                case "boolean" -> item.setPersistentBoolean(key, true);
-                case "double" -> item.setPersistentDouble(key, 1.0);
-            }
-        }*/
-
-        return item;
+    public final ItemBuilder build() {
+        return new ItemBuilder().withType(getDisplayMaterial()).setDisplayName(getDisplayName()).setDisplayLore(getDisplayLore());
     }
 }

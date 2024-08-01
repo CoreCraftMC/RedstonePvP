@@ -53,10 +53,7 @@ public class RedstonePvP extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Load the configuration.
-        ConfigManager.load(getDataFolder());
-
-        this.redstone = new RedstoneManager().start(redstone -> {
+        this.redstone = new RedstoneManager(this).start(redstone -> {
             final ModuleLoader moduleLoader = redstone.getModuleLoader();
 
             List.of(

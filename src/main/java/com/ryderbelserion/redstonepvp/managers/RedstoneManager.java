@@ -13,7 +13,17 @@ import java.util.function.Consumer;
 
 public class RedstoneManager extends Vital {
 
-    private final RedstonePvP plugin = RedstonePvP.getPlugin();
+    private final JavaPlugin plugin;
+    private final File dataFolder;
+    private final ComponentLogger logger;
+
+    public RedstoneManager(final JavaPlugin plugin) {
+        this.dataFolder = plugin.getDataFolder();
+        this.logger = plugin.getComponentLogger();
+        this.plugin = plugin;
+
+        ConfigManager.load(this.dataFolder);
+    }
 
     private ModuleLoader moduleLoader;
 
@@ -40,8 +50,8 @@ public class RedstoneManager extends Vital {
     }
 
     @Override
-    public @NotNull File getDirectory() {
-        return this.plugin.getDataFolder();
+    public @NotNull final File getDirectory() {
+        return this.dataFolder;
     }
 
     @Override
@@ -56,7 +66,7 @@ public class RedstoneManager extends Vital {
 
     @Override
     public @NotNull final ComponentLogger getLogger() {
-        return this.plugin.getComponentLogger();
+        return this.logger;
     }
 
     @Override

@@ -23,6 +23,9 @@ public class CommandReload extends Command {
         // Refresh the config.
         ConfigManager.refresh();
 
+        // Refresh the gui's.
+        MenuManager.populate();
+
         // Reload modules.
         this.plugin.getRedstone().apply(redstone -> {
             final ModuleLoader loader = redstone.getModuleLoader();
