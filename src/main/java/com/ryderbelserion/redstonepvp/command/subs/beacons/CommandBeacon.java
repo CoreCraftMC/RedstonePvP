@@ -2,34 +2,48 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.builders.gui.PaginatedGui;
+import com.ryderbelserion.redstonepvp.api.enums.PersistentKeys;
+import com.ryderbelserion.redstonepvp.api.interfaces.Gui;
+import com.ryderbelserion.redstonepvp.api.interfaces.GuiItem;
+import com.ryderbelserion.redstonepvp.managers.BeaconManager;
+import com.ryderbelserion.redstonepvp.managers.MenuManager;
+import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
+import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
+import com.ryderbelserion.redstonepvp.utils.MiscUtils;
+import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import com.ryderbelserion.redstonepvp.command.subs.beacons.item.CommandBeaconItem;
-import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommandBeacon extends Command {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
+    private final Server server = this.plugin.getServer();
 
     @Override
     public void execute(final CommandData data) {
@@ -39,9 +53,55 @@ public class CommandBeacon extends Command {
             return;
         }
 
-        final Player player = data.getPlayer();
+        final GuiProperty property = MenuManager.getGui("beacon-menu");
+        final @NotNull PaginatedGui gui = Gui.paginated().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
+                .setTitle(property.getGuiTitle())
+                .setRows(property.getGuiRows())
+                .create();
 
-        //player.openInventory(MiscUtils.buildBeaconMenu(player).build().getInventory());
+        gui.setItem(6, 3, gui.asGuiItem(new ItemStack(Material.ARROW), event -> gui.previous()));
+        gui.setItem(6, 7, gui.asGuiItem(new ItemStack(Material.ARROW), event -> gui.next()));
+
+        final ButtonProperty button = property.getButtons().getFirst();
+
+        BeaconManager.getBeaconData().forEach((uuid, beacon) -> {
+            final Location location = MiscUtils.location(beacon.getRawLocation());
+
+            final ItemBuilder itemBuilder = button.build(
+                    new HashMap<>() {{
+                        put("{world}", location.getWorld().getName());
+                        put("{x}", String.valueOf(location.getX()));
+                        put("{y}", String.valueOf(location.getY()));
+                        put("{z}", String.valueOf(location.getZ()));
+                        put("{name}", beacon.getName());
+                    }})
+                    .setAmount(beacon.getTime())
+                    .setPersistentString(PersistentKeys.beacon_uuid.getNamespacedKey(), beacon.getName());
+
+            gui.addItem(gui.asGuiItem(itemBuilder.getStack(), event -> {
+                if (!(event.getWhoClicked() instanceof Player player)) return;
+
+                final ItemStack itemStack = event.getCurrentItem();
+
+                if (itemStack == null) return;
+
+                switch (event.getClick()) {
+                    case LEFT -> {
+                        final PersistentDataContainer container = itemStack.getItemMeta().getPersistentDataContainer();
+
+                        final String beaconName = container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING);
+
+                        BeaconManager.removeLocation(beaconName);
+
+                        Messages.beacon_location_removed.sendMessage(player, "{name}", beaconName);
+
+                        gui.removePageItem(itemStack);
+                    }
+                }
+            }));
+        });
+
+        gui.open(data.getPlayer());
     }
 
     @Override

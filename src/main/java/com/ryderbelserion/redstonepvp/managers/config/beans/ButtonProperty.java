@@ -2,7 +2,10 @@ package com.ryderbelserion.redstonepvp.managers.config.beans;
 
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
+import java.util.Map;
 
 public class ButtonProperty {
 
@@ -81,9 +84,28 @@ public class ButtonProperty {
     }
 
     /**
+     * Builds an {@link ItemBuilder} with optionally placeholders
+     *
+     * @param placeholders a map of placeholders
+     * @return {@link ItemBuilder}
+     */
+    public final ItemBuilder build(@Nullable Map<String, String> placeholders) {
+        final ItemBuilder itemBuilder = new ItemBuilder();
+
+        if (placeholders != null) {
+            placeholders.forEach((key, pair) -> {
+                itemBuilder.addNamePlaceholder(key, pair);
+                itemBuilder.addLorePlaceholder(key, pair);
+            });
+        }
+
+        return itemBuilder.setDisplayName(getDisplayName()).setDisplayLore(getDisplayLore());
+    }
+
+    /**
      * @return {@link ItemBuilder}
      */
     public final ItemBuilder build() {
-        return new ItemBuilder().withType(getDisplayMaterial()).setDisplayName(getDisplayName()).setDisplayLore(getDisplayLore());
+        return build(null);
     }
 }
