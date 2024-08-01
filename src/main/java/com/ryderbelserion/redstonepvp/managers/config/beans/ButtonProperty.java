@@ -99,7 +99,7 @@ public class ButtonProperty {
             });
         }
 
-        return itemBuilder.setDisplayName(getDisplayName()).setDisplayLore(getDisplayLore());
+        return itemBuilder.withType(getDisplayMaterial()).setDisplayName(getDisplayName()).setDisplayLore(getDisplayLore());
     }
 
     /**
