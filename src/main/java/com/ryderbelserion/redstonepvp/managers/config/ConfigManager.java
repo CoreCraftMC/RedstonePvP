@@ -36,7 +36,7 @@ public class ConfigManager {
                 .create();
 
         fileManager = new FileManager();
-        fileManager.addFile("player-drops.yml").addFolder("menus").init();
+        fileManager.addFile("player-drops.yml").addFolder("static").init();
 
         // Create all the gui's
         MenuManager.populate();
