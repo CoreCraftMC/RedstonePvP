@@ -18,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
-
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconItemSet extends Command {
