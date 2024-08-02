@@ -85,10 +85,14 @@ public class BeaconDrop {
 
         CompletableFuture.runAsync(() -> {
             try (Connection connection = this.connector.getConnection()) {
-                try (PreparedStatement statement = connection.prepareStatement("delete from beacon_items where item = ?")) {
+                try (PreparedStatement statement = connection.prepareStatement("delete from beacon_items where item = ? returning position,id")) {
                     statement.setString(1, item);
 
-                    statement.executeUpdate();
+                    try (ResultSet generatedKeys = statement.executeQuery()) {
+                        if (generatedKeys.next()) {
+                            BeaconManager.removePosition(generatedKeys.getString("id"), generatedKeys.getInt("position"));
+                        }
+                    }
                 }
             } catch (SQLException exception) {
                 plugin.getComponentLogger().warn("Failed to delete item {}", item);

@@ -304,12 +304,12 @@ public class BeaconManager {
      * @param position the position to remove
      */
     public static void removePosition(final String id, final int position) {
-        if (!hasPosition(id)) return;
+        if (hasPosition(id)) {
+            ArrayList<Integer> numbers = positions.get(id);
 
-        final List<Integer> numbers = positions.get(id);
-
-        if (numbers.contains(position)) {
             numbers.remove(position);
+
+            positions.put(id, numbers);
         }
     }
 

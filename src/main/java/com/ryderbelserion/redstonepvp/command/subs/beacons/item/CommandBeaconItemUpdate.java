@@ -21,6 +21,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
+
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconItemUpdate extends Command {
@@ -57,7 +58,7 @@ public class CommandBeaconItemUpdate extends Command {
 
         final int position = data.getIntegerArgument("position");
 
-        if (!BeaconManager.getPositions().get(name).contains(position)) {
+        if (!BeaconManager.getPositionsById(name).contains(position)) {
             Messages.beacon_drop_doesnt_exist.sendMessage(player, new HashMap<>() {{
                 put("{position}", String.valueOf(position));
                 put("{name}", name);
@@ -66,7 +67,15 @@ public class CommandBeaconItemUpdate extends Command {
             return;
         }
 
-        beacon.addItem(ItemUtil.toBase64(itemStack), position, data.getFloatArgument("weight"), true);
+        final String item = ItemUtil.toBase64(itemStack);
+
+        if (beacon.containsItem(item)) {
+            Messages.beacon_drop_exists.sendMessage(player);
+
+            return;
+        }
+
+        beacon.addItem(item, position, data.getFloatArgument("weight"), true);
 
         Messages.beacon_drop_added.sendMessage(player, new HashMap<>() {{
             put("{position}", String.valueOf(position));

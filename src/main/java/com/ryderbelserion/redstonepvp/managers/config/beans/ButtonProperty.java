@@ -2,6 +2,7 @@ package com.ryderbelserion.redstonepvp.managers.config.beans;
 
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -87,19 +88,48 @@ public class ButtonProperty {
      * Builds an {@link ItemBuilder} with optionally placeholders
      *
      * @param placeholders a map of placeholders
+     * @param hasMaterial true or false
+     * @param base64 the item string
+     * @return {@link ItemBuilder}
+     */
+    public final ItemBuilder build(@Nullable final Map<String, String> placeholders, final boolean hasMaterial, @NotNull final String base64) {
+        ItemBuilder itemBuilder = new ItemBuilder();
+
+        if (hasMaterial && this.section.contains("preview.display_material")) {
+            itemBuilder.withType(getDisplayMaterial());
+        } else {
+            itemBuilder = itemBuilder.fromBase64(base64);
+        }
+
+        if (placeholders != null) {
+            for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+                itemBuilder.addNamePlaceholder(entry.getKey(), entry.getValue());
+                itemBuilder.addLorePlaceholder(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return itemBuilder.setDisplayName(getDisplayName()).setDisplayLore(getDisplayLore());
+    }
+
+    /**
+     * Builds an {@link ItemBuilder} with no placeholders.
+     *
+     * @param hasMaterial true or false
+     * @param base64 the item string
+     * @return {@link ItemBuilder}
+     */
+    public final ItemBuilder build(final String base64, final boolean hasMaterial) {
+        return build(null, hasMaterial, base64);
+    }
+
+    /**
+     * Builds an {@link ItemBuilder} with optionally placeholders
+     *
+     * @param placeholders a map of placeholders
      * @return {@link ItemBuilder}
      */
     public final ItemBuilder build(@Nullable Map<String, String> placeholders) {
-        final ItemBuilder itemBuilder = new ItemBuilder();
-
-        if (placeholders != null) {
-            placeholders.forEach((key, pair) -> {
-                itemBuilder.addNamePlaceholder(key, pair);
-                itemBuilder.addLorePlaceholder(key, pair);
-            });
-        }
-
-        return itemBuilder.withType(getDisplayMaterial()).setDisplayName(getDisplayName()).setDisplayLore(getDisplayLore());
+        return build(placeholders, true, "");
     }
 
     /**
