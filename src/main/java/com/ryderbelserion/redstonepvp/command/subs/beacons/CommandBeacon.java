@@ -22,7 +22,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -35,18 +34,15 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommandBeacon extends Command {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
-    private final Server server = this.plugin.getServer();
 
     @Override
     public void execute(final CommandData data) {
@@ -103,6 +99,66 @@ public class CommandBeacon extends Command {
                         button.getSoundProperty().playSound(player);
 
                         gui.removePageItem(item);
+                    }
+
+                    case RIGHT -> {
+                        final GuiItem item = gui.getPageItem(event.getSlot());
+
+                        if (item == null) return;
+
+                        final ItemStack itemStack = item.getItemStack();
+
+                        final PersistentDataContainer container = itemStack.getItemMeta().getPersistentDataContainer();
+
+                        final String beaconName = container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING);
+
+                        final GuiProperty item_menu = MenuManager.getGui("item-menu");
+                        final @NotNull PaginatedGui item_gui = Gui.paginated().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
+                                .setTitle(item_menu.getGuiTitle())
+                                .setRows(item_menu.getGuiRows())
+                                .create();
+
+                        item_gui.setItem(6, 3, item_gui.asGuiItem(new ItemStack(Material.ARROW), back -> item_gui.previous()));
+                        item_gui.setItem(6, 7, item_gui.asGuiItem(new ItemStack(Material.ARROW), next -> item_gui.next()));
+
+                        final ButtonProperty itemButton = item_menu.getButtons().getFirst();
+
+                        BeaconManager.getBeacon(beaconName).getDrop().getItems().forEach((key, weight) -> {
+                            // if null, don't add anything.
+                            if (key == null) return;
+
+                            final ItemBuilder drop = itemButton.build(key, false);
+
+                            Map<String, String> placeholders = new HashMap<>() {{
+                                put("{weight}", String.valueOf(weight));
+                                put("{name}", drop.getStrippedName());
+                            }};
+
+                            placeholders.forEach((placeholder, value) -> {
+                                drop.addNamePlaceholder(placeholder, value);
+                                drop.addLorePlaceholder(placeholder, value);
+                            });
+
+                            drop.setPersistentString(PersistentKeys.beacon_item.getNamespacedKey(), key);
+
+                            item_gui.addPageItem(item_gui.asGuiItem(drop.getStack(), clickEvent -> {
+                                final GuiItem guiItem = item_gui.getPageItem(clickEvent.getSlot());
+
+                                if (guiItem == null) return;
+
+                                final PersistentDataContainer pdc = guiItem.getItemStack().getItemMeta().getPersistentDataContainer();
+
+                                final String itemName = pdc.get(PersistentKeys.beacon_item.getNamespacedKey(), PersistentDataType.STRING);
+
+                                BeaconManager.getBeacon(beaconName).getDrop().removeItem(itemName);
+
+                                itemButton.getSoundProperty().playSound(player);
+
+                                item_gui.removePageItem(guiItem);
+                            }));
+                        });
+
+                        item_gui.open(player, 1);
                     }
                 }
             }));
