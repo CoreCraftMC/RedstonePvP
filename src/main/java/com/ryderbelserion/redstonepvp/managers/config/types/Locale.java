@@ -73,5 +73,8 @@ public class Locale implements SettingsHolder {
     public static final Property<String> beacon_drop_added = newProperty("root.beacon.drops.added", "{prefix}<white>You have updated the item with the position <red>{position}<white> for the drop location <red>{name}");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_drop_set = newProperty("root.beacon.drops.set", "{prefix}<white>You have added a new item to the drop location called <red>{name}");
+    public static final Property<String> beacon_drop_set = newProperty("root.beacon.drops.set", "{prefix}<white>You have added a new item to the drop location <red>{name}");
+
+    @Comment("A list of available placeholders: {name}, {position}")
+    public static final Property<String> beacon_drop_removed = newProperty("root.beacon.drops.removed", "{prefix}<white>You have removed the item from the drop location <red>{name}");
 }
