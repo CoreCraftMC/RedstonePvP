@@ -1,6 +1,5 @@
 package com.ryderbelserion.redstonepvp.command.subs.beacons.item;
 
-import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -11,18 +10,13 @@ import com.ryderbelserion.redstonepvp.api.objects.beacons.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
-import com.ryderbelserion.vital.paper.util.ItemUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
-
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconItemRemove extends Command {

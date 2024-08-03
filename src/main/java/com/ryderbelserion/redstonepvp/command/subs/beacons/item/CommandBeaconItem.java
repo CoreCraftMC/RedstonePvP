@@ -57,6 +57,7 @@ public class CommandBeaconItem extends Command {
 
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
+                .then(new CommandBeaconItemRemove().registerPermission().literal())
                 .then(new CommandBeaconItemUpdate().registerPermission().literal())
                 .then(new CommandBeaconItemSet().registerPermission().literal())
                 .build();
