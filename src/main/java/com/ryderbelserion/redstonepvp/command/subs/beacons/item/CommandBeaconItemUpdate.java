@@ -4,9 +4,9 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
@@ -99,31 +99,31 @@ public class CommandBeaconItemUpdate extends Command {
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
         LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("update");
 
-        return root.requires(source -> source.getSender().hasPermission(getPermission()))
-                .then(argument("name", StringArgumentType.string())
-                        .suggests((ctx, builder) -> {
-                            BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("name", StringArgumentType.string()).suggests((ctx, builder) -> {
+            BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
 
-                            return builder.buildFuture();
-                        })
-                .then(argument("position", IntegerArgumentType.integer())
-                        .suggests((ctx, builder) -> {
-                           final String name = ctx.getLastChild().getArgument("name", String.class);
+            return builder.buildFuture();
+        });
 
-                           BeaconDrop beacon = BeaconManager.getBeacon(name).getDrop();
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg2 = argument("position", StringArgumentType.string()).suggests((ctx, builder) -> {
+            final String name = ctx.getLastChild().getArgument("name", String.class);
 
-                           beacon.getPositions().values().forEach(builder::suggest);
+            BeaconDrop beacon = BeaconManager.getBeacon(name).getDrop();
 
-                           return builder.buildFuture();
-                        })
-                .then(argument("min", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder))
-                .then(argument("max", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder))
-                .then(argument("weight", FloatArgumentType.floatArg()).suggests((ctx, builder) -> suggestDoubles(builder))
-                .executes(context -> {
+            beacon.getPositions().values().forEach(builder::suggest);
+
+            return builder.buildFuture();
+        });
+
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg3 = argument("min", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder));
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg4 = argument("max", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder));
+        final RequiredArgumentBuilder<CommandSourceStack, Float> arg5 = argument("weight", FloatArgumentType.floatArg()).suggests((ctx, builder) -> suggestDoubles(builder));
+
+        return root.requires(source -> source.getSender().hasPermission(getPermission())).then(arg1.then(arg2.then(arg3.then(arg4.then(arg5).executes(context -> {
                    execute(new CommandData(context));
 
                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                })))))).build();
+                }))))).build();
     }
 
     @Override
