@@ -3,9 +3,11 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons.item;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
+import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.vital.paper.commands.Command;
@@ -69,30 +71,35 @@ public class CommandBeaconItemRemove extends Command {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("remove");
+        final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("remove").requires(source -> source.getSender().hasPermission(getPermission()));
 
-        return root.requires(source -> source.getSender().hasPermission(getPermission()))
-                .then(argument("name", StringArgumentType.string())
-                        .suggests((ctx, builder) -> {
-                            BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("name", StringArgumentType.string()).suggests((ctx, builder) -> {
+            BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
 
-                            return builder.buildFuture();
-                        })
-                .then(argument("position", IntegerArgumentType.integer())
-                        .suggests((ctx, builder) -> {
-                           final String name = ctx.getLastChild().getArgument("name", String.class);
+            return builder.buildFuture();
+        });
 
-                            BeaconDrop beacon = BeaconManager.getBeacon(name).getDrop();
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg2 = argument("position", IntegerArgumentType.integer()).suggests((ctx, builder) -> {
+            final String name = ctx.getLastChild().getArgument("name", String.class);
 
-                            beacon.getPositions().values().forEach(builder::suggest);
+            Beacon beacon = BeaconManager.getBeacon(name);
 
-                           return builder.buildFuture();
-                        })
-                .executes(context -> {
-                   execute(new CommandData(context));
+            if (beacon != null) {
+                BeaconDrop drop = beacon.getDrop();
 
-                   return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }))).build();
+                if (drop != null) {
+                    drop.getPositions().values().forEach(builder::suggest);
+                }
+            }
+
+            return builder.buildFuture();
+        }).executes(context -> {
+            execute(new CommandData(context));
+
+            return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+        });
+
+        return root.then(arg1.then(arg2)).build();
     }
 
     @Override

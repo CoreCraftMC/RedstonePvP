@@ -1,5 +1,6 @@
 package com.ryderbelserion.redstonepvp.command.subs;
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.cache.CacheManager;
@@ -45,9 +46,9 @@ public class CommandBypass extends Command {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("bypass")
-                .requires(source -> source.getSender().hasPermission(getPermission()))
-                .executes(context -> {
+        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("bypass").requires(source -> source.getSender().hasPermission(getPermission()));
+
+        return root.executes(context -> {
                     execute(new CommandData(context));
 
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;

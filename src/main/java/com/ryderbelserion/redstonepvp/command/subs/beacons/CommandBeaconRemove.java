@@ -1,6 +1,8 @@
 package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.vital.paper.commands.Command;
@@ -43,19 +45,15 @@ public class CommandBeaconRemove extends Command {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("remove")
-                .requires(source -> source.getSender().hasPermission(getPermission()))
-                .then(argument("name", StringArgumentType.string())
-                        .suggests((ctx, builder) -> {
-                            BeaconManager.getLocations(false).forEach(builder::suggest);
+        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("remove").requires(source -> source.getSender().hasPermission(getPermission()));
 
-                            return builder.buildFuture();
-                        })
-                ).executes(context -> {
-                    execute(new CommandData(context));
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("name", StringArgumentType.string()).suggests((ctx, builder) -> {
+            BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
 
-                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }).build();
+            return builder.buildFuture();
+        });
+
+        return root.then(arg1).build();
     }
 
     @Override

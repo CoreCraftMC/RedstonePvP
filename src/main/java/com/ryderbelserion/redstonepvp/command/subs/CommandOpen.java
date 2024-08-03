@@ -1,9 +1,12 @@
 package com.ryderbelserion.redstonepvp.command.subs;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.builders.gui.PaginatedGui;
+import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.interfaces.Gui;
 import com.ryderbelserion.redstonepvp.api.interfaces.GuiItem;
 import com.ryderbelserion.redstonepvp.managers.MenuManager;
@@ -96,25 +99,25 @@ public class CommandOpen extends Command {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("open")
-                .requires(source -> source.getSender().hasPermission(getPermission()))
-                .then(argument("player", StringArgumentType.string())
-                        .suggests((ctx, builder) -> {
-                            this.plugin.getServer().getOnlinePlayers().forEach(player -> builder.suggest(player.getName()));
+        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("open").requires(source -> source.getSender().hasPermission(getPermission()));
 
-                            return builder.buildFuture();
-                        })
-                .then(argument("name", StringArgumentType.string())
-                        .suggests((ctx, builder) -> {
-                            MenuManager.getGuis().keySet().forEach(builder::suggest);
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("player", StringArgumentType.string()).suggests((ctx, builder) -> {
+            this.plugin.getServer().getOnlinePlayers().forEach(player -> builder.suggest(player.getName()));
 
-                            return builder.buildFuture();
-                        })
-                .executes(context -> {
-                    execute(new CommandData(context));
+            return builder.buildFuture();
+        });
 
-                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }))).build();
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg2 = argument("name", StringArgumentType.string()).suggests((ctx, builder) -> {
+            MenuManager.getGuis().keySet().forEach(builder::suggest);
+
+            return builder.buildFuture();
+        }).executes(context -> {
+            execute(new CommandData(context));
+
+            return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+        });
+
+        return root.then(arg1.then(arg2)).build();
     }
 
     @Override

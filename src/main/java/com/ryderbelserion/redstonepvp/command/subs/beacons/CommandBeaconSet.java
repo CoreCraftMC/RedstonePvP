@@ -2,6 +2,8 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.vital.paper.commands.Command;
@@ -62,17 +64,21 @@ public class CommandBeaconSet extends Command {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("set")
-                .requires(source -> source.getSender().hasPermission(getPermission()))
-                .then(argument("name", StringArgumentType.string())
-                        .suggests((ctx, builder) -> suggestNames(builder))
-                .then(argument("time", IntegerArgumentType.integer())
-                        .suggests((ctx, builder) -> suggestIntegers(builder))
-                .executes(context -> {
-                   execute(new CommandData(context));
+        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("set").requires(source -> source.getSender().hasPermission(getPermission()));
 
-                   return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }))).build();
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("name", StringArgumentType.string()).suggests((ctx, builder) -> {
+            BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
+
+            return builder.buildFuture();
+        });
+
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg2 = argument("time", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder)).executes(context -> {
+            execute(new CommandData(context));
+
+            return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+        });;
+
+        return root.then(arg1.then(arg2)).build();
     }
 
     @Override
