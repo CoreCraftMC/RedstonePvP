@@ -6,14 +6,17 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
+import java.util.HashMap;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconTIme extends Command {
@@ -22,7 +25,24 @@ public class CommandBeaconTIme extends Command {
 
     @Override
     public void execute(final CommandData data) {
+        final CommandSender sender = data.getCommandSender();
 
+        final String name = data.getStringArgument("name");
+
+        if (!BeaconManager.hasBeacon(name)) {
+            Messages.beacon_location_doesnt_exist.sendMessage(sender, "{name}", name);
+
+            return;
+        }
+
+        final int time = data.getIntegerArgument("time");
+
+        Messages.beacon_location_time_updated.sendMessage(sender, new HashMap<>() {{
+            put("name", name);
+            put("{time}", String.valueOf(time));
+        }});
+
+        BeaconManager.updateBeaconTime(name, time, true);
     }
 
     @Override
