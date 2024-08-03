@@ -27,7 +27,7 @@ public class BeaconManager {
 
     /**
      * Adds a location to the cache and the database.
-     *
+     *2,-60,-19
      * @param name the name of the location.
      * @param location the location to add
      */
@@ -88,7 +88,7 @@ public class BeaconManager {
                         while (resultSet.next()) {
                             final Beacon drop = new Beacon(resultSet.getString("id"), resultSet.getString("location"), resultSet.getInt("time"));
 
-                            try (PreparedStatement next = connection.prepareStatement("select weight,item from beacon_items where id = ?")) {
+                            try (PreparedStatement next = connection.prepareStatement("select weight,item,position from beacon_items where id = ?")) {
                                 next.setString(1, drop.getName());
 
                                 final ResultSet query = next.executeQuery();
@@ -96,10 +96,11 @@ public class BeaconManager {
                                 while (query.next()) {
                                     float weight = query.getFloat("weight");
                                     String item = query.getString("item");
+                                    int position = query.getInt("position");
 
                                     final BeaconDrop beaconDrop = drop.getDrop();
 
-                                    beaconDrop.addItem(item, weight);
+                                    beaconDrop.addItem(item, position, weight, false);
                                 }
                             }
 
