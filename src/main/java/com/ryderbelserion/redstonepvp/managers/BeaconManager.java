@@ -1,12 +1,14 @@
 package com.ryderbelserion.redstonepvp.managers;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.data.DataManager;
 import com.ryderbelserion.redstonepvp.managers.data.types.Connector;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -32,6 +34,8 @@ public class BeaconManager {
     private static final DataManager dataManager = plugin.getDataManager();
 
     private static Map<String, Beacon> beaconDrops = new HashMap<>();
+
+    private static Map<String, ScheduledTask> beaconTasks = new HashMap<>();
 
     /**
      * Adds a location to the cache and the database.
@@ -80,7 +84,17 @@ public class BeaconManager {
         beaconDrops.put(name, beacon);
     }
 
-    public static void startTasks() {
+    public static void startTasks(final boolean isReload) {
+        if (isReload) {
+            beaconTasks.forEach((name, task) -> {
+                plugin.getLogger().warning("The task for " + name + " was cancelled because the plugin reloaded.");
+
+                task.cancel();
+            });
+
+            beaconTasks.clear();
+        }
+
         beaconDrops.forEach((name, beacon) -> {
             final Location location = MiscUtils.location(beacon.getRawLocation());
 
@@ -90,9 +104,9 @@ public class BeaconManager {
 
             final BlockData blockData = block.getBlockData();
 
-            //final List<ItemDrop> drops = beacon.getDrop().getItems();
+            final List<ItemDrop> drops = beacon.getDrop().getItemDrops();
 
-            new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
+            beaconTasks.put(name, new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
                 final long startTime = System.currentTimeMillis();
 
                 @Override
@@ -113,7 +127,7 @@ public class BeaconManager {
                     if (elapsedTime <= 1000) {
                         MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
 
-                        MiscUtils.getDrop(location, null);
+                        MiscUtils.getDrop(location, drops);
                     }
 
                     // 1.1 second.
@@ -136,7 +150,7 @@ public class BeaconManager {
                     if (elapsedTime >= 3000 && elapsedTime <= 4000) {
                         MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
 
-                        MiscUtils.getDrop(location, null);
+                        MiscUtils.getDrop(location, drops);
                     }
 
                     // spawn water on top of the slab to push items out when it reaches 4.1 seconds.
@@ -159,7 +173,7 @@ public class BeaconManager {
                     if (elapsedTime >= 5500 && elapsedTime <= 6500) {
                         MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
 
-                        MiscUtils.getDrop(location, null);
+                        MiscUtils.getDrop(location, drops);
                     }
 
                     // spawn water on top of the slab to push items out when it reaches 6.6 seconds.
@@ -179,7 +193,7 @@ public class BeaconManager {
                         cancel();
                     }
                 }
-            }.runAtFixedRate(plugin, 0, 1);
+            }.runAtFixedRate(plugin, 0, 1));
         });
     }
 

@@ -2,6 +2,7 @@ package com.ryderbelserion.redstonepvp.command.subs;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.managers.MenuManager;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
@@ -25,6 +26,9 @@ public class CommandReload extends Command {
 
         // Refresh the gui's.
         MenuManager.populate();
+
+        // Restart the tasks
+        BeaconManager.startTasks(true);
 
         // Reload modules.
         this.plugin.getRedstone().apply(redstone -> {
