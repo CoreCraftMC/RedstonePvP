@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -187,6 +188,15 @@ public class BeaconDrop {
      */
     public final Map<String, ItemDrop> getItems() {
         return Collections.unmodifiableMap(this.items);
+    }
+
+    /**
+     * Get a list of drops
+     *
+     * @return the list of drops
+     */
+    public final List<ItemDrop> getItemDrops() {
+        return this.items.values().stream().toList();
     }
 
     /**
