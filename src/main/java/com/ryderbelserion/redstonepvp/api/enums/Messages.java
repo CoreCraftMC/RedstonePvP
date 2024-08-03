@@ -36,6 +36,7 @@ public enum Messages {
 
     beacon_location_added(Locale.beacon_location_added),
     beacon_location_removed(Locale.beacon_location_removed),
+    beacon_location_time_updated(Locale.beacon_location_time_updated),
     beacon_location_exists(Locale.beacon_location_exists),
     beacon_location_doesnt_exist(Locale.beacon_location_doesnt_exist),
 

@@ -67,6 +67,9 @@ public class Locale implements SettingsHolder {
     @Comment("A list of available placeholders: {name}")
     public static final Property<String> beacon_location_removed = newProperty("root.beacon.location.removed", "{prefix}<white>You have removed a beacon drop location with the name <red>{name}.");
 
+    @Comment("A list of available placeholders: {time}, {name}")
+    public static final Property<String> beacon_location_time_updated = newProperty("root.beacon.location.time-updated", "{prefix}<white>The time has been updated to <red>{time} <white>for <red>{name}");
+
     @Comment("A list of available placeholders: {name}")
     public static final Property<String> beacon_location_doesnt_exist = newProperty("root.beacon.location.doesnt-exist", "{prefix}<white>There is no beacon drop with the name {name}.");
 
