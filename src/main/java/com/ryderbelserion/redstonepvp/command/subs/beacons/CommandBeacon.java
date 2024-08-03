@@ -16,16 +16,10 @@ import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
-import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import com.ryderbelserion.redstonepvp.command.subs.beacons.item.CommandBeaconItem;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
@@ -33,9 +27,7 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CommandBeacon extends Command {
@@ -198,112 +190,5 @@ public class CommandBeacon extends Command {
         }
 
         return this;
-    }
-
-    private void playDropAnimation(final Location location) {
-        final List<ItemDrop> drops = new ArrayList<>() {{
-            add(new ItemDrop(Material.GOLD_INGOT, 3, 12, 75.0));
-            add(new ItemDrop(Material.NETHERITE_SCRAP, 1, 3, 0.5));
-            add(new ItemDrop(Material.EMERALD, 1, 3, 1.0));
-            add(new ItemDrop(Material.DIAMOND, 1, 3, 3.0));
-        }};
-
-        final Block topBlock = location.clone().add(0.0, 2, 0.0).getBlock();
-
-        final Block waterBlock = topBlock.getLocation().clone().add(0.0, 1, 0.0).getBlock();
-
-        final BlockData blockData = topBlock.getBlockData();
-
-        new FoliaRunnable(this.plugin.getServer().getRegionScheduler(), location) {
-            int counter = 0;
-
-            @Override
-            public void run() {
-                // Event is cancelled.
-                if (isCancelled()) {
-                    return;
-                }
-
-                // Run start sound.
-                if (this.counter == 0) {
-                    //playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
-                }
-
-                // start phase 1
-                if (this.counter <= 10) {
-                    //playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-
-                    //getDrop(location, drops);
-                }
-
-                // spawn water on top of the slab to push items out when it reaches 15.
-                if (this.counter == 11) {
-                    //playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
-
-                    waterBlock.setType(Material.WATER, true);
-                }
-
-                // remove the water when it reaches 18.
-                if (this.counter == 15) {
-                    waterBlock.setType(Material.AIR, true);
-
-                    if (blockData instanceof Waterlogged waterlogged) {
-                        waterlogged.setWaterlogged(false);
-                    }
-                }
-
-                // start phase 2 at 30
-                if (this.counter >= 30 && this.counter <= 40) {
-                    //playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-
-                    //getDrop(location, drops);
-                }
-
-                // spawn water on top of the slab to push items out when it reaches 15.
-                if (this.counter == 41) {
-                    //playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
-
-                    waterBlock.setType(Material.WATER, true);
-                }
-
-                // remove the water when it reaches 33.
-                if (this.counter == 45) {
-                    waterBlock.setType(Material.AIR, true);
-
-                    if (blockData instanceof Waterlogged waterlogged) {
-                        waterlogged.setWaterlogged(false);
-                    }
-                }
-
-                // start phase 3
-                if (this.counter >= 55 && this.counter <= 65) {
-                    //playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-
-                    //getDrop(location, drops);
-                }
-
-                // spawn water on top of the slab to push items out when it reaches 45.
-                if (this.counter == 66) {
-                    //playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
-
-                    waterBlock.setType(Material.WATER, true);
-                }
-
-                // cancel task.
-                if (this.counter >= 69) {
-                    waterBlock.setType(Material.AIR, true);
-
-                    if (blockData instanceof Waterlogged waterlogged) {
-                        waterlogged.setWaterlogged(false);
-                    }
-
-                    cancel();
-
-                    return;
-                }
-
-                this.counter++;
-            }
-        }.runAtFixedRate(this.plugin, 0, 10);
     }
 }
