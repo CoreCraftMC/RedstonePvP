@@ -24,12 +24,12 @@ public class CommandBeaconTIme extends Command {
 
     @Override
     public @NotNull final String getPermission() {
-        return "redstonepvp.beacon.set";
+        return "redstonepvp.beacon.time";
     }
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("set")
+        return Commands.literal("time")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .then(argument("name", StringArgumentType.string())
                         .suggests((ctx, builder) -> suggestNames(builder))
