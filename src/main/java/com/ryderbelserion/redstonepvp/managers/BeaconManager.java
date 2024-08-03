@@ -82,6 +82,8 @@ public class BeaconManager {
 
         // add to cache to ensure better performance in future checks. use a random uuid for the hashmap as we don't care what's there.
         beaconDrops.put(name, beacon);
+
+        scheduleTask(name, beacon, MiscUtils.location(beacon.getRawLocation()));
     }
 
     public static void startTasks(final boolean isReload) {
