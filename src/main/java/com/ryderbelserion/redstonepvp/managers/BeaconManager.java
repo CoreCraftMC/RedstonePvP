@@ -193,7 +193,7 @@ public class BeaconManager {
                         cancel();
                     }
                 }
-            }.runAtFixedRate(plugin, 0, 1));
+            }.runAtFixedRate(plugin, 0, beacon.getTime() * 20L)); // 15 * 20 = 300, which is 15 seconds. 1 minute = 60 seconds/1200 ticks, 5 minutes = 6000 ticks
         });
     }
 
