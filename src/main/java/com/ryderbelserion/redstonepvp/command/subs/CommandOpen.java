@@ -6,7 +6,6 @@ import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.builders.gui.PaginatedGui;
 import com.ryderbelserion.redstonepvp.api.interfaces.Gui;
 import com.ryderbelserion.redstonepvp.api.interfaces.GuiItem;
-import com.ryderbelserion.redstonepvp.api.interfaces.GuiType;
 import com.ryderbelserion.redstonepvp.managers.MenuManager;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
@@ -24,7 +23,6 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
-
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandOpen extends Command {
