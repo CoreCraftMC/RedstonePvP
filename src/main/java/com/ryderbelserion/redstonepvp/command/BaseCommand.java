@@ -9,6 +9,7 @@ import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
 import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
+import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
@@ -47,13 +48,13 @@ public class BaseCommand extends Command {
             final GuiItem item = gui.asGuiItem(button.build().getStack(), action -> {
                 if (!(action.getWhoClicked() instanceof Player player)) return;
 
-                button.getCommands().forEach(command -> this.server.dispatchCommand(this.server.getConsoleSender(), command));
-                button.getMessages().forEach(player::sendRichMessage);
+                button.getCommands().forEach(command -> this.server.dispatchCommand(this.server.getConsoleSender(), command.replaceAll("\\{player}", player.getName())));
+                button.getMessages().forEach(message -> MiscUtils.message(player, message));
 
                 button.getSoundProperty().playSound(player);
             });
 
-            gui.setItem(button.getDisplaySlot(), item);
+            gui.setItem(button.getDisplayRow(), button.getDisplayColumn(), item);
         });
 
         gui.open(data.getPlayer());

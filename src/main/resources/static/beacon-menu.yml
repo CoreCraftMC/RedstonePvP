@@ -3,6 +3,94 @@ menu:
   title: '<yellow>Beacon Drops</yellow>'
   # The amount of rows for a gui, only is applied if the type is a chest.
   rows: 6
+  # The next button
+  next_button:
+    preview:
+      # The name of the next button
+      display_name: '<yellow>Next {page}'
+      # The lore of the next button
+      display_lore: []
+      # The material of the next button
+      display_material: 'arrow'
+      # The position settings
+      display_position:
+        # The row of the next button
+        row: 6
+        # The column of the next button
+        column: 3
+    # Run any commands
+    commands: []
+    # Settings related to sending a sound.
+    sound:
+      # Whether to send a sound at all.
+      toggle: true
+      # The sound to send.
+      sound: 'block.note_block.xylophone'
+      # The volume of the sound.
+      volume: '1.0'
+      # The pitch of the sound.
+      pitch: '1.0'
+      # The sound source, i.e. respects the client's sound settings.
+      source: 'player'
+  # The back button
+  back_button:
+    preview:
+      # The name of the back button
+      display_name: '<yellow>Back {page}'
+      # The lore of the back button
+      display_lore: []
+      # The material of the back button
+      display_material: 'arrow'
+      # The position settings
+      display_position:
+        # The row of the back button
+        row: 6
+        # The column of the back button
+        column: 7
+    # Run any commands
+    commands: []
+    # Settings related to sending a sound.
+    sound:
+      # Whether to send a sound at all.
+      toggle: true
+      # The sound to send.
+      sound: 'block.note_block.xylophone'
+      # The volume of the sound.
+      volume: '1.0'
+      # The pitch of the sound.
+      pitch: '1.0'
+      # The sound source, i.e. respects the client's sound settings.
+      source: 'player'
+  # The next button
+  home_button:
+    preview:
+      # The name of the menu button
+      display_name: '<red>Go Back'
+      # The lore of the next button
+      display_lore: []
+      # The material of the next button
+      display_material: 'compass'
+      # The position settings
+      display_position:
+        # The row of the next button
+        row: 6
+        # The column of the next button
+        column: 5
+    # Run any commands
+    commands:
+      - 'redstonepvp open {player} main-menu'
+      # Settings related to sending a sound.
+    sound:
+        # Whether to send a sound at all.
+      toggle: true
+        # The sound to send.
+      sound: 'block.note_block.xylophone'
+        # The volume of the sound.
+      volume: '1.0'
+        # The pitch of the sound.
+      pitch: '1.0'
+        # The sound source, i.e. respects the client's sound settings.
+      source: 'player'
   # All buttons in the gui
   buttons:
     beacon_drop:

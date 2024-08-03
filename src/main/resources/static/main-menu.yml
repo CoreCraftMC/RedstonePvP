@@ -12,7 +12,7 @@ menu:
   # brewing -> the brewing stand, 4 slots at maximum
   type: 'chest'
   # The amount of rows for a gui, only is applied if the type is a chest.
-  rows: 6
+  rows: 3
   # All buttons in the gui
   buttons:
     reload_plugin:
@@ -24,8 +24,12 @@ menu:
         display_lore: []
         # The material to display.
         display_material: 'compass'
-        # The slot in the gui.
-        display_slot: 12
+        # The position settings.
+        display_position:
+          # The row in the gui.
+          row: 2
+          # The column in the gui.
+          column: 4
       # Run any commands on click.
       commands:
         - 'redstonepvp reload'
@@ -54,10 +58,17 @@ menu:
         display_lore: []
         # The material to display.
         display_material: 'beacon'
-        # The slot in the gui.
-        display_slot: 14
+        # The position settings.
+        display_position:
+          # The row in the gui.
+          row: 2
+          # The column in the gui.
+          column: 6
       # Send any messages on click.
       messages: []
+      # Run any commands on click.
+      commands:
+        - 'redstonepvp open {player} beacon-menu'
       # The tag to identify an item.
       # nbt-tag: 'beacon_drop'
       # Settings related to sending a sound.

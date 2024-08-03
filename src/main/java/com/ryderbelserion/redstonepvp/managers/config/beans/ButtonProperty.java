@@ -4,7 +4,6 @@ import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.Map;
 
@@ -49,12 +48,21 @@ public class ButtonProperty {
     }
 
     /**
-     * Gets the slot of the button for the gui.
+     * Gets the row of the button for the gui.
      *
-     * @return the slot number
+     * @return the row number
      */
-    public final int getDisplaySlot() {
-        return this.section.getInt("preview.display_slot");
+    public final int getDisplayRow() {
+        return this.section.getInt("preview.display_position.row", -1);
+    }
+
+    /**
+     * Gets the column to place the button in.
+     *
+     * @return the column number
+     */
+    public final int getDisplayColumn() {
+        return this.section.getInt("preview.display_position.column", -1);
     }
 
     /**

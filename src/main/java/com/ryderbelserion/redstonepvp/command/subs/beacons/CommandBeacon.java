@@ -10,6 +10,7 @@ import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.managers.MenuManager;
 import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
 import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
+import com.ryderbelserion.redstonepvp.utils.ItemUtils;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.commands.Command;
@@ -52,14 +53,15 @@ public class CommandBeacon extends Command {
             return;
         }
 
+        final Player target = data.getPlayer();
+
         final GuiProperty property = MenuManager.getGui("beacon-menu");
         final @NotNull PaginatedGui gui = Gui.paginated().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
                 .setTitle(property.getGuiTitle())
                 .setRows(property.getGuiRows())
                 .create();
 
-        gui.setItem(6, 3, gui.asGuiItem(new ItemStack(Material.ARROW), event -> gui.previous()));
-        gui.setItem(6, 7, gui.asGuiItem(new ItemStack(Material.ARROW), event -> gui.next()));
+        ItemUtils.addButtons(property, target, gui);
 
         final ButtonProperty button = property.getButtons().getFirst();
 
@@ -113,13 +115,12 @@ public class CommandBeacon extends Command {
                         final String beaconName = container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING);
 
                         final GuiProperty item_menu = MenuManager.getGui("item-menu");
-                        final @NotNull PaginatedGui item_gui = Gui.paginated().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
+                        final PaginatedGui item_gui = Gui.paginated().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
                                 .setTitle(item_menu.getGuiTitle())
                                 .setRows(item_menu.getGuiRows())
                                 .create();
 
-                        item_gui.setItem(6, 3, item_gui.asGuiItem(new ItemStack(Material.ARROW), back -> item_gui.previous()));
-                        item_gui.setItem(6, 7, item_gui.asGuiItem(new ItemStack(Material.ARROW), next -> item_gui.next()));
+                        ItemUtils.addButtons(item_menu, player, item_gui);
 
                         final ButtonProperty itemButton = item_menu.getButtons().getFirst();
 

@@ -8,13 +8,12 @@ import com.ryderbelserion.redstonepvp.api.interfaces.Gui;
 import com.ryderbelserion.redstonepvp.managers.MenuManager;
 import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
 import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
+import com.ryderbelserion.redstonepvp.utils.ItemUtils;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
@@ -31,14 +30,15 @@ public class CommandBeaconItem extends Command {
             return;
         }
 
+        final Player player = data.getPlayer();
+
         final GuiProperty property = MenuManager.getGui("item-menu");
-        final @NotNull PaginatedGui gui = Gui.paginated().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
+        final @NotNull PaginatedGui item_gui = Gui.paginated().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
                 .setTitle(property.getGuiTitle())
                 .setRows(property.getGuiRows())
                 .create();
 
-        gui.setItem(6, 3, gui.asGuiItem(new ItemStack(Material.ARROW), event -> gui.previous()));
-        gui.setItem(6, 7, gui.asGuiItem(new ItemStack(Material.ARROW), event -> gui.next()));
+        ItemUtils.addButtons(property, player, item_gui);
 
         final ButtonProperty button = property.getButtons().getFirst();
     }
