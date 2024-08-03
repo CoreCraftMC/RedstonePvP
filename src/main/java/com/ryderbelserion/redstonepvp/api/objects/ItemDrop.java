@@ -9,9 +9,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ItemDrop {
 
     private final ItemBuilder itemBuilder;
-    private final int min;
-    private final int max;
-    private final double weight;
+    private int min;
+    private int max;
+    private double weight;
 
     public ItemDrop(final ConfigurationSection section) {
         this.itemBuilder = new ItemBuilder().withType(section.getString("material", "gold_ingot"));
@@ -31,11 +31,29 @@ public class ItemDrop {
         this.weight = weight;
     }
 
+    public ItemDrop(String item, int min, int max, double weight) {
+        this.itemBuilder = new ItemBuilder().fromBase64(item);
+
+        this.min = min;
+        this.max = max;
+
+        this.weight = weight;
+    }
+
     /**
      * @return {@link ItemStack}
      */
     public final ItemStack getItem() {
         return this.itemBuilder.setAmount(ThreadLocalRandom.current().nextInt(this.min, this.max)).getStack();
+    }
+
+    /**
+     * Updates the min range
+     *
+     * @param min the new value
+     */
+    public void setMin(final int min) {
+        this.min = min;
     }
 
     /**
@@ -46,10 +64,28 @@ public class ItemDrop {
     }
 
     /**
+     * Updates the max range
+     *
+     * @param max the new value
+     */
+    public void setMax(final int max) {
+        this.max = max;
+    }
+
+    /**
      * @return the max amount
      */
     public final int getMax() {
         return this.max;
+    }
+
+    /**
+     * Updates the weight
+     *
+     * @param weight the new value
+     */
+    public void setWeight(final double weight) {
+        this.weight = weight;
     }
 
     /**

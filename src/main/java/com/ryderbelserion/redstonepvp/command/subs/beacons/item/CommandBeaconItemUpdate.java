@@ -75,10 +75,17 @@ public class CommandBeaconItemUpdate extends Command {
             return;
         }
 
-        beacon.addItem(item, position, data.getFloatArgument("weight"), true);
+        final int min = data.getIntegerArgument("min");
+        final int max = data.getIntegerArgument("max");
+        final float weight = data.getFloatArgument("weight");
+
+        beacon.addItem(item, position, min, max, weight, true);
 
         Messages.beacon_drop_added.sendMessage(player, new HashMap<>() {{
             put("{position}", String.valueOf(position));
+            put("{min}", String.valueOf(min));
+            put("{max}", String.valueOf(max));
+            put("{weight}", String.valueOf(weight));
             put("{name}", name);
         }});
     }
@@ -109,13 +116,14 @@ public class CommandBeaconItemUpdate extends Command {
 
                            return builder.buildFuture();
                         })
-                .then(argument("weight", FloatArgumentType.floatArg())
-                        .suggests((ctx, builder) -> suggestDoubles(builder))
+                .then(argument("min", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder))
+                .then(argument("max", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder))
+                .then(argument("weight", FloatArgumentType.floatArg()).suggests((ctx, builder) -> suggestDoubles(builder))
                 .executes(context -> {
                    execute(new CommandData(context));
 
                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                })))).build();
+                })))))).build();
     }
 
     @Override

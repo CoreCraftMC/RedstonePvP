@@ -1,6 +1,7 @@
 package com.ryderbelserion.redstonepvp.command.subs.beacons.item;
 
 import com.mojang.brigadier.arguments.FloatArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
+import java.util.HashMap;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconItemSet extends Command {
@@ -60,9 +62,18 @@ public class CommandBeaconItemSet extends Command {
             return;
         }
 
-        beacon.setItem(name, item, data.getFloatArgument("weight"), true);
+        final int min = data.getIntegerArgument("min");
+        final int max = data.getIntegerArgument("max");
+        final float weight = data.getFloatArgument("weight");
 
-        Messages.beacon_drop_set.sendMessage(player, "{name}", name);
+        beacon.setItem(name, item, min, max, weight, true);
+
+        Messages.beacon_drop_set.sendMessage(player, new HashMap<>() {{
+            put("{min}", String.valueOf(min));
+            put("{max}", String.valueOf(max));
+            put("{weight}", String.valueOf(weight));
+            put("{name}", name);
+        }});
     }
 
     @Override
@@ -80,13 +91,17 @@ public class CommandBeaconItemSet extends Command {
 
                             return builder.buildFuture();
                         })
+                .then(argument("min", IntegerArgumentType.integer())
+                        .suggests((ctx, builder) -> suggestIntegers(builder))
+                .then(argument("max", IntegerArgumentType.integer())
+                        .suggests((ctx, builder) -> suggestIntegers(builder))
                 .then(argument("weight", FloatArgumentType.floatArg())
                         .suggests((ctx, builder) -> suggestDoubles(builder))
                 .executes(context -> {
                    execute(new CommandData(context));
 
                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }))).build();
+                }))))).build();
     }
 
     @Override

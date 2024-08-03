@@ -43,16 +43,6 @@ public class BeaconDrop {
     }
 
     /**
-     * Adds an item to the cache, without writing to the database.
-     *
-     * @param item data for the item
-     * @param weight weight of the item
-     */
-    public void addItem(final String item, final double weight) {
-        addItem(item, 1, weight, false);
-    }
-
-    /**
      * Updates an item in the cache/database.
      *
      * @param position position of the item
@@ -60,17 +50,23 @@ public class BeaconDrop {
      * @param weight weight of the item
      * @param insertData true or false
      */
-    public void addItem(final String item, final int position, final double weight, final boolean insertData) {
-        this.items.put(item, weight);
+    public void addItem(final String item, final int position, final int min, final int max, final double weight, final boolean insertData) {
+        if (item == null) return;
+
+        final ItemDrop itemDrop = new ItemDrop(item, min, max, weight);
+
+        this.items.put(item, itemDrop);
         this.positions.put(item, position);
 
         if (insertData) {
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = this.connector.getConnection()) {
-                    try (PreparedStatement statement = connection.prepareStatement("update beacon_items set item = ?, weight = ? where position = ?")) {
+                    try (PreparedStatement statement = connection.prepareStatement("update beacon_items set item = ?, weight = ?, min = ?, max = ? where position = ?")) {
                         statement.setString(1, item);
                         statement.setDouble(2, weight);
-                        statement.setInt(3, position);
+                        statement.setInt(3, min);
+                        statement.setInt(4, max);
+                        statement.setInt(5, position);
 
                         statement.executeUpdate();
                     }
@@ -89,8 +85,8 @@ public class BeaconDrop {
      * @param weight weight of the item
      * @param insertData true or false
      */
-    public void setItem(final String name, final String item, final double weight, final boolean insertData) {
-        this.items.put(item, weight);
+    public void setItem(final String name, final String item, final int min, final int max, final double weight, final boolean insertData) {
+        this.items.put(item, new ItemDrop(item, min, max, weight));
 
         if (insertData) {
             CompletableFuture.runAsync(() -> {

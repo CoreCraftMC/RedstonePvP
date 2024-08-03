@@ -54,7 +54,7 @@ public class BeaconManager {
                         if (generatedKeys.next()) {
                             final BeaconDrop drop = beacon.getDrop();
 
-                            drop.addItem(null, generatedKeys.getInt(1), 0.0, false);
+                            drop.addItem(null, generatedKeys.getInt(1), 0, 0, 0.0, false);
                         }
                     }
                 }
@@ -88,7 +88,7 @@ public class BeaconManager {
                         while (resultSet.next()) {
                             final Beacon drop = new Beacon(resultSet.getString("id"), resultSet.getString("location"), resultSet.getInt("time"));
 
-                            try (PreparedStatement next = connection.prepareStatement("select weight,item,position from beacon_items where id = ?")) {
+                            try (PreparedStatement next = connection.prepareStatement("select * from beacon_items where id = ?")) {
                                 next.setString(1, drop.getName());
 
                                 final ResultSet query = next.executeQuery();
@@ -97,10 +97,12 @@ public class BeaconManager {
                                     float weight = query.getFloat("weight");
                                     String item = query.getString("item");
                                     int position = query.getInt("position");
+                                    int min = query.getInt("min");
+                                    int max = query.getInt("max");
 
                                     final BeaconDrop beaconDrop = drop.getDrop();
 
-                                    beaconDrop.addItem(item, position, weight, false);
+                                    beaconDrop.addItem(item, position, min, max, weight, false);
                                 }
                             }
 
