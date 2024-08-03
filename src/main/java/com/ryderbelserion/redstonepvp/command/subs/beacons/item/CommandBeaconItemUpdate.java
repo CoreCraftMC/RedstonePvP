@@ -122,8 +122,8 @@ public class CommandBeaconItemUpdate extends Command {
             return builder.buildFuture();
         });
 
-        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg3 = argument("min", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder));
-        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg4 = argument("max", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder));
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg3 = argument("min", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder, 1, 60));
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg4 = argument("max", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder, 1, 60));
         final RequiredArgumentBuilder<CommandSourceStack, Float> arg5 = argument("weight", FloatArgumentType.floatArg()).suggests((ctx, builder) -> suggestDoubles(builder)).executes(context -> {
             execute(new CommandData(context));
 

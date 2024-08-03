@@ -40,7 +40,7 @@ public class CommandBeaconTIme extends Command {
             return builder.buildFuture();
         });
 
-        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg2 = argument("time", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder)).executes(context -> {
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg2 = argument("time", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder, 1, 60)).executes(context -> {
             execute(new CommandData(context));
 
             return com.mojang.brigadier.Command.SINGLE_SUCCESS;
