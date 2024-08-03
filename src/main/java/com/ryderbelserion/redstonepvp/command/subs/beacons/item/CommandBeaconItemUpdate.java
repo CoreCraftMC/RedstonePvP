@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
@@ -21,7 +22,6 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
-
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconItemUpdate extends Command {
@@ -48,7 +48,7 @@ public class CommandBeaconItemUpdate extends Command {
 
         final String name = data.getStringArgument("name");
 
-        if (!BeaconManager.hasValue(name)) {
+        if (!BeaconManager.hasBeacon(name)) {
             Messages.beacon_location_doesnt_exist.sendMessage(player, "{name}", name);
 
             return;
@@ -58,7 +58,7 @@ public class CommandBeaconItemUpdate extends Command {
 
         final int position = data.getIntegerArgument("position");
 
-        if (!BeaconManager.getPositionsById(name).contains(position)) {
+        if (!beacon.hasPosition(position)) {
             Messages.beacon_drop_doesnt_exist.sendMessage(player, new HashMap<>() {{
                 put("{position}", String.valueOf(position));
                 put("{name}", name);
@@ -69,7 +69,7 @@ public class CommandBeaconItemUpdate extends Command {
 
         final String item = ItemUtil.toBase64(itemStack);
 
-        if (beacon.containsItem(item)) {
+        if (beacon.hasItem(item)) {
             Messages.beacon_drop_exists.sendMessage(player);
 
             return;
@@ -103,7 +103,9 @@ public class CommandBeaconItemUpdate extends Command {
                         .suggests((ctx, builder) -> {
                            final String name = ctx.getLastChild().getArgument("name", String.class);
 
-                           BeaconManager.getPositionsById(name).forEach(builder::suggest);
+                           BeaconDrop beacon = BeaconManager.getBeacon(name).getDrop();
+
+                           beacon.getPositions().values().forEach(builder::suggest);
 
                            return builder.buildFuture();
                         })

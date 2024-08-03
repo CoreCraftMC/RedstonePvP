@@ -2,7 +2,6 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.vital.paper.commands.Command;
@@ -17,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
-
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconSet extends Command {
@@ -46,7 +44,7 @@ public class CommandBeaconSet extends Command {
 
         final String name = data.getStringArgument("name");
 
-        if (BeaconManager.hasValue(name) || BeaconManager.hasLocation(location)) {
+        if (BeaconManager.hasBeacon(name) || BeaconManager.hasLocation(location)) {
             Messages.beacon_location_exists.sendMessage(player, "{name}", name);
 
             return;

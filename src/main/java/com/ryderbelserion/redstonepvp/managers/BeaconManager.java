@@ -25,8 +25,6 @@ public class BeaconManager {
 
     private static Map<String, Beacon> beaconDrops = new HashMap<>();
 
-    private static Map<String, ArrayList<Integer>> positions = new HashMap<>();
-
     /**
      * Adds a location to the cache and the database.
      *
@@ -34,8 +32,7 @@ public class BeaconManager {
      * @param location the location to add
      */
     public static void addLocation(final String name, final String location, final int time) {
-        // add to cache to ensure better performance in future checks. use a random uuid for the hashmap as we don't care what's there.
-        beaconDrops.put(name, new Beacon(name, location, time));
+        final Beacon beacon = new Beacon(name, location, time);
 
         // run off the main thread.
         CompletableFuture.runAsync(() -> {
@@ -53,10 +50,12 @@ public class BeaconManager {
 
                     statement.executeUpdate();
 
-                    final ResultSet generatedKeys = statement.getGeneratedKeys();
+                    try (final ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            final BeaconDrop drop = beacon.getDrop();
 
-                    if (generatedKeys.next()) {
-                        BeaconManager.addPosition(name, generatedKeys.getInt(1));
+                            drop.addItem(null, generatedKeys.getInt(1), 0.0, false);
+                        }
                     }
                 }
             } catch (SQLException exception) {
@@ -65,6 +64,9 @@ public class BeaconManager {
                 exception.printStackTrace();
             }
         });
+
+        // add to cache to ensure better performance in future checks. use a random uuid for the hashmap as we don't care what's there.
+        beaconDrops.put(name, beacon);
     }
 
     /**
@@ -112,42 +114,6 @@ public class BeaconManager {
             return beaconDrops;
         }).join();
 
-        positions = CompletableFuture.supplyAsync(() -> {
-            final Map<String, ArrayList<Integer>> positions = new HashMap<>();
-
-            final Connector connector = dataManager.getConnector();
-
-            try (Connection connection = connector.getConnection()) {
-                if (connector.tableExists(connection, "beacon_items")) {
-                    try (PreparedStatement statement = connection.prepareStatement("select position,id from beacon_items")) {
-                        final ResultSet query = statement.executeQuery();
-
-                        while (query.next()) {
-                            final String id = query.getString("id");
-
-                            final boolean hasName = positions.containsKey(id);
-
-                            if (hasName) {
-                                final ArrayList<Integer> numbers = positions.get(id);
-
-                                numbers.add(query.getInt("position"));
-
-                                positions.put(id, numbers);
-                            } else {
-                                positions.put(id, new ArrayList<>() {{
-                                    add(query.getInt("position"));
-                                }});
-                            }
-                        }
-                    }
-                }
-            } catch (SQLException exception) {
-                plugin.getComponentLogger().warn("Failed to fetch the position ids.", exception);
-            }
-
-            return positions;
-        }).join();
-
         //todo() run tasks to start drops.
     }
 
@@ -160,7 +126,6 @@ public class BeaconManager {
         // if name is not null, we remove from the cache.
         if (name != null) {
             beaconDrops.remove(name);
-            positions.remove(name);
 
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = dataManager.getConnector().getConnection()) {
@@ -224,7 +189,8 @@ public class BeaconManager {
      * @param name the name of the location.
      * @return true or false
      */
-    public static boolean hasValue(final String name) {
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean hasBeacon(final String name) {
         return beaconDrops.containsKey(name);
     }
 
@@ -251,74 +217,5 @@ public class BeaconManager {
      */
     public static Map<String, Beacon> getBeaconData() {
         return Collections.unmodifiableMap(beaconDrops);
-    }
-
-    /**
-     * Checks if a position exists.
-     *
-     * @param id the name of the position.
-     * @return true or false
-     */
-    public static boolean hasPosition(final String id) {
-        return positions.containsKey(id);
-    }
-
-    /**
-     * Adds a position to the cache.
-     *
-     * @param id the name of the position
-     * @param position the integer we actually care about
-     */
-    public static void addPosition(final String id, final int position) {
-        if (hasPosition(id)) {
-            ArrayList<Integer> numbers = positions.get(id);
-
-            numbers.add(position);
-
-            positions.put(id, numbers);
-
-            return;
-        }
-
-        positions.put(id, new ArrayList<>() {{
-            add(position);
-        }});
-    }
-
-    /**
-     * Get a list of positions by id.
-     *
-     * @param name the name of the location
-     * @return the list of positions
-     */
-    public static List<Integer> getPositionsById(final String name) {
-        if (!hasPosition(name)) return Collections.emptyList();
-
-        return positions.get(name);
-    }
-
-    /**
-     * Remove a position from the cache.
-     *
-     * @param id the name of the location associated with the position
-     * @param position the position to remove
-     */
-    public static void removePosition(final String id, final int position) {
-        if (hasPosition(id)) {
-            ArrayList<Integer> numbers = positions.get(id);
-
-            numbers.remove(position);
-
-            positions.put(id, numbers);
-        }
-    }
-
-    /**
-     * Get a map of positions.
-     *
-     * @return the map of positions
-     */
-    public static Map<String, ArrayList<Integer>> getPositions() {
-        return Collections.unmodifiableMap(positions);
     }
 }

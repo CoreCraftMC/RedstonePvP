@@ -41,15 +41,17 @@ public class CommandBeaconItemRemove extends Command {
 
         final String name = data.getStringArgument("name");
 
-        if (!BeaconManager.hasValue(name)) {
+        if (!BeaconManager.hasBeacon(name)) {
             Messages.beacon_location_doesnt_exist.sendMessage(player, "{name}", name);
 
             return;
         }
 
+        final BeaconDrop drop = BeaconManager.getBeacon(name).getDrop();
+
         final int position = data.getIntegerArgument("position");
 
-        if (!BeaconManager.getPositionsById(name).contains(position)) {
+        if (!drop.hasPosition(position)) {
             Messages.beacon_drop_doesnt_exist.sendMessage(player, new HashMap<>() {{
                 put("{position}", String.valueOf(position));
                 put("{name}", name);
@@ -58,7 +60,7 @@ public class CommandBeaconItemRemove extends Command {
             return;
         }
 
-        //BeaconManager.getBeacon(name).getDrop().removeItem(position);
+        drop.removeItem(position);
 
         Messages.beacon_drop_removed.sendMessage(player, new HashMap<>() {{
             put("{position}", String.valueOf(position));
@@ -86,7 +88,9 @@ public class CommandBeaconItemRemove extends Command {
                         .suggests((ctx, builder) -> {
                            final String name = ctx.getLastChild().getArgument("name", String.class);
 
-                           BeaconManager.getPositionsById(name).forEach(builder::suggest);
+                            BeaconDrop beacon = BeaconManager.getBeacon(name).getDrop();
+
+                            beacon.getPositions().values().forEach(builder::suggest);
 
                            return builder.buildFuture();
                         })

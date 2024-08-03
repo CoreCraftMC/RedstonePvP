@@ -1,13 +1,11 @@
 package com.ryderbelserion.redstonepvp.api.objects.beacons;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.managers.BeaconManager;
 import com.ryderbelserion.redstonepvp.managers.data.types.Connector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,18 +18,51 @@ public class BeaconDrop {
 
     private final Map<String, Double> items = new HashMap<>();
 
+    private final Map<String, Integer> positions = new HashMap<>();
+
     private final String name;
 
+    /**
+     * Creates a new beacon drop which represents the items.
+     *
+     * @param name the name of the beacon drop
+     */
     public BeaconDrop(final String name) {
         this.name = name;
     }
 
+    /**
+     * Checks if the cache contains the position
+     *
+     * @param position the position number
+     * @return true or false
+     */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public final boolean hasPosition(final int position) {
+        return this.positions.containsValue(position);
+    }
+
+    /**
+     * Adds an item to the cache, without writing to the database.
+     *
+     * @param item data for the item
+     * @param weight weight of the item
+     */
     public void addItem(final String item, final double weight) {
         addItem(item, 1, weight, false);
     }
 
+    /**
+     * Updates an item in the cache/database.
+     *
+     * @param position position of the item
+     * @param item date for the item
+     * @param weight weight of the item
+     * @param insertData true or false
+     */
     public void addItem(final String item, final int position, final double weight, final boolean insertData) {
         this.items.put(item, weight);
+        this.positions.put(item, position);
 
         if (insertData) {
             CompletableFuture.runAsync(() -> {
@@ -50,23 +81,29 @@ public class BeaconDrop {
         }
     }
 
+    /**
+     * Sets an item to the cache/database.
+     *
+     * @param name name of the drop location
+     * @param item data for the item
+     * @param weight weight of the item
+     * @param insertData true or false
+     */
     public void setItem(final String name, final String item, final double weight, final boolean insertData) {
         this.items.put(item, weight);
 
         if (insertData) {
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = this.connector.getConnection()) {
-                    try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(id, item, weight) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                    try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(id, item, weight) values (?, ?, ?) returning position")) {
                         statement.setString(1, name);
                         statement.setString(2, item);
                         statement.setDouble(3, weight);
 
-                        statement.executeUpdate();
-
-                        final ResultSet generatedKeys = statement.getGeneratedKeys();
-
-                        if (generatedKeys.next()) {
-                            BeaconManager.addPosition(name, generatedKeys.getInt(1));
+                        try (final ResultSet generatedKeys = statement.executeQuery()) {
+                            if (generatedKeys.next()) {
+                                this.positions.put(item, generatedKeys.getInt(1));
+                            }
                         }
                     }
                 } catch (SQLException exception) {
@@ -76,23 +113,31 @@ public class BeaconDrop {
         }
     }
 
-    public boolean containsItem(final String item) {
+    /**
+     * Checks if the cache contains an item.
+     *
+     * @param item the item to remove
+     * @return true or false
+     */
+    public final boolean hasItem(final String item) {
         return this.items.containsKey(item);
     }
 
+    /**
+     * Removes an item from the hashmaps and database.
+     *
+     * @param item the item to remove
+     */
     public void removeItem(final String item) {
         this.items.remove(item);
+        this.positions.remove(item);
 
         CompletableFuture.runAsync(() -> {
             try (Connection connection = this.connector.getConnection()) {
-                try (PreparedStatement statement = connection.prepareStatement("delete from beacon_items where item = ? returning position,id")) {
+                try (PreparedStatement statement = connection.prepareStatement("delete from beacon_items where item = ?")) {
                     statement.setString(1, item);
 
-                    try (ResultSet generatedKeys = statement.executeQuery()) {
-                        if (generatedKeys.next()) {
-                            BeaconManager.removePosition(generatedKeys.getString("id"), generatedKeys.getInt("position"));
-                        }
-                    }
+                    statement.executeUpdate();
                 }
             } catch (SQLException exception) {
                 plugin.getComponentLogger().warn("Failed to delete item {}", item);
@@ -102,10 +147,58 @@ public class BeaconDrop {
         });
     }
 
+    /**
+     * Remove item by position
+     *
+     * @param position the position
+     */
+    public void removeItem(final int position) {
+        String item = "";
+
+        for (Map.Entry<String, Integer> entry : this.positions.entrySet()) {
+            if (position == entry.getValue()) {
+                item = entry.getKey();
+
+                break;
+            }
+        }
+
+        removeItem(item);
+    }
+
+    /**
+     * Gets the position by using the item
+     *
+     * @param item the item string
+     * @return a number
+     */
+    public final int getPosition(final String item) {
+        return this.positions.get(item);
+    }
+
+    /**
+     * An unmodifiable map of the current positions.
+     *
+     * @return map of the current positions
+     */
+    public final Map<String, Integer> getPositions() {
+        return Collections.unmodifiableMap(this.positions);
+    }
+
+    /**
+     * An unmodifiable map of the current items.
+     *
+     * @return map of the current items
+     */
     public final Map<String, Double> getItems() {
         return Collections.unmodifiableMap(this.items);
     }
 
+    /**
+     * Gets the name of the drop location.
+     *
+     * @return the name of the location
+     */
     public final String getName() {
         return this.name;
     }

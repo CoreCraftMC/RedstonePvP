@@ -44,7 +44,7 @@ public class CommandBeaconItemSet extends Command {
 
         final String name = data.getStringArgument("name");
 
-        if (!BeaconManager.hasValue(name)) {
+        if (!BeaconManager.hasBeacon(name)) {
             Messages.beacon_location_doesnt_exist.sendMessage(player, "{name}", name);
 
             return;
@@ -54,7 +54,7 @@ public class CommandBeaconItemSet extends Command {
 
         final String item = ItemUtil.toBase64(itemStack);
 
-        if (beacon.containsItem(item)) {
+        if (beacon.hasItem(item)) {
             Messages.beacon_drop_exists.sendMessage(player);
 
             return;
