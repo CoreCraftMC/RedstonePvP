@@ -5,6 +5,14 @@ import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.BeaconDrop;
 import com.ryderbelserion.redstonepvp.managers.data.DataManager;
 import com.ryderbelserion.redstonepvp.managers.data.types.Connector;
+import com.ryderbelserion.redstonepvp.utils.MiscUtils;
+import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Waterlogged;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,6 +75,109 @@ public class BeaconManager {
 
         // add to cache to ensure better performance in future checks. use a random uuid for the hashmap as we don't care what's there.
         beaconDrops.put(name, beacon);
+    }
+
+    public static void startTasks() {
+        beaconDrops.forEach((name, beacon) -> {
+            final Location location = MiscUtils.location(beacon.getRawLocation());
+
+            final Block block = location.clone().add(0.0, 2, 0.0).getBlock();
+
+            final Block water = block.getLocation().clone().add(0.0, 1, 0.0).getBlock();
+
+            final BlockData blockData = block.getBlockData();
+
+            //final List<ItemDrop> drops = beacon.getDrop().getItems();
+
+            new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
+                final long startTime = System.currentTimeMillis();
+
+                @Override
+                public void run() {
+                    // Event is cancelled.
+                    if (isCancelled()) {
+                        return;
+                    }
+
+                    final long elapsedTime = System.currentTimeMillis() - this.startTime;
+
+                    // 0 seconds.
+                    if (elapsedTime == 0) {
+                        MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+                    }
+
+                    // less than 1 second.
+                    if (elapsedTime <= 1000) {
+                        MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+
+                        MiscUtils.getDrop(location, null);
+                    }
+
+                    // 1.1 second.
+                    if (elapsedTime == 1100) {
+                        MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+
+                        water.setType(Material.WATER, true);
+                    }
+
+                    // 1.5 seconds.
+                    if (elapsedTime == 1500) {
+                        water.setType(Material.AIR, true);
+
+                        if (blockData instanceof Waterlogged waterlogged) {
+                            waterlogged.setWaterlogged(false);
+                        }
+                    }
+
+                    // start phase 2 at 3 seconds.
+                    if (elapsedTime >= 3000 && elapsedTime <= 4000) {
+                        MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+
+                        MiscUtils.getDrop(location, null);
+                    }
+
+                    // spawn water on top of the slab to push items out when it reaches 4.1 seconds.
+                    if (elapsedTime == 4100) {
+                        MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+
+                        water.setType(Material.WATER, true);
+                    }
+
+                    // remove water at 4.5 seconds.
+                    if (elapsedTime == 4500) {
+                        water.setType(Material.AIR, true);
+
+                        if (blockData instanceof Waterlogged waterlogged) {
+                            waterlogged.setWaterlogged(false);
+                        }
+                    }
+
+                    // start phase 2 at 5.5 seconds.
+                    if (elapsedTime >= 5500 && elapsedTime <= 6500) {
+                        MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+
+                        MiscUtils.getDrop(location, null);
+                    }
+
+                    // spawn water on top of the slab to push items out when it reaches 6.6 seconds.
+                    if (elapsedTime == 6600) {
+                        MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+
+                        water.setType(Material.WATER, true);
+                    }
+
+                    if (elapsedTime >= 6900) {
+                        water.setType(Material.AIR, true);
+
+                        if (blockData instanceof Waterlogged waterlogged) {
+                            waterlogged.setWaterlogged(false);
+                        }
+
+                        cancel();
+                    }
+                }
+            }.runAtFixedRate(plugin, 0, 1);
+        });
     }
 
     /**

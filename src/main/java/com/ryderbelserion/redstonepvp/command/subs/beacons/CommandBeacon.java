@@ -124,14 +124,16 @@ public class CommandBeacon extends Command {
 
                         final ButtonProperty itemButton = item_menu.getButtons().getFirst();
 
-                        BeaconManager.getBeacon(beaconName).getDrop().getItems().forEach((key, weight) -> {
+                        BeaconManager.getBeacon(beaconName).getDrop().getItems().forEach((key, itemDrop) -> {
                             // if null, don't add anything.
                             if (key == null) return;
 
                             final ItemBuilder drop = itemButton.build(key, false);
 
                             Map<String, String> placeholders = new HashMap<>() {{
-                                put("{weight}", String.valueOf(weight));
+                                put("{weight}", String.valueOf(itemDrop.getWeight()));
+                                put("{min}", String.valueOf(itemDrop.getMin()));
+                                put("{max}", String.valueOf(itemDrop.getMax()));
                                 put("{name}", drop.getStrippedName());
                             }};
 
@@ -227,19 +229,19 @@ public class CommandBeacon extends Command {
 
                 // Run start sound.
                 if (this.counter == 0) {
-                    playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+                    //playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
                 }
 
                 // start phase 1
                 if (this.counter <= 10) {
-                    playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+                    //playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
 
-                    getDrop(location, drops);
+                    //getDrop(location, drops);
                 }
 
                 // spawn water on top of the slab to push items out when it reaches 15.
                 if (this.counter == 11) {
-                    playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+                    //playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
 
                     waterBlock.setType(Material.WATER, true);
                 }
@@ -255,14 +257,14 @@ public class CommandBeacon extends Command {
 
                 // start phase 2 at 30
                 if (this.counter >= 30 && this.counter <= 40) {
-                    playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+                    //playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
 
-                    getDrop(location, drops);
+                    //getDrop(location, drops);
                 }
 
                 // spawn water on top of the slab to push items out when it reaches 15.
                 if (this.counter == 41) {
-                    playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+                    //playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
 
                     waterBlock.setType(Material.WATER, true);
                 }
@@ -278,14 +280,14 @@ public class CommandBeacon extends Command {
 
                 // start phase 3
                 if (this.counter >= 55 && this.counter <= 65) {
-                    playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+                    //playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
 
-                    getDrop(location, drops);
+                    //getDrop(location, drops);
                 }
 
                 // spawn water on top of the slab to push items out when it reaches 45.
                 if (this.counter == 66) {
-                    playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+                    //playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
 
                     waterBlock.setType(Material.WATER, true);
                 }
@@ -306,30 +308,5 @@ public class CommandBeacon extends Command {
                 this.counter++;
             }
         }.runAtFixedRate(this.plugin, 0, 10);
-    }
-
-    private void playSound(final Location location, final Sound sound) {
-        location.getNearbyPlayers(7.5).forEach(player -> player.playSound(location, sound, 1f, 1f));
-    }
-
-    private void getDrop(final Location location, final List<ItemDrop> drops) {
-        double weight = 0.0;
-
-        for (ItemDrop itemDrop : drops) {
-            weight += itemDrop.getWeight();
-        }
-
-        int index = 0;
-
-        for (double random = ThreadLocalRandom.current().nextDouble() * weight; index < drops.size() - 1; index++) {
-            random -= drops.get(index).getWeight();
-
-            if (random < 0.0) break;
-        }
-
-        final Item item = location.getWorld().dropItemNaturally(location, drops.get(index).getItem());
-
-        item.setCanPlayerPickup(true);
-        item.setCanMobPickup(false);
     }
 }

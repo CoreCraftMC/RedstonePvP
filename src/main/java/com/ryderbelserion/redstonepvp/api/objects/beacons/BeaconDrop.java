@@ -1,13 +1,16 @@
 package com.ryderbelserion.redstonepvp.api.objects.beacons;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import com.ryderbelserion.redstonepvp.managers.data.types.Connector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -16,7 +19,9 @@ public class BeaconDrop {
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
     private final Connector connector = this.plugin.getDataManager().getConnector();
 
-    private final Map<String, Double> items = new HashMap<>();
+    private final List<ItemDrop> drops = new ArrayList<>();
+
+    private final Map<String, ItemDrop> items = new HashMap<>();
 
     private final Map<String, Integer> positions = new HashMap<>();
 
@@ -186,7 +191,7 @@ public class BeaconDrop {
      *
      * @return map of the current items
      */
-    public final Map<String, Double> getItems() {
+    public final Map<String, ItemDrop> getItems() {
         return Collections.unmodifiableMap(this.items);
     }
 
