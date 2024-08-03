@@ -4,11 +4,13 @@ import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ItemDrop {
 
-    private final ItemBuilder itemBuilder;
+    private ItemBuilder itemBuilder;
     private int min;
     private int max;
     private double weight;
@@ -22,7 +24,7 @@ public class ItemDrop {
         this.weight = section.getDouble("weight", 10.0);
     }
 
-    public ItemDrop(Material material, int min, int max, double weight) {
+    public ItemDrop(final Material material, final int min, final int max, final double weight) {
         this.itemBuilder = new ItemBuilder().withType(material);
 
         this.min = min;
@@ -31,8 +33,10 @@ public class ItemDrop {
         this.weight = weight;
     }
 
-    public ItemDrop(String item, int min, int max, double weight) {
-        this.itemBuilder = new ItemBuilder().fromBase64(item);
+    public ItemDrop(@Nullable final String item, final int min, final int max, final double weight) {
+        if (item != null) {
+            this.itemBuilder = new ItemBuilder().fromBase64(item);
+        }
 
         this.min = min;
         this.max = max;
@@ -45,6 +49,15 @@ public class ItemDrop {
      */
     public final ItemStack getItem() {
         return this.itemBuilder.setAmount(ThreadLocalRandom.current().nextInt(this.min, this.max)).getStack();
+    }
+
+    /**
+     * Sets the base64 string
+     *
+     * @param item the item
+     */
+    public final void setItem(final String item) {
+        this.itemBuilder = new ItemBuilder().fromBase64(item);
     }
 
     /**

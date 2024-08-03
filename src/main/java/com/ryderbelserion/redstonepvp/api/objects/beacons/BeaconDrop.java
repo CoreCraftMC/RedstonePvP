@@ -7,10 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -18,8 +16,6 @@ public class BeaconDrop {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
     private final Connector connector = this.plugin.getDataManager().getConnector();
-
-    private final List<ItemDrop> drops = new ArrayList<>();
 
     private final Map<String, ItemDrop> items = new HashMap<>();
 
@@ -56,8 +52,6 @@ public class BeaconDrop {
      * @param insertData true or false
      */
     public void addItem(final String item, final int position, final int min, final int max, final double weight, final boolean insertData) {
-        if (item == null) return;
-
         final ItemDrop itemDrop = new ItemDrop(item, min, max, weight);
 
         this.items.put(item, itemDrop);

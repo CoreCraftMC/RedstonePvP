@@ -70,9 +70,7 @@ public class PlayerDropsModule extends ModuleHandler {
 
         final ItemDrop itemDrop = getDrop();
 
-        if (itemDrop == null) {
-            return;
-        }
+        if (itemDrop == null) return;
 
         player.getWorld().dropItem(target.getLocation(), itemDrop.getItem());
     }
