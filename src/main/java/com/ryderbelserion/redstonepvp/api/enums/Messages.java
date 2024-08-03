@@ -25,11 +25,15 @@ public enum Messages {
     no_item_in_hand(Locale.no_item_in_hand),
     must_be_console_sender(Locale.must_be_console_sender),
     not_a_player(Locale.not_a_player),
+    player_not_found(Locale.player_not_found),
     not_a_block(Locale.not_a_block),
     item_frame_bypass(Locale.item_frame_bypass),
     anvil_repair_not_enough(Locale.anvil_repair_not_enough),
     anvil_repair_no_damage(Locale.anvil_repair_no_damage),
     anvil_repair_not_valid(Locale.anvil_repair_not_valid),
+
+    menu_not_found(Locale.menu_not_found),
+
     beacon_location_added(Locale.beacon_location_added),
     beacon_location_removed(Locale.beacon_location_removed),
     beacon_location_exists(Locale.beacon_location_exists),

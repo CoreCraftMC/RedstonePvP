@@ -38,6 +38,9 @@ public class Locale implements SettingsHolder {
 
     public static final Property<String> not_a_player = newProperty("root.not-a-player", "{prefix}<white>You must be a player to run this command.");
 
+    @Comment("A list of available placeholders: {name}")
+    public static final Property<String> player_not_found = newProperty("root.player-not-found", "{prefix}<white>The player <red>{name} <white>was not found.");
+
     public static final Property<String> not_a_block = newProperty("root.not-a-block", "{prefix}<white>That is not a block.");
 
     public static final Property<String> no_item_in_hand = newProperty("root.no-item-in-hand", "{prefix}<white>You have no item or valid item in hand.");
@@ -51,6 +54,9 @@ public class Locale implements SettingsHolder {
     public static final Property<String> anvil_repair_no_damage = newProperty("root.anvil-repair.no-damage", "{prefix}<white>The item you are trying to repair has no damage.");
 
     public static final Property<String> anvil_repair_not_valid = newProperty("root.anvil-repair.not-valid", "{prefix}<white>Cannot repair this item as it has no durability.");
+
+    @Comment("A list of available placeholders: {name}")
+    public static final Property<String> menu_not_found = newProperty("root.menu-not-found", "{prefix}<white>Menu named <red>{name} <white>could not be found.");
 
     @Comment("A list of available placeholders: {name}")
     public static final Property<String> beacon_location_added = newProperty("root.beacon.location.added", "{prefix}<white>You have added a new beacon drop location with the name <red>{name}.");

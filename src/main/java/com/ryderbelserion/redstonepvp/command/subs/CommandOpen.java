@@ -32,25 +32,27 @@ public class CommandOpen extends Command {
 
     @Override
     public void execute(final CommandData data) {
-        final String name = data.getStringArgument("name");
+        final String arg1 = data.getStringArgument("name");
 
-        if (name.isEmpty() || !MenuManager.getGuis().containsKey(name)) {
-            //todo() add menu not found message.
+        if (arg1.isEmpty() || !MenuManager.getGuis().containsKey(arg1)) {
+            Messages.menu_not_found.sendMessage(data.getCommandSender(), "{name}", arg1);
 
             return;
         }
 
-        final Player player = this.server.getPlayer(data.getStringArgument("player"));
+        final String arg2 = data.getStringArgument("player");
+
+        final Player player = this.server.getPlayer(arg2);
 
         if (player == null) {
-            //todo() add player not found message.
+            Messages.menu_not_found.sendMessage(data.getCommandSender(), "{name}", arg2);
 
             return;
         }
 
-        final GuiProperty property = MenuManager.getGui(name);
+        final GuiProperty property = MenuManager.getGui(arg1);
 
-        if (name.equalsIgnoreCase(ConfigManager.getConfig().getProperty(Config.main_menu_name))) {
+        if (arg1.equalsIgnoreCase(ConfigManager.getConfig().getProperty(Config.main_menu_name))) {
             final Gui gui = Gui.gui().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
                     .setTitle(property.getGuiTitle())
                     .setRows(property.getGuiRows())
