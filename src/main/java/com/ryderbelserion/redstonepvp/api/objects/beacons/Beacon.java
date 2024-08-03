@@ -5,7 +5,7 @@ public class Beacon {
     private final String rawLocation;
     private final BeaconDrop drop;
     private final String name;
-    private final int time;
+    private int time;
 
     public Beacon(final String name, final String rawLocation, final int time) {
         this.name = name;
@@ -31,5 +31,9 @@ public class Beacon {
 
     public final int getTime() {
         return this.time;
+    }
+
+    public void setTime(final int time) {
+        this.time = time;
     }
 }
