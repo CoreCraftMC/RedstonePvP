@@ -3,6 +3,8 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons.item;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
@@ -83,25 +85,23 @@ public class CommandBeaconItemSet extends Command {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("set")
-                .requires(source -> source.getSender().hasPermission(getPermission()))
-                .then(argument("name", StringArgumentType.string())
-                        .suggests((ctx, builder) -> {
-                            BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
+        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("set").requires(source -> source.getSender().hasPermission(getPermission()));
 
-                            return builder.buildFuture();
-                        })
-                .then(argument("min", IntegerArgumentType.integer())
-                        .suggests((ctx, builder) -> suggestIntegers(builder))
-                .then(argument("max", IntegerArgumentType.integer())
-                        .suggests((ctx, builder) -> suggestIntegers(builder))
-                .then(argument("weight", FloatArgumentType.floatArg())
-                        .suggests((ctx, builder) -> suggestDoubles(builder))
-                .executes(context -> {
-                   execute(new CommandData(context));
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("name", StringArgumentType.string()).suggests((ctx, builder) -> {
+            BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
 
-                   return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }))))).build();
+            return builder.buildFuture();
+        });
+
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg2 = argument("min", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder));
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg3 = argument("max", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder));
+        final RequiredArgumentBuilder<CommandSourceStack, Float> arg4 = argument("weight", FloatArgumentType.floatArg()).suggests((ctx, builder) -> suggestDoubles(builder)).executes(context -> {
+            execute(new CommandData(context));
+
+            return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+        });
+
+        return root.then(arg1.then(arg2.then(arg3.then(arg4)))).build();
     }
 
     @Override

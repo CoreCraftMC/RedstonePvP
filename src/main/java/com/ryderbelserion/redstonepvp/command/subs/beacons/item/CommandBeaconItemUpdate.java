@@ -7,6 +7,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
@@ -97,7 +98,7 @@ public class CommandBeaconItemUpdate extends Command {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("update");
+        LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("update").requires(source -> source.getSender().hasPermission(getPermission()));
 
         final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("name", StringArgumentType.string()).suggests((ctx, builder) -> {
             BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
@@ -105,25 +106,31 @@ public class CommandBeaconItemUpdate extends Command {
             return builder.buildFuture();
         });
 
-        final RequiredArgumentBuilder<CommandSourceStack, String> arg2 = argument("position", StringArgumentType.string()).suggests((ctx, builder) -> {
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg2 = argument("position", IntegerArgumentType.integer()).suggests((ctx, builder) -> {
             final String name = ctx.getLastChild().getArgument("name", String.class);
 
-            BeaconDrop beacon = BeaconManager.getBeacon(name).getDrop();
+            Beacon beacon = BeaconManager.getBeacon(name);
 
-            beacon.getPositions().values().forEach(builder::suggest);
+            if (beacon != null) {
+                BeaconDrop drop = beacon.getDrop();
+
+                if (drop != null) {
+                    drop.getPositions().values().forEach(builder::suggest);
+                }
+            }
 
             return builder.buildFuture();
         });
 
         final RequiredArgumentBuilder<CommandSourceStack, Integer> arg3 = argument("min", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder));
         final RequiredArgumentBuilder<CommandSourceStack, Integer> arg4 = argument("max", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder));
-        final RequiredArgumentBuilder<CommandSourceStack, Float> arg5 = argument("weight", FloatArgumentType.floatArg()).suggests((ctx, builder) -> suggestDoubles(builder));
+        final RequiredArgumentBuilder<CommandSourceStack, Float> arg5 = argument("weight", FloatArgumentType.floatArg()).suggests((ctx, builder) -> suggestDoubles(builder)).executes(context -> {
+            execute(new CommandData(context));
 
-        return root.requires(source -> source.getSender().hasPermission(getPermission())).then(arg1.then(arg2.then(arg3.then(arg4.then(arg5).executes(context -> {
-                   execute(new CommandData(context));
+            return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+        });
 
-                   return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }))))).build();
+        return root.then(arg1.then(arg2.then(arg3.then(arg4.then(arg5))))).build();
     }
 
     @Override
