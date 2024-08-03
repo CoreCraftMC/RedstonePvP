@@ -35,7 +35,7 @@ public class BeaconManager {
 
     private static Map<String, Beacon> beaconDrops = new HashMap<>();
 
-    private static Map<String, ScheduledTask> beaconTasks = new HashMap<>();
+    private static final Map<String, ScheduledTask> beaconTasks = new HashMap<>();
 
     /**
      * Adds a location to the cache and the database.
@@ -95,106 +95,7 @@ public class BeaconManager {
             beaconTasks.clear();
         }
 
-        beaconDrops.forEach((name, beacon) -> {
-            final Location location = MiscUtils.location(beacon.getRawLocation());
-
-            final Block block = location.clone().add(0.0, 2, 0.0).getBlock();
-
-            final Block water = block.getLocation().clone().add(0.0, 1, 0.0).getBlock();
-
-            final BlockData blockData = block.getBlockData();
-
-            final List<ItemDrop> drops = beacon.getDrop().getItemDrops();
-
-            beaconTasks.put(name, new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
-                final long startTime = System.currentTimeMillis();
-
-                @Override
-                public void run() {
-                    // Event is cancelled.
-                    if (isCancelled()) {
-                        return;
-                    }
-
-                    final long elapsedTime = System.currentTimeMillis() - this.startTime;
-
-                    // 0 seconds.
-                    if (elapsedTime == 0) {
-                        MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
-                    }
-
-                    // less than 1 second.
-                    if (elapsedTime <= 1000) {
-                        MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-
-                        MiscUtils.getDrop(location, drops);
-                    }
-
-                    // 1.1 second.
-                    if (elapsedTime == 1100) {
-                        MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
-
-                        water.setType(Material.WATER, true);
-                    }
-
-                    // 1.5 seconds.
-                    if (elapsedTime == 1500) {
-                        water.setType(Material.AIR, true);
-
-                        if (blockData instanceof Waterlogged waterlogged) {
-                            waterlogged.setWaterlogged(false);
-                        }
-                    }
-
-                    // start phase 2 at 3 seconds.
-                    if (elapsedTime >= 3000 && elapsedTime <= 4000) {
-                        MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-
-                        MiscUtils.getDrop(location, drops);
-                    }
-
-                    // spawn water on top of the slab to push items out when it reaches 4.1 seconds.
-                    if (elapsedTime == 4100) {
-                        MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
-
-                        water.setType(Material.WATER, true);
-                    }
-
-                    // remove water at 4.5 seconds.
-                    if (elapsedTime == 4500) {
-                        water.setType(Material.AIR, true);
-
-                        if (blockData instanceof Waterlogged waterlogged) {
-                            waterlogged.setWaterlogged(false);
-                        }
-                    }
-
-                    // start phase 2 at 5.5 seconds.
-                    if (elapsedTime >= 5500 && elapsedTime <= 6500) {
-                        MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
-
-                        MiscUtils.getDrop(location, drops);
-                    }
-
-                    // spawn water on top of the slab to push items out when it reaches 6.6 seconds.
-                    if (elapsedTime == 6600) {
-                        MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
-
-                        water.setType(Material.WATER, true);
-                    }
-
-                    if (elapsedTime >= 6900) {
-                        water.setType(Material.AIR, true);
-
-                        if (blockData instanceof Waterlogged waterlogged) {
-                            waterlogged.setWaterlogged(false);
-                        }
-
-                        cancel();
-                    }
-                }
-            }.runAtFixedRate(plugin, 0, beacon.getTime() * 20L)); // 15 * 20 = 300, which is 15 seconds. 1 minute = 60 seconds/1200 ticks, 5 minutes = 6000 ticks
-        });
+        beaconDrops.forEach((name, beacon) -> scheduleTask(name, beacon, MiscUtils.location(beacon.getRawLocation())));
     }
 
     /**
@@ -216,7 +117,7 @@ public class BeaconManager {
                         while (resultSet.next()) {
                             final Beacon drop = new Beacon(resultSet.getString("id"), resultSet.getString("location"), resultSet.getInt("time"));
 
-                            try (PreparedStatement next = connection.prepareStatement("select * from beacon_items where id = ?")) {
+                            try (PreparedStatement next = connection.prepareStatement("select * from beacon_items where id=?")) {
                                 next.setString(1, drop.getName());
 
                                 final ResultSet query = next.executeQuery();
@@ -244,8 +145,6 @@ public class BeaconManager {
 
             return beaconDrops;
         }).join();
-
-        //todo() run tasks to start drops.
     }
 
     /**
@@ -260,7 +159,7 @@ public class BeaconManager {
 
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = dataManager.getConnector().getConnection()) {
-                    try (PreparedStatement statement = connection.prepareStatement("delete from beacon_locations where id = ?")) {
+                    try (PreparedStatement statement = connection.prepareStatement("delete from beacon_locations where id=?")) {
                         statement.setString(1, name);
 
                         statement.executeUpdate();
@@ -302,6 +201,154 @@ public class BeaconManager {
         }
 
         return beaconDrops.keySet().stream().toList();
+    }
+
+    /**
+     * Updates the beacon drop time.
+     *
+     * @param name name of the drop location
+     * @param time the new time
+     * @param updateDirectly true or false
+     */
+    public static void updateBeaconTime(final String name, final int time, final boolean updateDirectly) {
+        if (updateDirectly) {
+            CompletableFuture.runAsync(() -> {
+                try (Connection connection = dataManager.getConnector().getConnection()) {
+                    try (PreparedStatement statement = connection.prepareStatement("update beacon_locations set time=? where name=?")) {
+                        statement.setInt(1, time);
+                        statement.setString(2, name);
+
+                        statement.executeUpdate();
+                    }
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            });
+        }
+
+        final Beacon beacon = getBeacon(name);
+
+        beacon.setTime(time);
+
+        beaconDrops.put(name, beacon);
+
+        final ScheduledTask task = beaconTasks.get(name);
+
+        if (task != null) {
+            // cancel old task
+            task.cancel();
+
+            beaconTasks.remove(name);
+
+            // schedule new task
+            scheduleTask(name, beacon, MiscUtils.location(beacon.getRawLocation()));
+        }
+    }
+
+    /**
+     * Schedule a task for the beacon drop
+     *
+     * @param name name of the beacon drop location
+     * @param beacon beacon drop of the name
+     * @param location location of the beacon drop
+     */
+    public static void scheduleTask(final String name, final Beacon beacon, final Location location) {
+        final Block block = location.clone().add(0.0, 2, 0.0).getBlock();
+
+        final Block water = block.getLocation().clone().add(0.0, 1, 0.0).getBlock();
+
+        final BlockData blockData = block.getBlockData();
+
+        final List<ItemDrop> drops = beacon.getDrop().getItemDrops();
+
+        beaconTasks.put(name, new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
+            final long startTime = System.currentTimeMillis();
+
+            @Override
+            public void run() {
+                // Event is cancelled.
+                if (isCancelled()) {
+                    return;
+                }
+
+                final long elapsedTime = System.currentTimeMillis() - this.startTime;
+
+                // 0 seconds.
+                if (elapsedTime == 0) {
+                    MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+                }
+
+                // less than 1 second.
+                if (elapsedTime <= 1000) {
+                    MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+
+                    MiscUtils.getDrop(location, drops);
+                }
+
+                // 1.1 second.
+                if (elapsedTime == 1100) {
+                    MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+
+                    water.setType(Material.WATER, true);
+                }
+
+                // 1.5 seconds.
+                if (elapsedTime == 1500) {
+                    water.setType(Material.AIR, true);
+
+                    if (blockData instanceof Waterlogged waterlogged) {
+                        waterlogged.setWaterlogged(false);
+                    }
+                }
+
+                // start phase 2 at 3 seconds.
+                if (elapsedTime >= 3000 && elapsedTime <= 4000) {
+                    MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+
+                    MiscUtils.getDrop(location, drops);
+                }
+
+                // spawn water on top of the slab to push items out when it reaches 4.1 seconds.
+                if (elapsedTime == 4100) {
+                    MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+
+                    water.setType(Material.WATER, true);
+                }
+
+                // remove water at 4.5 seconds.
+                if (elapsedTime == 4500) {
+                    water.setType(Material.AIR, true);
+
+                    if (blockData instanceof Waterlogged waterlogged) {
+                        waterlogged.setWaterlogged(false);
+                    }
+                }
+
+                // start phase 2 at 5.5 seconds.
+                if (elapsedTime >= 5500 && elapsedTime <= 6500) {
+                    MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
+
+                    MiscUtils.getDrop(location, drops);
+                }
+
+                // spawn water on top of the slab to push items out when it reaches 6.6 seconds.
+                if (elapsedTime == 6600) {
+                    MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+
+                    water.setType(Material.WATER, true);
+                }
+
+                if (elapsedTime >= 6900) {
+                    water.setType(Material.AIR, true);
+
+                    if (blockData instanceof Waterlogged waterlogged) {
+                        waterlogged.setWaterlogged(false);
+                    }
+
+                    cancel();
+                }
+            }
+        }.runAtFixedRate(plugin, 0, beacon.getTime() * 20L)); // 15 * 20 = 300, which is 15 seconds. 1 minute = 60 seconds/1200 ticks, 5 minutes = 6000 ticks
     }
 
     /**
