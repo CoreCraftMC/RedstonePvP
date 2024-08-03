@@ -60,11 +60,11 @@ public class BeaconDrop {
         if (insertData) {
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = this.connector.getConnection()) {
-                    try (PreparedStatement statement = connection.prepareStatement("update beacon_items set item = ?, weight = ?, min = ?, max = ? where position = ?")) {
+                    try (PreparedStatement statement = connection.prepareStatement("update beacon_items set item=?, min=?, max=?, weight=? where position=?")) {
                         statement.setString(1, item);
-                        statement.setDouble(2, weight);
-                        statement.setInt(3, min);
-                        statement.setInt(4, max);
+                        statement.setInt(2, min);
+                        statement.setInt(3, max);
+                        statement.setDouble(4, weight);
                         statement.setInt(5, position);
 
                         statement.executeUpdate();

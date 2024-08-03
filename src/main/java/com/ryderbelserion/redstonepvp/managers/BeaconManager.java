@@ -53,8 +53,11 @@ public class BeaconManager {
                     statement.executeUpdate();
                 }
 
-                try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(id) values (?)", Statement.RETURN_GENERATED_KEYS)) {
+                try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(id, weight, min, max) values (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
                     statement.setString(1, name);
+                    statement.setDouble(2, 0.0);
+                    statement.setInt(3, 0);
+                    statement.setInt(4, 0);
 
                     statement.executeUpdate();
 
