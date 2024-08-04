@@ -1,10 +1,15 @@
 package com.ryderbelserion.redstonepvp.api.objects.beacons;
 
+import com.ryderbelserion.redstonepvp.utils.MiscUtils;
+import java.util.Calendar;
+
 public class Beacon {
 
     private final String rawLocation;
     private final BeaconDrop drop;
     private final String name;
+
+    private Calendar calendar;
     private String time;
 
     public Beacon(final String name, final String rawLocation, final String time) {
@@ -15,6 +20,8 @@ public class Beacon {
         this.rawLocation = rawLocation;
 
         this.time = time;
+
+        setCalendar(MiscUtils.getTimeFromString(time));
     }
 
     public final String getRawLocation() {
@@ -35,5 +42,15 @@ public class Beacon {
 
     public void setTime(final String time) {
         this.time = time;
+
+        setCalendar(MiscUtils.getTimeFromString(time));
+    }
+
+    public void setCalendar(final Calendar calendar) {
+        this.calendar = calendar;
+    }
+
+    public final Calendar getCalendar() {
+        return this.calendar;
     }
 }
