@@ -302,6 +302,16 @@ public class BeaconManager {
         final BlockData blockData = block.getBlockData();
 
         final List<ItemDrop> drops = beacon.getDrop().getItemDrops();
+        // do not continue if drops empty.
+        if (drops.isEmpty()) {
+            // reset the calendar
+            beacon.setCalendar(MiscUtils.getTimeFromString(beacon.getTime()));
+
+            // set active to false
+            beacon.setActive(false);
+
+            return;
+        }
 
         new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
             int counter = 0;
@@ -311,12 +321,6 @@ public class BeaconManager {
                 // Event is cancelled.
                 if (isCancelled()) {
                     return;
-                }
-
-                // cancel if drops empty.
-                //todo() reset calendar timer
-                if (drops.isEmpty()) {
-                    cancel();
                 }
 
                 // 0 seconds.
