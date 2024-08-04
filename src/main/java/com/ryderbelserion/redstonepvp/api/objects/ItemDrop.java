@@ -48,6 +48,8 @@ public class ItemDrop {
      * @return {@link ItemStack}
      */
     public final ItemStack getItem() {
+        if (this.min < 0 || this.max < 0 || this.weight < 0 || this.min == this.max) return null;
+
         return this.itemBuilder.setAmount(ThreadLocalRandom.current().nextInt(this.min, this.max)).getStack();
     }
 
