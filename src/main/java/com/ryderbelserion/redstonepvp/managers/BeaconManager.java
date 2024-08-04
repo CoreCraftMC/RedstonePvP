@@ -328,7 +328,11 @@ public class BeaconManager {
                 if (this.counter == 0) {
                     MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
 
-                    Messages.beacon_drop_party_started.broadcast();
+                    Messages.beacon_drop_party_started.broadcast(new HashMap<>() {{
+                        put("{x}", String.valueOf(location.getX()));
+                        put("{z}", String.valueOf(location.getZ()));
+                    }});
+
                 }
 
                 // less than 1 second.
@@ -401,8 +405,15 @@ public class BeaconManager {
                     // reset the calendar
                     beacon.setCalendar(MiscUtils.getTimeFromString(beacon.getTime()));
 
+                    Messages.beacon_drop_party_stopped.broadcast(new HashMap<>() {{
+                        put("{time}", beacon.getTime());
+                    }});
+
+                    // the beacon is no longer active
 
                     cancel();
+
+                    return;
                 }
 
                 this.counter++;
