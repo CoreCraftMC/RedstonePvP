@@ -43,7 +43,7 @@ public class BeaconManager {
      * @param name the name of the location.
      * @param location the location to add
      */
-    public static void addLocation(final String name, final String location, final int time) {
+    public static void addLocation(final String name, final String location, final String time) {
         final Beacon beacon = new Beacon(name, location, time);
 
         // run off the main thread.
@@ -52,7 +52,7 @@ public class BeaconManager {
                 try (PreparedStatement statement = connection.prepareStatement("insert into beacon_locations(id, location, time) values (?, ?, ?)")) {
                     statement.setString(1, name);
                     statement.setString(2, location);
-                    statement.setInt(3, time);
+                    statement.setString(3, time);
 
                     statement.executeUpdate();
                 }
@@ -117,7 +117,7 @@ public class BeaconManager {
                         final ResultSet resultSet = statement.executeQuery();
 
                         while (resultSet.next()) {
-                            final Beacon drop = new Beacon(resultSet.getString("id"), resultSet.getString("location"), resultSet.getInt("time"));
+                            final Beacon drop = new Beacon(resultSet.getString("id"), resultSet.getString("location"), resultSet.getString("time"));
 
                             try (PreparedStatement next = connection.prepareStatement("select * from beacon_items where id=?")) {
                                 next.setString(1, drop.getName());
@@ -212,12 +212,12 @@ public class BeaconManager {
      * @param time the new time
      * @param updateDirectly true or false
      */
-    public static void updateBeaconTime(final String name, final int time, final boolean updateDirectly) {
+    public static void updateBeaconTime(final String name, final String time, final boolean updateDirectly) {
         if (updateDirectly) {
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = dataManager.getConnector().getConnection()) {
                     try (PreparedStatement statement = connection.prepareStatement("update beacon_locations set time=? where name=?")) {
-                        statement.setInt(1, time);
+                        statement.setString(1, time);
                         statement.setString(2, name);
 
                         statement.executeUpdate();

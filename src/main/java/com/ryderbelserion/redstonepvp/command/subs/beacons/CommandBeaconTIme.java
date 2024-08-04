@@ -17,6 +17,8 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
+import java.util.List;
+
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconTIme extends Command {
@@ -35,11 +37,11 @@ public class CommandBeaconTIme extends Command {
             return;
         }
 
-        final int time = data.getIntegerArgument("time");
+        final String time = data.getStringArgument("time");
 
         Messages.beacon_drop_party_time_updated.sendMessage(sender, new HashMap<>() {{
             put("name", name);
-            put("{time}", String.valueOf(time));
+            put("{time}", time);
         }});
 
         BeaconManager.updateBeaconTime(name, time, true);
@@ -60,7 +62,11 @@ public class CommandBeaconTIme extends Command {
             return builder.buildFuture();
         });
 
-        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg2 = argument("time", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder, 1, 60)).executes(context -> {
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg2 = argument("time", StringArgumentType.string()).suggests((ctx, builder) -> {
+            List.of("1m, 5m, 15m, 30m, 45m, 1h").forEach(builder::suggest);
+
+            return builder.buildFuture();
+        }).executes(context -> {
             execute(new CommandData(context));
 
             return com.mojang.brigadier.Command.SINGLE_SUCCESS;

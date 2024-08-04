@@ -60,12 +60,12 @@ public class CommandBeacon extends Command {
             final ItemBuilder itemBuilder = button.build(
                     new HashMap<>() {{
                         put("{world}", location.getWorld().getName());
+                        put("{time}", beacon.getTime());
                         put("{x}", String.valueOf(location.getX()));
                         put("{y}", String.valueOf(location.getY()));
                         put("{z}", String.valueOf(location.getZ()));
                         put("{name}", beacon.getName());
                     }})
-                    .setAmount(beacon.getTime())
                     .setPersistentString(PersistentKeys.beacon_uuid.getNamespacedKey(), beacon.getName());
 
             gui.addPageItem(gui.asGuiItem(itemBuilder.getStack(), event -> {

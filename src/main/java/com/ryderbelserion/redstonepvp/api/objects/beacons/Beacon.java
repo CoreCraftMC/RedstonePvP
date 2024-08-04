@@ -5,9 +5,9 @@ public class Beacon {
     private final String rawLocation;
     private final BeaconDrop drop;
     private final String name;
-    private int time;
+    private String time;
 
-    public Beacon(final String name, final String rawLocation, final int time) {
+    public Beacon(final String name, final String rawLocation, final String time) {
         this.name = name;
 
         this.drop = new BeaconDrop(this.name);
@@ -29,11 +29,11 @@ public class Beacon {
         return this.name;
     }
 
-    public final int getTime() {
+    public final String getTime() {
         return this.time;
     }
 
-    public void setTime(final int time) {
+    public void setTime(final String time) {
         this.time = time;
     }
 }
