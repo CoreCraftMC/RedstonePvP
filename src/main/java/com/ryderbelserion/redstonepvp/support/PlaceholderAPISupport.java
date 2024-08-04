@@ -21,6 +21,10 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
         for (final Beacon beacon : BeaconManager.getBeaconData().values()) {
             if (lower.equalsIgnoreCase(beacon.getName() + "_timer")) {
+                if (beacon.isActive()) {
+                    return "On Going";
+                }
+
                 return MiscUtils.convertTimeToString(beacon.getCalendar());
             }
         }
