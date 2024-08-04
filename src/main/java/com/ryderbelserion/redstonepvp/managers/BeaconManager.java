@@ -111,7 +111,7 @@ public class BeaconManager {
             beaconTasks.clear();
         }
 
-        beaconDrops.forEach((name, beacon) -> scheduleTask(name, beacon, MiscUtils.location(beacon.getRawLocation())));
+        if (config.getProperty(Config.beacon_drop_party_toggle)) beaconDrops.forEach((name, beacon) -> scheduleTask(name, beacon, MiscUtils.location(beacon.getRawLocation())));
     }
 
     /**
@@ -269,6 +269,14 @@ public class BeaconManager {
      * @param location location of the beacon drop
      */
     public static void scheduleTask(final String name, final Beacon beacon, final Location location) {
+        if (!config.getProperty(Config.beacon_drop_party_toggle)) {
+            beacon.setActive(false);
+
+            beacon.setBroken(true);
+
+            return;
+        }
+
         beaconTasks.put(name, new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
             @Override
             public void run() {
@@ -321,14 +329,33 @@ public class BeaconManager {
         }.runAtFixedRate(plugin, 0, 20));
     }
 
+    /**
+     * Get the cooldown from the beacon time
+     *
+     * @param name the name of the beacon
+     * @return the calendar instance
+     */
     public static Calendar getBeaconCooldown(final String name) {
         return MiscUtils.getTimeFromString(getBeacon(name).getTime());
     }
 
+    /**
+     * Get a list of beacon drops
+     *
+     * @param drop the beacon drop object
+     * @return list of beacon drops
+     */
     public static List<ItemDrop> getBeaconDrops(final BeaconDrop drop) {
         return getBeaconDrops(false, drop);
     }
 
+    /**
+     * Get a list of beacon drops
+     *
+     * @param excludeNull true or false
+     * @param drop the beacon drop object
+     * @return list of beacon drops
+     */
     public static List<ItemDrop> getBeaconDrops(final boolean excludeNull, final BeaconDrop drop) {
         final List<ItemDrop> itemDrops = drop.getItemDrops();
 
@@ -339,6 +366,13 @@ public class BeaconManager {
         return itemDrops;
     }
 
+    /**
+     * Runs the drop party animation
+     *
+     * @param block block
+     * @param beacon beacon
+     * @param location location
+     */
     public static void runAnimation(final Block block, final Beacon beacon, final Location location) {
         final List<ItemDrop> drops = getBeaconDrops(true, beacon.getDrop());
 

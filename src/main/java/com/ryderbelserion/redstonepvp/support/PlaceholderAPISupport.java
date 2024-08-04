@@ -37,7 +37,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
                     return this.config.getProperty(Config.beacon_drop_party_on_going);
                 }
 
-                if (beacon.isBroken()) {
+                if (!this.config.getProperty(Config.beacon_drop_party_toggle) || beacon.isBroken()) {
                     return this.config.getProperty(Config.beacon_drop_party_out_of_order);
                 }
 

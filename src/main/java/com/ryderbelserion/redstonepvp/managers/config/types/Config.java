@@ -49,6 +49,9 @@ public class Config implements SettingsHolder {
     @Comment("The amount of the material required to repair items. -1 is disabled!")
     public static final Property<Integer> anvil_repair_cost = newProperty("feature.anvil-repair.cost", 32);
 
+    @Comment("Should drop parties be enabled?")
+    public static final Property<Boolean> beacon_drop_party_toggle = newProperty("feature.drop-party.toggle", false);
+
     @Comment("How many players are required for a drop party to begin? -1 implies it will wait until at least one player is on.")
     public static final Property<Integer> beacon_drop_party_required_players = newProperty("feature.drop-party.required-players", 5);
 
