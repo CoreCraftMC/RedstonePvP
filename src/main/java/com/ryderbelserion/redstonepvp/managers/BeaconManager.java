@@ -99,6 +99,11 @@ public class BeaconManager {
             beaconTasks.forEach((name, task) -> {
                 plugin.getLogger().warning("The task for " + name + " was cancelled because the plugin reloaded.");
 
+                final Beacon beacon = beaconDrops.get(name);
+
+                // reset the calendar
+                beacon.setCalendar(MiscUtils.getTimeFromString(beacon.getTime()));
+
                 task.cancel();
             });
 
