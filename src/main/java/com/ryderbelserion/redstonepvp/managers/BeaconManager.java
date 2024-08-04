@@ -333,6 +333,7 @@ public class BeaconManager {
                         put("{z}", String.valueOf(location.getZ()));
                     }});
 
+                    beacon.setActive(true);
                 }
 
                 // less than 1 second.
@@ -410,6 +411,7 @@ public class BeaconManager {
                     }});
 
                     // the beacon is no longer active
+                    beacon.setActive(false);
 
                     cancel();
 
