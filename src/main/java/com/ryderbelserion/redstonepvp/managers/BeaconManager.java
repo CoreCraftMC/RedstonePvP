@@ -269,11 +269,30 @@ public class BeaconManager {
      * @param location location of the beacon drop
      */
     public static void scheduleTask(final String name, final Beacon beacon, final Location location) {
-        final Block block = location.clone().add(0.0, 2, 0.0).getBlock();
-
         beaconTasks.put(name, new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
             @Override
             public void run() {
+                final List<ItemDrop> drops = beacon.getDrop().getItemDrops().stream().filter(itemDrop -> itemDrop.getItem() != null).toList();
+
+                // do not continue if drops empty.
+                if (drops.isEmpty()) {
+                    // reset the calendar
+                    beacon.setCalendar(MiscUtils.getTimeFromString(beacon.getTime()));
+
+                    // set active to false
+                    beacon.setActive(false);
+
+                    // set broken to true
+                    beacon.setBroken(true);
+
+                    return;
+                }
+
+                // if it is broken, set it to false... we clearly passed the check above.
+                if (beacon.isBroken()) {
+                    beacon.setBroken(false);
+                }
+
                 final Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
 
                 final int requirement = config.getProperty(Config.beacon_drop_party_required_players);
@@ -296,7 +315,7 @@ public class BeaconManager {
                         return;
                     }
 
-                    runAnimation(block, beacon, location);
+                    runAnimation(location.clone().add(0.0, 2, 0.0).getBlock(), beacon, location);
                 }
             }
         }.runAtFixedRate(plugin, 0, 20));
@@ -307,21 +326,7 @@ public class BeaconManager {
     }
 
     public static void runAnimation(final Block block, final Beacon beacon, final Location location) {
-        final List<ItemDrop> drops = beacon.getDrop().getItemDrops().stream().filter(itemDrop -> itemDrop.getItem() != null).toList();
-
-        // do not continue if drops empty.
-        if (drops.isEmpty()) {
-            // reset the calendar
-            beacon.setCalendar(MiscUtils.getTimeFromString(beacon.getTime()));
-
-            // set active to false
-            beacon.setActive(false);
-
-            // set broken to true
-            beacon.setBroken(true);
-
-            return;
-        }
+        final List<ItemDrop> drops = beacon.getDrop().getItemDrops();
 
         final Block water = block.getLocation().clone().add(0.0, 1, 0.0).getBlock();
 
