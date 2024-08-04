@@ -34,11 +34,16 @@ public enum Messages {
 
     menu_not_found(Locale.menu_not_found),
 
-    beacon_location_added(Locale.beacon_location_added),
-    beacon_location_removed(Locale.beacon_location_removed),
-    beacon_location_time_updated(Locale.beacon_location_time_updated),
-    beacon_location_exists(Locale.beacon_location_exists),
-    beacon_location_doesnt_exist(Locale.beacon_location_doesnt_exist),
+    beacon_drop_party_added(Locale.beacon_drop_party_added),
+    beacon_drop_party_removed(Locale.beacon_drop_party_removed),
+    beacon_drop_party_time_updated(Locale.beacon_drop_party_time_updated),
+    beacon_drop_party_exists(Locale.beacon_drop_party_exists),
+    beacon_drop_party_doesnt_exist(Locale.beacon_drop_party_doesnt_exist),
+
+    beacon_drop_party_started(Locale.beacon_drop_party_started),
+    beacon_drop_party_stopped(Locale.beacon_drop_party_stopped),
+    beacon_drop_party_not_enough_players(Locale.beacon_drop_party_not_enough_players),
+    beacon_drop_party_countdown(Locale.beacon_drop_party_countdown),
 
     beacon_drop_doesnt_exist(Locale.beacon_drop_doesnt_exist),
     beacon_drop_exists(Locale.beacon_drop_exists),

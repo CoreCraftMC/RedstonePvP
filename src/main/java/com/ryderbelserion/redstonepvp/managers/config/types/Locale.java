@@ -59,31 +59,42 @@ public class Locale implements SettingsHolder {
     public static final Property<String> menu_not_found = newProperty("root.menu-not-found", "{prefix}<white>Menu named <red>{name} <white>could not be found.");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_location_added = newProperty("root.beacon.location.added", "{prefix}<white>You have added a new beacon drop location with the name <red>{name}.");
+    public static final Property<String> beacon_drop_party_added = newProperty("root.feature.drop-party.location.added", "{prefix}<white>You have added a new beacon drop location with the name <red>{name}.");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_location_exists = newProperty("root.beacon.location.exists", "{prefix}<red>{name} <white>is already a beacon drop location.");
+    public static final Property<String> beacon_drop_party_exists = newProperty("root.feature.drop-party.location.exists", "{prefix}<red>{name} <white>is already a beacon drop location.");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_location_removed = newProperty("root.beacon.location.removed", "{prefix}<white>You have removed a beacon drop location with the name <red>{name}.");
+    public static final Property<String> beacon_drop_party_removed = newProperty("root.feature.drop-party.location.removed", "{prefix}<white>You have removed a beacon drop location with the name <red>{name}.");
 
     @Comment("A list of available placeholders: {time}, {name}")
-    public static final Property<String> beacon_location_time_updated = newProperty("root.beacon.location.time-updated", "{prefix}<white>The time has been updated to <red>{time} <white>for <red>{name}");
+    public static final Property<String> beacon_drop_party_time_updated = newProperty("root.feature.drop-party.location.time-updated", "{prefix}<white>The time has been updated to <red>{time} <white>for <red>{name}");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_location_doesnt_exist = newProperty("root.beacon.location.doesnt-exist", "{prefix}<white>There is no beacon drop with the name {name}.");
+    public static final Property<String> beacon_drop_party_doesnt_exist = newProperty("root.feature.drop-party.location.doesnt-exist", "{prefix}<white>There is no beacon drop with the name {name}.");
 
-    public static final Property<String> beacon_drop_exists = newProperty("root.beacon.drops.exists", "{prefix}<white>The item you are holding is already added.");
+    @Comment("A list of available placeholders: {x}, {z}")
+    public static final Property<String> beacon_drop_party_started = newProperty("root.feature.drop-party.started", "{prefix}<white>A drop party has started @ {x},{z}!");
+
+    @Comment("A list of available placeholders: {time}")
+    public static final Property<String> beacon_drop_party_stopped = newProperty("root.feature.drop-party.stopped", "{prefix}<white>The drop party has ended! Come back in {time} minutes.");
+
+    @Comment("A list of available placeholders: {x}, {z}")
+    public static final Property<String> beacon_drop_party_countdown = newProperty("root.feature.drop-party.countdown", "{prefix}<white>The drop party will start shortly @ {x},{z}!");
+
+    public static final Property<String> beacon_drop_party_not_enough_players = newProperty("root.feature.drop-party.not-enough-players", "{prefix}<white>Not enough players online to start a drop party.");
+
+    public static final Property<String> beacon_drop_exists = newProperty("root.feature.drop-party.drops.exists", "{prefix}<white>The item you are holding is already added.");
 
     @Comment("A list of available placeholders: {name}, {position}")
-    public static final Property<String> beacon_drop_doesnt_exist = newProperty("root.beacon.drops.doesnt-exist", "{prefix}<white>Position <red>#{position}<white> that you trying to update doesn't exist for the drop location <red>{name}.");
+    public static final Property<String> beacon_drop_doesnt_exist = newProperty("root.feature.drop-party.drops.doesnt-exist", "{prefix}<white>Position <red>#{position}<white> that you trying to update doesn't exist for the drop location <red>{name}.");
 
     @Comment("A list of available placeholders: {name}, {position}")
-    public static final Property<String> beacon_drop_added = newProperty("root.beacon.drops.added", "{prefix}<white>You have updated the item with the position <red>{position}<white> for the drop location <red>{name}");
+    public static final Property<String> beacon_drop_added = newProperty("root.feature.drop-party.drops.added", "{prefix}<white>You have updated the item with the position <red>{position}<white> for the drop location <red>{name}");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> beacon_drop_set = newProperty("root.beacon.drops.set", "{prefix}<white>You have added a new item to the drop location <red>{name}");
+    public static final Property<String> beacon_drop_set = newProperty("root.feature.drop-party.drops.set", "{prefix}<white>You have added a new item to the drop location <red>{name}");
 
     @Comment("A list of available placeholders: {name}, {position}")
-    public static final Property<String> beacon_drop_removed = newProperty("root.beacon.drops.removed", "{prefix}<white>You have removed the item from the drop location <red>{name}");
+    public static final Property<String> beacon_drop_removed = newProperty("root.feature.drop-party.drops.removed", "{prefix}<white>You have removed the item from the drop location <red>{name}");
 }
