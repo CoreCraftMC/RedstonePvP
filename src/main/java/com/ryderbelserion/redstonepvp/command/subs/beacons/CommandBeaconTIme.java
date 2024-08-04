@@ -30,14 +30,14 @@ public class CommandBeaconTIme extends Command {
         final String name = data.getStringArgument("name");
 
         if (!BeaconManager.hasBeacon(name)) {
-            Messages.beacon_location_doesnt_exist.sendMessage(sender, "{name}", name);
+            Messages.beacon_drop_party_doesnt_exist.sendMessage(sender, "{name}", name);
 
             return;
         }
 
         final int time = data.getIntegerArgument("time");
 
-        Messages.beacon_location_time_updated.sendMessage(sender, new HashMap<>() {{
+        Messages.beacon_drop_party_time_updated.sendMessage(sender, new HashMap<>() {{
             put("name", name);
             put("{time}", String.valueOf(time));
         }});

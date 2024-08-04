@@ -85,7 +85,7 @@ public class CommandBeacon extends Command {
 
                         BeaconManager.removeLocation(beaconName);
 
-                        Messages.beacon_location_removed.sendMessage(player, "{name}", beaconName);
+                        Messages.beacon_drop_party_removed.sendMessage(player, "{name}", beaconName);
 
                         button.getSoundProperty().playSound(player);
 

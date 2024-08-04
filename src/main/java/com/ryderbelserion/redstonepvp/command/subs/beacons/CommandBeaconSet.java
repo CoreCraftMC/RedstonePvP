@@ -47,12 +47,12 @@ public class CommandBeaconSet extends Command {
         final String name = data.getStringArgument("name");
 
         if (BeaconManager.hasBeacon(name) || BeaconManager.hasLocation(location)) {
-            Messages.beacon_location_exists.sendMessage(player, "{name}", name);
+            Messages.beacon_drop_party_exists.sendMessage(player, "{name}", name);
 
             return;
         }
 
-        Messages.beacon_location_added.sendMessage(player, "{name}", name);
+        Messages.beacon_drop_party_added.sendMessage(player, "{name}", name);
 
         BeaconManager.addLocation(name, location, data.getIntegerArgument("time"));
     }

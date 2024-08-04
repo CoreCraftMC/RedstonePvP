@@ -28,12 +28,12 @@ public class CommandBeaconRemove extends Command {
         final String name = data.getStringArgument("name");
 
         if (!BeaconManager.hasBeacon(name)) {
-            Messages.beacon_location_doesnt_exist.sendMessage(sender, "{name}", name);
+            Messages.beacon_drop_party_doesnt_exist.sendMessage(sender, "{name}", name);
 
             return;
         }
 
-        Messages.beacon_location_removed.sendMessage(sender, "{name}", name);
+        Messages.beacon_drop_party_removed.sendMessage(sender, "{name}", name);
 
         BeaconManager.removeLocation(name);
     }
