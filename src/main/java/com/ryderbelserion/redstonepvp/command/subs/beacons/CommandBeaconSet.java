@@ -1,6 +1,5 @@
 package com.ryderbelserion.redstonepvp.command.subs.beacons;
 
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -18,9 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandBeaconSet extends Command {
