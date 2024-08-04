@@ -19,6 +19,8 @@ dependencies {
 
     implementation(libs.vital.paper)
 
+    implementation(libs.yardwatch)
+
     compileOnly(libs.placeholderapi)
 
     compileOnly(libs.packet.events)

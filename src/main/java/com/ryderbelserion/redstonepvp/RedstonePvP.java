@@ -4,7 +4,6 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.settings.PacketEventsSettings;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.redstonepvp.command.BaseCommand;
-import com.ryderbelserion.redstonepvp.command.help.CommandManager;
 import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
 import com.ryderbelserion.redstonepvp.command.subs.CommandHelp;
 import com.ryderbelserion.redstonepvp.command.subs.CommandOpen;

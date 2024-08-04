@@ -15,6 +15,8 @@ vital = "2.4.7"
 paperweight = "1.7.1"
 runPaper = "2.3.0"
 
+yardWatch = "2.0.0"
+
 # Other
 shadowJar = "8.1.8"
 
@@ -36,3 +38,5 @@ vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital"
 vital-core = { module = "com.ryderbelserion.vital:core", version.ref = "vital" }
 
 hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+
+yardwatch = { module = "com.github.YouHaveTrouble:YardWatchAPI", version.ref = "yardWatch" }

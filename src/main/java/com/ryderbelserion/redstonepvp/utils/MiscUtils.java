@@ -6,14 +6,19 @@ import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.youhavetrouble.yardwatch.Protection;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
 import org.jetbrains.annotations.NotNull;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -123,5 +128,22 @@ public class MiscUtils {
         }
 
         return message;
+    }
+
+    public static Collection<RegisteredServiceProvider<Protection>> getProtections() {
+        return plugin.getServer().getServicesManager().getRegistrations(Protection.class);
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean canAttack(Player player, Player target) {
+        final Collection<RegisteredServiceProvider<Protection>> protections = getProtections();
+
+        for (final RegisteredServiceProvider<Protection> protection : protections) {
+            if (protection.getProvider().canDamage(player, target)) continue;
+
+            return false;
+        }
+
+        return true;
     }
 }
