@@ -342,6 +342,29 @@ public class BeaconManager {
                     return;
                 }
 
+                // if drops is ever item.
+                if (drops.isEmpty()) {
+                    water.setType(Material.AIR, true);
+
+                    if (blockData instanceof Waterlogged waterlogged) {
+                        waterlogged.setWaterlogged(false);
+                    }
+
+                    // reset the calendar
+                    beacon.setCalendar(MiscUtils.getTimeFromString(beacon.getTime()));
+
+                    Messages.beacon_drop_party_stopped.broadcast(new HashMap<>() {{
+                        put("{time}", beacon.getTime());
+                    }});
+
+                    // the beacon is no longer active
+                    beacon.setActive(false);
+
+                    cancel();
+
+                    return;
+                }
+
                 // 0 seconds.
                 if (this.counter == 0) {
                     MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
