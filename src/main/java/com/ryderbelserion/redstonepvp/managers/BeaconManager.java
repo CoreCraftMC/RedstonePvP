@@ -1,9 +1,13 @@
 package com.ryderbelserion.redstonepvp.managers;
 
+import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.Beacon;
 import com.ryderbelserion.redstonepvp.api.objects.beacons.BeaconDrop;
+import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.managers.data.DataManager;
 import com.ryderbelserion.redstonepvp.managers.data.types.Connector;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
@@ -15,12 +19,14 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Waterlogged;
+import org.bukkit.entity.Player;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +38,8 @@ public class BeaconManager {
     private static final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     private static final DataManager dataManager = plugin.getDataManager();
+
+    private static final SettingsManager config = ConfigManager.getConfig();
 
     private static Map<String, Beacon> beaconDrops = new HashMap<>();
 
@@ -257,14 +265,37 @@ public class BeaconManager {
     public static void scheduleTask(final String name, final Beacon beacon, final Location location) {
         final Block block = location.clone().add(0.0, 2, 0.0).getBlock();
 
+        beaconTasks.put(name, new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
+            @Override
+            public void run() {
+                final Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
+
+                final int requirement = config.getProperty(Config.beacon_drop_party_required_players);
+
+                if (requirement != -1) {
+                    if (players.size() < requirement) {
+                        Messages.beacon_drop_party_not_enough_players.broadcast();
+
+                        return;
+                    }
+                }
+
+                //todo() calender task
+
+                runAnimation(block, beacon, location);
+            }
+        }.runAtFixedRate(plugin, 0, 20));
+    }
+
+    public static void runAnimation(final Block block, final Beacon beacon, final Location location) {
         final Block water = block.getLocation().clone().add(0.0, 1, 0.0).getBlock();
 
         final BlockData blockData = block.getBlockData();
 
         final List<ItemDrop> drops = beacon.getDrop().getItemDrops();
 
-        beaconTasks.put(name, new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
-            final long startTime = System.currentTimeMillis();
+        new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
+            int counter = 0;
 
             @Override
             public void run() {
@@ -280,26 +311,28 @@ public class BeaconManager {
                 }
 
                 // 0 seconds.
-                if (elapsedTime == 0) {
+                if (this.counter == 0) {
                     MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
+
+                    Messages.beacon_drop_party_started.broadcast();
                 }
 
                 // less than 1 second.
-                if (elapsedTime <= 1000) {
+                if (this.counter <= 10) {
                     MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
 
                     MiscUtils.getDrop(location, drops);
                 }
 
                 // 1.1 second.
-                if (elapsedTime == 1100) {
+                if (this.counter == 11) {
                     MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
 
                     water.setType(Material.WATER, true);
                 }
 
                 // 1.5 seconds.
-                if (elapsedTime == 1500) {
+                if (this.counter == 15) {
                     water.setType(Material.AIR, true);
 
                     if (blockData instanceof Waterlogged waterlogged) {
@@ -308,21 +341,21 @@ public class BeaconManager {
                 }
 
                 // start phase 2 at 3 seconds.
-                if (elapsedTime >= 3000 && elapsedTime <= 4000) {
+                if (this.counter >= 30 && this.counter <= 40) {
                     MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
 
                     MiscUtils.getDrop(location, drops);
                 }
 
                 // spawn water on top of the slab to push items out when it reaches 4.1 seconds.
-                if (elapsedTime == 4100) {
+                if (this.counter == 41) {
                     MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
 
                     water.setType(Material.WATER, true);
                 }
 
                 // remove water at 4.5 seconds.
-                if (elapsedTime == 4500) {
+                if (this.counter == 45) {
                     water.setType(Material.AIR, true);
 
                     if (blockData instanceof Waterlogged waterlogged) {
@@ -331,30 +364,34 @@ public class BeaconManager {
                 }
 
                 // start phase 2 at 5.5 seconds.
-                if (elapsedTime >= 5500 && elapsedTime <= 6500) {
+                if (this.counter >= 55 && this.counter <= 65) {
                     MiscUtils.playSound(location, Sound.ENTITY_EXPERIENCE_BOTTLE_THROW);
 
                     MiscUtils.getDrop(location, drops);
                 }
 
                 // spawn water on top of the slab to push items out when it reaches 6.6 seconds.
-                if (elapsedTime == 6600) {
+                if (this.counter == 66) {
                     MiscUtils.playSound(location, Sound.ENTITY_GENERIC_EXPLODE);
 
                     water.setType(Material.WATER, true);
                 }
 
-                if (elapsedTime >= 6900) {
+                if (this.counter >= 69) {
                     water.setType(Material.AIR, true);
 
                     if (blockData instanceof Waterlogged waterlogged) {
                         waterlogged.setWaterlogged(false);
                     }
 
+                    Messages.beacon_drop_party_stopped.broadcast();
+
                     cancel();
                 }
+
+                this.counter++;
             }
-        }.runAtFixedRate(plugin, 0, beacon.getTime() * 20L)); // 15 * 20 = 300, which is 15 seconds. 1 minute = 60 seconds/1200 ticks, 5 minutes = 6000 ticks
+        }.runAtFixedRate(plugin, 0, 10);
     }
 
     /**
