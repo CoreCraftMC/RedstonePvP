@@ -8,6 +8,7 @@ import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.UUID;
@@ -62,9 +63,13 @@ public class MiscUtils {
             if (random < 0.0) break;
         }
 
-        final Item item = location.getWorld().dropItemNaturally(location, drops.get(index).getItem());
+        final ItemStack itemStack = drops.get(index).getItem();
 
-        item.setCanPlayerPickup(true);
-        item.setCanMobPickup(false);
+        if (itemStack != null) {
+            final Item item = location.getWorld().dropItemNaturally(location, itemStack);
+
+            item.setCanPlayerPickup(true);
+            item.setCanMobPickup(false);
+        }
     }
 }
