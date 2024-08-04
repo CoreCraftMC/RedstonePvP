@@ -4,7 +4,6 @@ import com.ryderbelserion.redstonepvp.api.interfaces.GuiType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -5,17 +5,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.builders.gui.PaginatedGui;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
-import com.ryderbelserion.redstonepvp.api.interfaces.Gui;
-import com.ryderbelserion.redstonepvp.api.interfaces.GuiItem;
 import com.ryderbelserion.redstonepvp.managers.MenuManager;
-import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
-import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
-import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
-import com.ryderbelserion.redstonepvp.managers.config.types.Config;
-import com.ryderbelserion.redstonepvp.utils.ItemUtils;
-import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -25,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
-import java.util.List;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class CommandOpen extends Command {
@@ -53,43 +43,7 @@ public class CommandOpen extends Command {
             return;
         }
 
-        final GuiProperty property = MenuManager.getGui(arg1);
-
-        if (arg1.equalsIgnoreCase(ConfigManager.getConfig().getProperty(Config.main_menu_name))) {
-            final Gui gui = Gui.gui().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
-                    .setTitle(property.getGuiTitle())
-                    .setRows(property.getGuiRows())
-                    .setType(property.getGuiType())
-                    .create();
-
-            final List<ButtonProperty> buttons = property.getButtons();
-
-            buttons.forEach(button -> {
-                final GuiItem item = gui.asGuiItem(button.build().getStack(), action -> {
-                    if (!(action.getWhoClicked() instanceof Player clicker)) return;
-
-                    button.getCommands().forEach(command -> this.server.dispatchCommand(this.server.getConsoleSender(), command.replaceAll("\\{player}", clicker.getName())));
-                    button.getMessages().forEach(message -> MiscUtils.message(clicker, message));
-
-                    button.getSoundProperty().playSound(clicker);
-                });
-
-                gui.setItem(button.getDisplayRow(), button.getDisplayColumn(), item);
-            });
-
-            gui.open(player);
-
-            return;
-        }
-
-        final PaginatedGui gui = Gui.paginated().disableItemDrop().disableItemPlacement().disableItemSwap().disableItemTake()
-                .setTitle(property.getGuiTitle())
-                .setRows(property.getGuiRows())
-                .create();
-
-        ItemUtils.addButtons(property, player, gui);
-
-        gui.open(player, 1);
+        MenuManager.openMenu(player, arg1);
     }
 
     @Override
