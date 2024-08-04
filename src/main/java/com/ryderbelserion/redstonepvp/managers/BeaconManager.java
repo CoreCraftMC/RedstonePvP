@@ -301,7 +301,8 @@ public class BeaconManager {
 
         final BlockData blockData = block.getBlockData();
 
-        final List<ItemDrop> drops = beacon.getDrop().getItemDrops();
+        final List<ItemDrop> drops = beacon.getDrop().getItemDrops().stream().filter(itemDrop -> itemDrop.getItem() == null).toList();
+
         // do not continue if drops empty.
         if (drops.isEmpty()) {
             // reset the calendar
