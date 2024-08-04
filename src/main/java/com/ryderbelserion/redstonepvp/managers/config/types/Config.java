@@ -61,11 +61,15 @@ public class Config implements SettingsHolder {
     @Comment("Configures the output of the %redstonepvp_name_timer% when the drop is broken.")
     public static final Property<String> beacon_drop_party_out_of_order = newProperty("feature.drop-party.out_of_order", "<red>Out of Order</red>");
 
+    @Comment("The placeholder used in countdowns, if it's a day.")
     public static final Property<String> time_placeholder_day = newProperty("root.time-placeholders.day", "d");
 
+    @Comment("The placeholder used in countdowns, if it's an hour.")
     public static final Property<String> time_placeholder_hour = newProperty("root.time-placeholders.hour", "h");
 
+    @Comment("The placeholder used in countdowns, if it's a minute.")
     public static final Property<String> time_placeholder_minute = newProperty("root.time-placeholders.minute", "m");
 
+    @Comment("The placeholder used in countdowns, if it's a second.")
     public static final Property<String> time_placeholder_second = newProperty("root.time-placeholders.second", "s");
 }
