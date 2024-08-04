@@ -106,6 +106,10 @@ public class RedstonePvP extends JavaPlugin {
                 //new ItemMenu()
         ).forEach(key -> getServer().getPluginManager().registerEvents(key, this));
 
+        if (Support.placeholder_api.isEnabled()) {
+            new PlaceholderAPISupport().register();
+        }
+
         getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
     }
 
