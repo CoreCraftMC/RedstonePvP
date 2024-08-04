@@ -2,6 +2,7 @@ package com.ryderbelserion.redstonepvp.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
+import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.managers.config.types.Locale;
@@ -64,6 +65,8 @@ public enum Messages {
         this.properties = properties;
         this.isList = isList;
     }
+
+    private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     private final SettingsManager config = ConfigManager.getConfig();
 
@@ -138,5 +141,17 @@ public enum Messages {
         }
 
         return message;
+    }
+
+    public void broadcast() {
+        broadcast(null);
+    }
+
+    public void broadcast(final Map<String, String> placeholder) {
+        sendMessage(this.plugin.getServer().getConsoleSender(), placeholder);
+
+        for (Player player : this.plugin.getServer().getOnlinePlayers()) {
+            if (placeholder == null) sendMessage(player); else sendMessage(player, placeholder);
+        }
     }
 }
