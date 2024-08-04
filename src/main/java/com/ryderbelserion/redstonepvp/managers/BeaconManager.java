@@ -224,7 +224,7 @@ public class BeaconManager {
         if (updateDirectly) {
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = dataManager.getConnector().getConnection()) {
-                    try (PreparedStatement statement = connection.prepareStatement("update beacon_locations set time=? where name=?")) {
+                    try (PreparedStatement statement = connection.prepareStatement("update beacon_locations set time=? where id=?")) {
                         statement.setString(1, time);
                         statement.setString(2, name);
 
