@@ -321,6 +321,9 @@ public class BeaconManager {
             // set active to false
             beacon.setActive(false);
 
+            // set broken to true
+            beacon.setBroken(true);
+
             return;
         }
 

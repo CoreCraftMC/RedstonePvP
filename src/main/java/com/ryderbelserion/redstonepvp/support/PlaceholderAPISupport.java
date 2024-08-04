@@ -25,6 +25,10 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
                     return "On Going";
                 }
 
+                if (beacon.isBroken()) {
+                    return "Out of Order";
+                }
+
                 return MiscUtils.convertTimeToString(beacon.getCalendar());
             }
         }

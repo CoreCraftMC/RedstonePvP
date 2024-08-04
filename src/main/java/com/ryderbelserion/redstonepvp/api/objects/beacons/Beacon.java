@@ -13,6 +13,7 @@ public class Beacon {
     private String time;
 
     private boolean isActive = false;
+    private boolean isBroken = false;
 
     public Beacon(final String name, final String rawLocation, final String time) {
         this.name = name;
@@ -62,5 +63,13 @@ public class Beacon {
 
     public final boolean isActive() {
         return this.isActive;
+    }
+
+    public void setBroken(final boolean broken) {
+        this.isBroken = broken;
+    }
+
+    public final boolean isBroken() {
+        return this.isBroken;
     }
 }
