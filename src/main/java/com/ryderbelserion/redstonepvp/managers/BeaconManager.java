@@ -272,7 +272,7 @@ public class BeaconManager {
         beaconTasks.put(name, new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
             @Override
             public void run() {
-                final List<ItemDrop> drops = beacon.getDrop().getItemDrops().stream().filter(itemDrop -> itemDrop.getItem() != null).toList();
+                final List<ItemDrop> drops = getBeaconDrops(true, beacon.getDrop());
 
                 // do not continue if drops empty.
                 if (drops.isEmpty()) {
@@ -325,8 +325,22 @@ public class BeaconManager {
         return MiscUtils.getTimeFromString(getBeacon(name).getTime());
     }
 
+    public static List<ItemDrop> getBeaconDrops(final BeaconDrop drop) {
+        return getBeaconDrops(false, drop);
+    }
+
+    public static List<ItemDrop> getBeaconDrops(final boolean excludeNull, final BeaconDrop drop) {
+        final List<ItemDrop> itemDrops = drop.getItemDrops();
+
+        if (excludeNull) {
+            return itemDrops.stream().filter(itemDrop -> itemDrop.getItem() != null).toList();
+        }
+
+        return itemDrops;
+    }
+
     public static void runAnimation(final Block block, final Beacon beacon, final Location location) {
-        final List<ItemDrop> drops = beacon.getDrop().getItemDrops();
+        final List<ItemDrop> drops = getBeaconDrops(true, beacon.getDrop());
 
         final Block water = block.getLocation().clone().add(0.0, 1, 0.0).getBlock();
 
