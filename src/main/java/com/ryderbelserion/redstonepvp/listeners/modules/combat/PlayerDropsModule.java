@@ -59,14 +59,17 @@ public class PlayerDropsModule extends ModuleHandler {
 
     @Override
     public void disable() {
-        reload();
+        this.drops.clear();
     }
 
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player target)) return;
+        if (!(event.getDamager() instanceof Player player) || !(event.getEntity() instanceof Player target)) return;
 
         if (!isEnabled()) return;
+
+        // Don't spawn drops if they can't attack.
+        if (!MiscUtils.canAttack(player, target)) return;
 
         MiscUtils.getDrop(target.getLocation(), this.drops);
     }
