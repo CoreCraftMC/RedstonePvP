@@ -41,7 +41,7 @@ public class CommandBeaconTIme extends Command {
 
         Messages.beacon_drop_party_time_updated.sendMessage(sender, new HashMap<>() {{
             put("name", name);
-            put("{time}", time);
+            put("time", time);
         }});
 
         BeaconManager.updateBeaconTime(name, time, true);
