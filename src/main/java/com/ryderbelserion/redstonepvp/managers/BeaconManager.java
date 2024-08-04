@@ -273,7 +273,10 @@ public class BeaconManager {
                     return;
                 }
 
-                final long elapsedTime = System.currentTimeMillis() - this.startTime;
+                // cancel if drops empty.
+                if (drops.isEmpty()) {
+                    cancel();
+                }
 
                 // 0 seconds.
                 if (elapsedTime == 0) {
