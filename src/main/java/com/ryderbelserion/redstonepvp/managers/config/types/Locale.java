@@ -5,6 +5,10 @@ import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 public class Locale implements SettingsHolder {
@@ -97,4 +101,13 @@ public class Locale implements SettingsHolder {
 
     @Comment("A list of available placeholders: {name}, {position}")
     public static final Property<String> beacon_drop_removed = newProperty("root.feature.drop-party.drops.removed", "{prefix}<white>You have removed the item from the drop location <red>{name}");
+
+    public static final Property<List<String>> beacon_drop_help = newListProperty("root.feature.drop-party.drops.help", List.of(
+            "<bold><gold>━━━━━━━━━━━━━━━━━━━ Beacon Drop Help ━━━━━━━━━━━━━━━━━━━</gold></bold>",
+            " ⤷ <red>/redstonepvp beacon item - <white>Opens this help menu",
+            " ⤷ <red>/redstonepvp beacon item remove <gold>{name} {position}</gold> <gray>- <white>Removes an item from the drop",
+            " ⤷ <red>/redstonepvp beacon item set <gold>{name} {min} {max} {weight}</gold> <gray>- <white>Adds a new item to the drop",
+            " ⤷ <red>/redstonepvp beacon item update <gold>{name} {position} {min} {max} {weight}</gold> <gray>- <white>Updates an item already added",
+            "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
+    ));
 }

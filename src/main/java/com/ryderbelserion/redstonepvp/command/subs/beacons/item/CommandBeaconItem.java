@@ -3,7 +3,6 @@ package com.ryderbelserion.redstonepvp.command.subs.beacons.item;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
-import com.ryderbelserion.redstonepvp.managers.MenuManager;
 import com.ryderbelserion.vital.paper.commands.Command;
 import com.ryderbelserion.vital.paper.commands.CommandData;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -18,13 +17,7 @@ public class CommandBeaconItem extends Command {
 
     @Override
     public void execute(final CommandData data) {
-        if (!data.isPlayer()) {
-            Messages.not_a_player.sendMessage(data.getCommandSender());
-
-            return;
-        }
-
-        MenuManager.openMenu(data.getPlayer(), "item-menu");
+        Messages.beacon_drop_help.sendMessage(data.getCommandSender());
     }
 
     @Override
