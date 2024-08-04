@@ -287,6 +287,10 @@ public class BeaconManager {
         }.runAtFixedRate(plugin, 0, 20));
     }
 
+    public static Calendar getBeaconCooldown(final String name) {
+        return MiscUtils.getTimeFromString(getBeacon(name).getTime());
+    }
+
     public static void runAnimation(final Block block, final Beacon beacon, final Location location) {
         final Block water = block.getLocation().clone().add(0.0, 1, 0.0).getBlock();
 
