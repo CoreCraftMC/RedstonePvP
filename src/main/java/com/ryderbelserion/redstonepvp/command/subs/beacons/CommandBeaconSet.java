@@ -66,11 +66,7 @@ public class CommandBeaconSet extends Command {
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
         LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("set").requires(source -> source.getSender().hasPermission(getPermission()));
 
-        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("name", StringArgumentType.string()).suggests((ctx, builder) -> {
-            BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
-
-            return builder.buildFuture();
-        });
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("name", StringArgumentType.string()).suggests((ctx, builder) -> suggestNames(builder));
 
         final RequiredArgumentBuilder<CommandSourceStack, Integer> arg2 = argument("time", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder, 1, 60)).executes(context -> {
             execute(new CommandData(context));
