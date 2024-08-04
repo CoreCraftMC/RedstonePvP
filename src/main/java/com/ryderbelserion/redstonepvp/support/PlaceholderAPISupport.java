@@ -16,7 +16,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
-    private static final SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     @Override
     public @NotNull final String onRequest(@Nullable final OfflinePlayer player, @NotNull final String identifier) {
@@ -24,21 +24,21 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
         String lower = identifier.toLowerCase();
 
-        final int requirement = config.getProperty(Config.beacon_drop_party_required_players);
+        final int requirement = this.config.getProperty(Config.beacon_drop_party_required_players);
         final int onlinePlayers = this.plugin.getServer().getOnlinePlayers().size();
 
         for (final Beacon beacon : BeaconManager.getBeaconData().values()) {
             if (lower.equalsIgnoreCase(beacon.getName() + "_timer")) {
                 if (onlinePlayers == 0 || onlinePlayers < requirement) {
-                    return "<red>Not enough players</red>";
+                    return this.config.getProperty(Config.beacon_drop_party_not_enough_players);
                 }
 
                 if (beacon.isActive()) {
-                    return "<green>On Going</green>";
+                    return this.config.getProperty(Config.beacon_drop_party_on_going);
                 }
 
                 if (beacon.isBroken()) {
-                    return "<red>Out of Order</red>";
+                    return this.config.getProperty(Config.beacon_drop_party_out_of_order);
                 }
 
                 return MiscUtils.convertTimeToString(beacon.getCalendar());

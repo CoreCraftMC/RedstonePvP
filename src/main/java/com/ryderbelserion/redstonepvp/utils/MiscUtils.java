@@ -1,7 +1,10 @@
 package com.ryderbelserion.redstonepvp.utils;
 
+import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
+import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
+import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -18,6 +21,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MiscUtils {
 
     private static final RedstonePvP plugin = RedstonePvP.getPlugin();
+
+    private static final SettingsManager config = ConfigManager.getConfig();
 
     public static String location(@NotNull final Location location, boolean getName) {
         String name = getName ? location.getWorld().getName() : String.valueOf(location.getWorld().getUID());
@@ -106,13 +111,13 @@ public class MiscUtils {
         second += total;
         String message = "";
 
-        if (day > 0) message += day + "d" + ", ";
-        if (day > 0 || hour > 0) message += hour + "h" + ", ";
-        if (day > 0 || hour > 0 || minute > 0) message += minute + "m" + ", ";
-        if (day > 0 || hour > 0 || minute > 0 || second > 0) message += second + "s" + ", ";
+        if (day > 0) message += day + config.getProperty(Config.time_placeholder_day) + ", ";
+        if (day > 0 || hour > 0) message += hour + config.getProperty(Config.time_placeholder_hour) + ", ";
+        if (day > 0 || hour > 0 || minute > 0) message += minute + config.getProperty(Config.time_placeholder_minute) + ", ";
+        if (day > 0 || hour > 0 || minute > 0 || second > 0) message += second + config.getProperty(Config.time_placeholder_second) + ", ";
 
         if (message.length() < 2) {
-            message = "0" + "s";
+            message = "0" + config.getProperty(Config.time_placeholder_second);
         } else {
             message = message.substring(0, message.length() - 2);
         }

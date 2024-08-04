@@ -51,4 +51,21 @@ public class Config implements SettingsHolder {
 
     @Comment("How many players are required for a drop party to begin? -1 implies it will wait until at least one player is on.")
     public static final Property<Integer> beacon_drop_party_required_players = newProperty("feature.drop-party.required-players", 5);
+
+    @Comment("Configures the output of the %redstonepvp_name_timer% when the drop fails to meet requirements.")
+    public static final Property<String> beacon_drop_party_not_enough_players = newProperty("feature.drop-party.not-enough-players", "<red>Not enough players</red>");
+
+    @Comment("Configures the output of the %redstonepvp_name_timer% when the drop is active.")
+    public static final Property<String> beacon_drop_party_on_going = newProperty("feature.drop-party.on_going", "<green>On Going</green>");
+
+    @Comment("Configures the output of the %redstonepvp_name_timer% when the drop is broken.")
+    public static final Property<String> beacon_drop_party_out_of_order = newProperty("feature.drop-party.out_of_order", "<red>Out of Order</red>");
+
+    public static final Property<String> time_placeholder_day = newProperty("root.time-placeholders.day", "d");
+
+    public static final Property<String> time_placeholder_hour = newProperty("root.time-placeholders.hour", "h");
+
+    public static final Property<String> time_placeholder_minute = newProperty("root.time-placeholders.minute", "m");
+
+    public static final Property<String> time_placeholder_second = newProperty("root.time-placeholders.second", "s");
 }
