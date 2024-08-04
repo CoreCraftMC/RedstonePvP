@@ -51,6 +51,10 @@ public class CommandBeaconRemove extends Command {
             BeaconManager.getBeaconData().keySet().forEach(builder::suggest);
 
             return builder.buildFuture();
+        }).executes(context -> {
+            execute(new CommandData(context));
+
+            return com.mojang.brigadier.Command.SINGLE_SUCCESS;
         });
 
         return root.then(arg1).build();
