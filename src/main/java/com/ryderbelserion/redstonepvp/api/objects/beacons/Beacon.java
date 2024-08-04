@@ -12,6 +12,8 @@ public class Beacon {
     private Calendar calendar;
     private String time;
 
+    private boolean isActive = false;
+
     public Beacon(final String name, final String rawLocation, final String time) {
         this.name = name;
 
@@ -52,5 +54,13 @@ public class Beacon {
 
     public final Calendar getCalendar() {
         return this.calendar;
+    }
+
+    public void setActive(final boolean active) {
+        this.isActive = active;
+    }
+
+    public final boolean isActive() {
+        return this.isActive;
     }
 }
