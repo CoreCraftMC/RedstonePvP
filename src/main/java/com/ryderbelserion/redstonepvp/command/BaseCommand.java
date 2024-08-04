@@ -30,7 +30,7 @@ public class BaseCommand extends Command {
     @Override
     public void execute(CommandData data) {
         if (!data.isPlayer()) {
-            Messages.not_a_player.sendMessage(data.getCommandSender());
+            Messages.command_help.sendMessage(data.getCommandSender());
 
             return;
         }
