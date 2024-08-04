@@ -398,7 +398,9 @@ public class BeaconManager {
                         waterlogged.setWaterlogged(false);
                     }
 
-                    Messages.beacon_drop_party_stopped.broadcast();
+                    // reset the calendar
+                    beacon.setCalendar(MiscUtils.getTimeFromString(beacon.getTime()));
+
 
                     cancel();
                 }
