@@ -63,7 +63,7 @@ public class CommandBeaconTIme extends Command {
         });
 
         final RequiredArgumentBuilder<CommandSourceStack, String> arg2 = argument("time", StringArgumentType.string()).suggests((ctx, builder) -> {
-            List.of("1m, 5m, 15m, 30m, 45m, 1h").forEach(builder::suggest);
+            List.of("1m", "5m", "15m", "30m", "45m", "1h").forEach(builder::suggest);
 
             return builder.buildFuture();
         }).executes(context -> {
