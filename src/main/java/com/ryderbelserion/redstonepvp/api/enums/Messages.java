@@ -13,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +114,7 @@ public enum Messages {
         sender.sendRichMessage(getMessage(sender));
     }
 
-    private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
+    private @NotNull String parse(@NotNull final CommandSender sender, @Nullable final Map<String, String> placeholders) {
         String message;
 
         if (isList()) {
@@ -127,7 +129,7 @@ public enum Messages {
             }
         }
 
-        if (!placeholders.isEmpty()) {
+        if (placeholders != null && !placeholders.isEmpty()) {
             for (Map.Entry<String, String> placeholder : placeholders.entrySet()) {
                 if (placeholder != null) {
                     final String key = placeholder.getKey();
@@ -147,11 +149,11 @@ public enum Messages {
         broadcast(null);
     }
 
-    public void broadcast(final Map<String, String> placeholder) {
-        sendMessage(this.plugin.getServer().getConsoleSender(), placeholder);
+    public void broadcast(@Nullable final Map<String, String> placeholders) {
+        sendMessage(this.plugin.getServer().getConsoleSender(), placeholders);
 
         for (Player player : this.plugin.getServer().getOnlinePlayers()) {
-            if (placeholder == null) sendMessage(player); else sendMessage(player, placeholder);
+            if (placeholders == null) sendMessage(player); else sendMessage(player, placeholders);
         }
     }
 }
