@@ -77,7 +77,7 @@ public class Locale implements SettingsHolder {
     public static final Property<String> beacon_drop_party_started = newProperty("root.feature.drop-party.started", "{prefix}<white>A drop party has started @ {x},{z}!");
 
     @Comment("A list of available placeholders: {time}")
-    public static final Property<String> beacon_drop_party_stopped = newProperty("root.feature.drop-party.stopped", "{prefix}<white>The drop party has ended! Come back in {time} minutes.");
+    public static final Property<String> beacon_drop_party_stopped = newProperty("root.feature.drop-party.stopped", "{prefix}<white>The drop party has ended! Come back in {time}.");
 
     @Comment("A list of available placeholders: {x}, {z}")
     public static final Property<String> beacon_drop_party_countdown = newProperty("root.feature.drop-party.countdown", "{prefix}<white>The drop party will start shortly @ {x},{z}!");
