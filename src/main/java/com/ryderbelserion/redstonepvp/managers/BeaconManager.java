@@ -26,6 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -277,17 +278,26 @@ public class BeaconManager {
 
                 final int requirement = config.getProperty(Config.beacon_drop_party_required_players);
 
-                if (requirement != -1) {
+                if (requirement == -1 && players.isEmpty()) return;
+
+                final Calendar start = Calendar.getInstance();
+                start.clear(Calendar.MILLISECOND);
+
+                final Calendar calendar = beacon.getCalendar();
+
+                // if timer reaches 0
+                if (calendar.compareTo(start) <= 0 && !beacon.isActive()) {
                     if (players.size() < requirement) {
                         Messages.beacon_drop_party_not_enough_players.broadcast();
 
+                        // reset the calendar
+                        beacon.setCalendar(MiscUtils.getTimeFromString(beacon.getTime()));
+
                         return;
                     }
+
+                    runAnimation(block, beacon, location);
                 }
-
-                //todo() calender task
-
-                runAnimation(block, beacon, location);
             }
         }.runAtFixedRate(plugin, 0, 20));
     }
