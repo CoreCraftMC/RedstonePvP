@@ -98,14 +98,16 @@ public class BeaconManager {
     public static void startTasks(final boolean isReload) {
         if (isReload) {
             beaconTasks.forEach((name, task) -> {
-                plugin.getLogger().warning("The task for " + name + " was cancelled because the plugin reloaded.");
+                if (!task.isCancelled()) {
+                    plugin.getLogger().warning("The task for " + name + " was cancelled because the plugin reloaded.");
 
-                final Beacon beacon = beaconDrops.get(name);
+                    final Beacon beacon = beaconDrops.get(name);
 
-                // reset the calendar
-                beacon.setCalendar(MiscUtils.getTimeFromString(beacon.getTime()));
+                    // reset the calendar
+                    beacon.setCalendar(MiscUtils.getTimeFromString(beacon.getTime()));
 
-                task.cancel();
+                    task.cancel();
+                }
             });
 
             beaconTasks.clear();
@@ -172,6 +174,11 @@ public class BeaconManager {
         // if name is not null, we remove from the cache.
         if (name != null) {
             beaconDrops.remove(name);
+
+            final ScheduledTask task = beaconTasks.get(name);
+            task.cancel();
+
+            beaconTasks.remove(name);
 
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = dataManager.getConnector().getConnection()) {
