@@ -307,11 +307,7 @@ public class BeaconManager {
     }
 
     public static void runAnimation(final Block block, final Beacon beacon, final Location location) {
-        final Block water = block.getLocation().clone().add(0.0, 1, 0.0).getBlock();
-
-        final BlockData blockData = block.getBlockData();
-
-        final List<ItemDrop> drops = beacon.getDrop().getItemDrops().stream().filter(itemDrop -> itemDrop.getItem() == null).toList();
+        final List<ItemDrop> drops = beacon.getDrop().getItemDrops().stream().filter(itemDrop -> itemDrop.getItem() != null).toList();
 
         // do not continue if drops empty.
         if (drops.isEmpty()) {
@@ -326,6 +322,10 @@ public class BeaconManager {
 
             return;
         }
+
+        final Block water = block.getLocation().clone().add(0.0, 1, 0.0).getBlock();
+
+        final BlockData blockData = block.getBlockData();
 
         new FoliaRunnable(plugin.getServer().getRegionScheduler(), location) {
             int counter = 0;
