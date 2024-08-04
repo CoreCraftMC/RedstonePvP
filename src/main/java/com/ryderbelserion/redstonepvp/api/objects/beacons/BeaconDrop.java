@@ -91,10 +91,12 @@ public class BeaconDrop {
         if (insertData) {
             CompletableFuture.runAsync(() -> {
                 try (Connection connection = this.connector.getConnection()) {
-                    try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(id, item, weight) values (?, ?, ?) returning position")) {
+                    try (PreparedStatement statement = connection.prepareStatement("insert into beacon_items(id, item, min, max, weight) values (?, ?, ?, ?, ?) returning position")) {
                         statement.setString(1, name);
                         statement.setString(2, item);
-                        statement.setDouble(3, weight);
+                        statement.setInt(3, min);
+                        statement.setInt(4, max);
+                        statement.setDouble(5, weight);
 
                         try (final ResultSet generatedKeys = statement.executeQuery()) {
                             if (generatedKeys.next()) {
