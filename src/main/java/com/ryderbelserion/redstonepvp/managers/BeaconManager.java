@@ -274,6 +274,7 @@ public class BeaconManager {
                 }
 
                 // cancel if drops empty.
+                //todo() reset calendar timer
                 if (drops.isEmpty()) {
                     cancel();
                 }
