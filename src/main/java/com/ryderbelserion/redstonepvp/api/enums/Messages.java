@@ -54,7 +54,8 @@ public enum Messages {
     beacon_drop_removed(Locale.beacon_drop_removed),
     beacon_drop_set(Locale.beacon_drop_set),
 
-    beacon_drop_help(Locale.beacon_drop_help, true);
+    beacon_drop_help(Locale.beacon_drop_help, true),
+    command_help(Locale.command_help, true);
 
     private Property<String> property;
 

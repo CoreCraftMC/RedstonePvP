@@ -4,7 +4,9 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.settings.PacketEventsSettings;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.redstonepvp.command.BaseCommand;
+import com.ryderbelserion.redstonepvp.command.help.CommandManager;
 import com.ryderbelserion.redstonepvp.command.subs.CommandBypass;
+import com.ryderbelserion.redstonepvp.command.subs.CommandHelp;
 import com.ryderbelserion.redstonepvp.command.subs.CommandOpen;
 import com.ryderbelserion.redstonepvp.command.subs.CommandReload;
 import com.ryderbelserion.redstonepvp.command.subs.beacons.CommandBeacon;
@@ -85,6 +87,7 @@ public class RedstonePvP extends JavaPlugin {
                     new CommandBeacon(),
                     new CommandReload(),
                     new CommandBypass(),
+                    new CommandHelp(),
                     new CommandOpen()
             ).forEach(command -> root.then(command.registerPermission().literal()));
 

@@ -42,6 +42,18 @@ public class Locale implements SettingsHolder {
 
     public static final Property<String> not_a_player = newProperty("root.not-a-player", "{prefix}<white>You must be a player to run this command.");
 
+    public static final Property<List<String>> command_help = newListProperty("root.command-help", List.of(
+            "<bold><gold>━━━━━━━━━━━━━━━━━━━ RedstonePvP Help ━━━━━━━━━━━━━━━━━━━</gold></bold>",
+            " ⤷ <red>/redstonepvp bypass - <white>Allows you to remove/edit item frames",
+            " ⤷ <red>/redstonepvp help - <white>Opens this help menu",
+            " ⤷ <red>/redstonepvp open {menu} - <white>Opens a menu from the <gold>static</gold> directory.",
+            " ⤷ <red>/redstonepvp reload - <white>Reloads the plugin.",
+            "",
+            " ⤷ <red>/redstonepvp beacon - <white>Access beacon settings.",
+            " ⤷ <red>/redstonepvp beacon item - <white>Access beacon item settings.",
+            "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
+    ));
+
     @Comment("A list of available placeholders: {name}")
     public static final Property<String> player_not_found = newProperty("root.player-not-found", "{prefix}<white>The player <red>{name} <white>was not found.");
 
