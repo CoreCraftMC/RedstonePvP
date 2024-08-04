@@ -360,6 +360,9 @@ public class BeaconManager {
                     // the beacon is no longer active
                     beacon.setActive(false);
 
+                    // the beacon is broken because, no drops!
+                    beacon.setBroken(true);
+
                     cancel();
 
                     return;
