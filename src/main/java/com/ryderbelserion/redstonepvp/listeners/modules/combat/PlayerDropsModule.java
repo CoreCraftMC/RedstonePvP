@@ -1,5 +1,6 @@
 package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 
+import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.commands.modules.ModuleHandler;
 import com.ryderbelserion.redstonepvp.api.enums.Files;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
@@ -11,7 +12,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerDropsModule extends ModuleHandler {
 
@@ -64,32 +64,10 @@ public class PlayerDropsModule extends ModuleHandler {
 
     @EventHandler
     public void onPlayerHit(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player player) || !(event.getEntity() instanceof Player target)) return;
+        if (!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof Player target)) return;
 
         if (!isEnabled()) return;
 
-        final ItemDrop itemDrop = getDrop();
-
-        if (itemDrop == null) return;
-
-        player.getWorld().dropItem(target.getLocation(), itemDrop.getItem());
-    }
-
-    private ItemDrop getDrop() {
-        double weight = 0.0;
-
-        for (ItemDrop itemDrop : this.drops) {
-            weight += itemDrop.getWeight();
-        }
-
-        int index = 0;
-
-        for (double random = ThreadLocalRandom.current().nextDouble() * weight; index < this.drops.size() - 1; index++) {
-            random -= this.drops.get(index).getWeight();
-
-            if (random < 0.0) break;
-        }
-
-        return this.drops.get(index);
+        MiscUtils.getDrop(target.getLocation(), this.drops);
     }
 }
