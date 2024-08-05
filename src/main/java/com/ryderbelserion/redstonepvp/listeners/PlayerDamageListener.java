@@ -17,7 +17,7 @@ public class PlayerDamageListener implements Listener {
         if (!(event.getDamager() instanceof Player player) || !(event.getEntity() instanceof Player target)) return;
 
         // don't spawn blood particle if they can't damage the target.
-        if (!MiscUtils.canAttack(player, target)) return;
+        if (MiscUtils.cantDamage(player, target)) return;
 
         final int count = ConfigManager.getConfig().getProperty(Config.blood_effect);
 

@@ -134,8 +134,7 @@ public class MiscUtils {
         return plugin.getServer().getServicesManager().getRegistrations(Protection.class);
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean canAttack(Player player, Player target) {
+    public static boolean cantDamage(final Player player, final Player target) {
         final Collection<RegisteredServiceProvider<Protection>> protections = getProtections();
 
         for (final RegisteredServiceProvider<Protection> protection : protections) {

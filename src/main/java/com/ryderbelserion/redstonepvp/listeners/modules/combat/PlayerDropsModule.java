@@ -69,7 +69,7 @@ public class PlayerDropsModule extends ModuleHandler {
         if (!isEnabled()) return;
 
         // Don't spawn drops if they can't attack.
-        if (!MiscUtils.canAttack(player, target)) return;
+        if (MiscUtils.cantDamage(player, target)) return;
 
         MiscUtils.getDrop(target.getLocation(), this.drops);
     }
