@@ -135,6 +135,10 @@ public class MiscUtils {
     }
 
     public static boolean cantDamage(final Player player, final Player target) {
+        if (!plugin.getServer().getPluginManager().isPluginEnabled("YardWatch")) {
+            return true;
+        }
+
         final Collection<RegisteredServiceProvider<Protection>> protections = getProtections();
 
         for (final RegisteredServiceProvider<Protection> protection : protections) {
