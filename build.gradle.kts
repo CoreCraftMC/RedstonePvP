@@ -19,13 +19,13 @@ dependencies {
 
     implementation(libs.vital.paper)
 
-    implementation(libs.yardwatch)
-
     compileOnly(libs.placeholderapi)
 
     compileOnly(libs.packet.events)
 
     compileOnly(libs.hikari.cp)
+
+    compileOnly(libs.yardwatch)
 }
 
 tasks {
