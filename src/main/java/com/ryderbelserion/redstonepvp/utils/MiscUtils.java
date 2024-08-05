@@ -5,6 +5,7 @@ import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
+import com.ryderbelserion.vital.paper.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.youhavetrouble.yardwatch.Protection;
 import org.bukkit.Location;
@@ -130,16 +131,12 @@ public class MiscUtils {
         return message;
     }
 
-    public static Collection<RegisteredServiceProvider<Protection>> getProtections() {
-        return plugin.getServer().getServicesManager().getRegistrations(Protection.class);
-    }
-
     public static boolean cantDamage(final Player player, final Player target) {
-        if (!plugin.getServer().getPluginManager().isPluginEnabled("YardWatch")) {
+        if (!Support.yard_watch.isEnabled()) {
             return true;
         }
 
-        final Collection<RegisteredServiceProvider<Protection>> protections = getProtections();
+        final Collection<RegisteredServiceProvider<Protection>> protections = plugin.getServer().getServicesManager().getRegistrations(Protection.class);
 
         for (final RegisteredServiceProvider<Protection> protection : protections) {
             if (protection.getProvider().canDamage(player, target)) continue;
