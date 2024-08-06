@@ -17,6 +17,8 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
+    implementation("dev.triumphteam", "triumph-gui", "3.1.10")
+
     implementation(libs.vital.paper)
 
     compileOnly(libs.placeholderapi)
@@ -40,6 +42,12 @@ tasks {
     shadowJar {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("")
+
+        listOf(
+            "com.ryderbelserion.vital"
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
     }
 
     processResources {
