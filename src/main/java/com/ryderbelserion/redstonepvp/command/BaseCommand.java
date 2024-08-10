@@ -2,8 +2,6 @@ package com.ryderbelserion.redstonepvp.command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.interfaces.Gui;
-import com.ryderbelserion.redstonepvp.api.interfaces.GuiItem;
 import com.ryderbelserion.redstonepvp.managers.MenuManager;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
@@ -13,6 +11,8 @@ import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.vital.paper.api.commands.Command;
 import com.ryderbelserion.vital.paper.api.commands.CommandData;
+import com.ryderbelserion.vital.paper.api.interfaces.Gui;
+import com.ryderbelserion.vital.paper.api.interfaces.GuiItem;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.Server;

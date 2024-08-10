@@ -1,18 +1,18 @@
 package com.ryderbelserion.redstonepvp.managers;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.redstonepvp.api.builders.gui.PaginatedGui;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.api.enums.PersistentKeys;
-import com.ryderbelserion.redstonepvp.api.interfaces.Gui;
-import com.ryderbelserion.redstonepvp.api.interfaces.GuiItem;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
 import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.utils.ItemUtils;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
+import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.api.interfaces.Gui;
+import com.ryderbelserion.vital.paper.api.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
 import org.bukkit.Location;
 import org.bukkit.Server;
