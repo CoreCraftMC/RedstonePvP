@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -343,8 +344,13 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     @Override
     public void populatePage() {
         int slot = 0;
+        final int inventorySize = getInventory().getSize();
 
         for (GuiItem item : getItemsFromPage(this.pageNumber)) {
+            if (slot >= inventorySize) {
+                break;
+            }
+
             if (getGuiItem(slot) != null || getInventory().getItem(slot) != null) {
                 slot++;
 
