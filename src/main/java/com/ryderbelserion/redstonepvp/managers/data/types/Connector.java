@@ -5,7 +5,7 @@ import java.sql.Connection;
 
 public interface Connector {
 
-    Connector init(File file);
+    Connector init(final File file);
 
     void start();
 
@@ -19,6 +19,6 @@ public interface Connector {
 
     File getFile();
 
-    boolean tableExists(Connection connection, String table);
+    boolean tableExists(final Connection connection, final String table);
 
 }

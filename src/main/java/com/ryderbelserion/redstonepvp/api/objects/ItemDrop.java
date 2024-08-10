@@ -1,11 +1,10 @@
 package com.ryderbelserion.redstonepvp.api.objects;
 
-import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ItemDrop {

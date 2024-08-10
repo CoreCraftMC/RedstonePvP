@@ -4,7 +4,7 @@ import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.api.builders.gui.PaginatedGui;
 import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
 import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
-import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 

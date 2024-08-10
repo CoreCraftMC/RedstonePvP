@@ -17,9 +17,9 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
-    implementation("dev.triumphteam", "triumph-gui", "3.1.10")
-
     implementation(libs.vital.paper)
+
+    implementation(libs.yalu)
 
     compileOnly(libs.placeholderapi)
 
@@ -44,7 +44,8 @@ tasks {
         archiveClassifier.set("")
 
         listOf(
-            "com.ryderbelserion.vital"
+            "com.ryderbelserion.vital",
+            "ch.jalu"
         ).forEach {
             relocate(it, "libs.$it")
         }

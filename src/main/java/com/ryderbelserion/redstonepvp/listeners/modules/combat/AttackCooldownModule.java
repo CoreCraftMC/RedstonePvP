@@ -3,7 +3,7 @@ package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
-import com.ryderbelserion.vital.paper.commands.modules.ModuleHandler;
+import com.ryderbelserion.vital.paper.api.commands.modules.ModuleHandler;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;

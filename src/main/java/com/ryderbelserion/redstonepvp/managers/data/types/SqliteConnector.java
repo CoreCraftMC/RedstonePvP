@@ -20,7 +20,7 @@ public class SqliteConnector implements Connector {
     private File file;
 
     @Override
-    public final Connector init(File file) {
+    public final Connector init(final File file) {
         try {
             file.createNewFile();
         } catch (IOException exception) {

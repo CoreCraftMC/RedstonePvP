@@ -1,7 +1,7 @@
 package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
-import com.ryderbelserion.vital.paper.commands.modules.ModuleHandler;
+import com.ryderbelserion.vital.paper.api.commands.modules.ModuleHandler;
 import com.ryderbelserion.redstonepvp.api.enums.Files;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import org.bukkit.configuration.ConfigurationSection;

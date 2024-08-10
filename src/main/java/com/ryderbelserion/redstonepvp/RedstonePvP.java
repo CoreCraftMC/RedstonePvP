@@ -21,15 +21,14 @@ import com.ryderbelserion.redstonepvp.managers.RedstoneManager;
 import com.ryderbelserion.redstonepvp.managers.data.types.Connector;
 import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
 import com.ryderbelserion.redstonepvp.support.PlaceholderAPISupport;
-import com.ryderbelserion.vital.paper.commands.modules.ModuleHandler;
-import com.ryderbelserion.vital.paper.commands.modules.ModuleLoader;
-import com.ryderbelserion.vital.paper.enums.Support;
-import com.ryderbelserion.vital.paper.plugins.PluginManager;
-import com.ryderbelserion.vital.paper.plugins.interfaces.Plugin;
+import com.ryderbelserion.vital.paper.api.commands.modules.ModuleHandler;
+import com.ryderbelserion.vital.paper.api.commands.modules.ModuleLoader;
+import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.ryderbelserion.vital.paper.api.plugins.PluginManager;
+import com.ryderbelserion.vital.paper.api.plugins.interfaces.Plugin;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.Locale;
@@ -40,7 +39,6 @@ public class RedstonePvP extends JavaPlugin {
         return JavaPlugin.getPlugin(RedstonePvP.class);
     }
 
-    private List<ItemStack> items;
     private long startTime;
 
     @Override

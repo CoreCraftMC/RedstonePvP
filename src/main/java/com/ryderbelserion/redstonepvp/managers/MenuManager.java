@@ -12,7 +12,7 @@ import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.utils.ItemUtils;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
-import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
 import org.bukkit.Location;
 import org.bukkit.Server;

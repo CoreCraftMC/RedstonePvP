@@ -5,7 +5,7 @@ import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.listeners.modules.PlayerPacketModule;
-import com.ryderbelserion.vital.paper.plugins.interfaces.Plugin;
+import com.ryderbelserion.vital.paper.api.plugins.interfaces.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class PacketEventsSupport implements Plugin {
