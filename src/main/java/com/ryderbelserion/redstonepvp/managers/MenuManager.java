@@ -10,15 +10,15 @@ import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.utils.ItemUtils;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
-import com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.vital.paper.api.interfaces.Gui;
-import com.ryderbelserion.vital.paper.api.interfaces.GuiItem;
+import com.ryderbelserion.redstonepvp.api.objects.ItemBuilder;
+import com.ryderbelserion.vital.paper.api.interfaces.gui.Gui;
+import com.ryderbelserion.vital.paper.api.interfaces.gui.GuiItem;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import java.util.Collections;
 import java.util.HashMap;
@@ -114,7 +114,7 @@ public class MenuManager {
 
                             final ItemStack itemStack = item.getItemStack();
 
-                            final PersistentDataContainer container = itemStack.getItemMeta().getPersistentDataContainer();
+                            final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
 
                             final String beaconName = container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING);
 
@@ -134,7 +134,7 @@ public class MenuManager {
 
                             final ItemStack itemStack = item.getItemStack();
 
-                            final PersistentDataContainer container = itemStack.getItemMeta().getPersistentDataContainer();
+                            final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
 
                             final String beaconName = container.get(PersistentKeys.beacon_uuid.getNamespacedKey(), PersistentDataType.STRING);
 
@@ -173,7 +173,7 @@ public class MenuManager {
 
                                     if (guiItem == null) return;
 
-                                    final PersistentDataContainer pdc = guiItem.getItemStack().getItemMeta().getPersistentDataContainer();
+                                    final PersistentDataContainerView pdc = guiItem.getItemStack().getPersistentDataContainer();
 
                                     final String itemName = pdc.get(PersistentKeys.beacon_item.getNamespacedKey(), PersistentDataType.STRING);
 

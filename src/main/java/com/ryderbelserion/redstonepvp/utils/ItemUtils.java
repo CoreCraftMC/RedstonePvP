@@ -1,10 +1,10 @@
 package com.ryderbelserion.redstonepvp.utils;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
+import com.ryderbelserion.redstonepvp.api.objects.ItemBuilder;
 import com.ryderbelserion.redstonepvp.managers.config.beans.ButtonProperty;
 import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
-import com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 

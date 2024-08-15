@@ -6,7 +6,7 @@ import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.managers.config.types.Locale;
-import com.ryderbelserion.vital.common.utils.StringUtils;
+import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.command.CommandSender;
@@ -119,7 +119,7 @@ public enum Messages {
         String message;
 
         if (isList()) {
-            message = StringUtils.chomp(StringUtils.convertList(getList()));
+            message = StringUtil.chomp(StringUtil.convertList(getList()));
         } else {
             message = getString();
         }

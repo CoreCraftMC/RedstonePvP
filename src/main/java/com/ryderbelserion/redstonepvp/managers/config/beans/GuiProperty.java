@@ -1,6 +1,6 @@
 package com.ryderbelserion.redstonepvp.managers.config.beans;
 
-import com.ryderbelserion.vital.paper.api.interfaces.GuiType;
+import com.ryderbelserion.vital.paper.api.interfaces.gui.GuiType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;

@@ -1,6 +1,6 @@
 package com.ryderbelserion.redstonepvp.managers.config.beans;
 
-import com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.redstonepvp.api.objects.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

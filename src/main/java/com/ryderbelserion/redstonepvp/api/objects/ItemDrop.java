@@ -1,6 +1,5 @@
 package com.ryderbelserion.redstonepvp.api.objects;
 
-import com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
