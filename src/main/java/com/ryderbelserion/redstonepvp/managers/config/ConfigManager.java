@@ -6,12 +6,9 @@ import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.redstonepvp.managers.MenuManager;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.managers.config.types.Locale;
-import com.ryderbelserion.vital.paper.files.config.FileManager;
 import java.io.File;
 
 public class ConfigManager {
-
-    private static FileManager fileManager;
 
     private static SettingsManager config;
 
@@ -35,9 +32,6 @@ public class ConfigManager {
                 .configurationData(Locale.class)
                 .create();
 
-        fileManager = new FileManager();
-        fileManager.addFile("player-drops.yml").addFolder("static").init();
-
         // Create all the gui's
         MenuManager.populate();
     }
@@ -50,7 +44,7 @@ public class ConfigManager {
 
         messages.reload();
 
-        fileManager.reloadFiles().init();
+        //fileManager.reloadFiles().init();
     }
 
     /**
@@ -65,12 +59,5 @@ public class ConfigManager {
      */
     public static SettingsManager getMessages() {
         return messages;
-    }
-
-    /**
-     * @return {@link FileManager}
-     */
-    public static FileManager getFileManager() {
-        return fileManager;
     }
 }

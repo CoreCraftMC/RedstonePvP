@@ -8,7 +8,6 @@ import com.ryderbelserion.vital.paper.api.commands.Command;
 import com.ryderbelserion.vital.paper.api.commands.CommandData;
 import com.ryderbelserion.redstonepvp.api.enums.Messages;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
-import com.ryderbelserion.vital.paper.api.commands.modules.ModuleLoader;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.permissions.Permission;
@@ -31,11 +30,7 @@ public class CommandReload extends Command {
         BeaconManager.startTasks(true);
 
         // Reload modules.
-        this.plugin.getRedstone().apply(redstone -> {
-            final ModuleLoader loader = redstone.getModuleLoader();
-
-            loader.reload();
-        });
+        this.plugin.getLoader().reload();
 
         // Send the message.
         Messages.reloaded_plugin.sendMessage(data.getCommandSender());

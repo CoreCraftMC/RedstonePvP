@@ -5,10 +5,10 @@ import com.github.retrooper.packetevents.PacketEventsAPI;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.listeners.modules.PlayerPacketModule;
-import com.ryderbelserion.vital.paper.api.plugins.interfaces.Plugin;
+import com.ryderbelserion.vital.common.api.interfaces.IPlugin;
 import org.jetbrains.annotations.NotNull;
 
-public class PacketEventsSupport implements Plugin {
+public class PacketEventsSupport implements IPlugin {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
@@ -23,7 +23,7 @@ public class PacketEventsSupport implements Plugin {
     }
 
     @Override
-    public void add() {
+    public void init() {
         if (!isEnabled()) return;
 
         final PacketEventsAPI<?> packet = PacketEvents.getAPI();
@@ -34,7 +34,7 @@ public class PacketEventsSupport implements Plugin {
     }
 
     @Override
-    public void remove() {
+    public void stop() {
         if (!isEnabled()) return;
 
         PacketEvents.getAPI().terminate();

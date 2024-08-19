@@ -5,7 +5,5 @@ plugins {
 }
 
 repositories {
-    maven("https://repo.triumphteam.dev/snapshots")
-
     maven(Repository.Paper.url)
 }

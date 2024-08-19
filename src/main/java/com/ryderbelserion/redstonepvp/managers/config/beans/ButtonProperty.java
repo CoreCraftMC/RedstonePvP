@@ -4,19 +4,20 @@ import com.ryderbelserion.redstonepvp.api.objects.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.List;
 import java.util.Map;
 
 public class ButtonProperty {
 
-    private final ConfigurationSection section;
+    private final CommentedConfigurationNode section;
 
     /**
      * Constructs the button
      *
      * @param section {@link ConfigurationSection} for the button
      */
-    public ButtonProperty(final ConfigurationSection section) {
+    public ButtonProperty(final CommentedConfigurationNode section) {
         this.section = section;
     }
 
@@ -26,7 +27,7 @@ public class ButtonProperty {
      * @return the material to build {@link org.bukkit.Material}
      */
     public final String getDisplayMaterial() {
-        return this.section.getString("preview.display_material", "compass");
+        return this.section.node("preview", "display_material").getString("compass");
     }
 
     /**
@@ -35,7 +36,7 @@ public class ButtonProperty {
      * @return {@link String} display name
      */
     public final String getDisplayName() {
-        return this.section.getString("preview.display_name", "");
+        return this.section.node("preview", "display_name").getString("");
     }
 
     /**
@@ -44,7 +45,7 @@ public class ButtonProperty {
      * @return {@link List<String>} list of strings
      */
     public final List<String> getDisplayLore() {
-        return this.section.getStringList("preview.display_lore");
+        return this.section.node("preview", "display_lore").getList();
     }
 
     /**
@@ -53,7 +54,7 @@ public class ButtonProperty {
      * @return the row number
      */
     public final int getDisplayRow() {
-        return this.section.getInt("preview.display_position.row", -1);
+        return this.section.node("preview", "display_position", "row").getInt(-1);
     }
 
     /**
@@ -62,7 +63,7 @@ public class ButtonProperty {
      * @return the column number
      */
     public final int getDisplayColumn() {
-        return this.section.getInt("preview.display_position.column", -1);
+        return this.section.node("preview", "display_position", "column").getInt(-1);
     }
 
     /**

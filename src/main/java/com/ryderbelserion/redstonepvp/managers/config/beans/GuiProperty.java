@@ -1,38 +1,40 @@
 package com.ryderbelserion.redstonepvp.managers.config.beans;
 
-import com.ryderbelserion.vital.paper.api.interfaces.gui.GuiType;
+import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiType;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuiProperty {
 
-    private final FileConfiguration configuration;
+    private final CommentedConfigurationNode configuration;
 
-    public GuiProperty(final FileConfiguration configuration) {
+    public GuiProperty(final CommentedConfigurationNode configuration) {
         this.configuration = configuration;
     }
 
     public final GuiType getGuiType() {
-        return GuiType.valueOf(this.configuration.getString("menu.type", "chest").toUpperCase());
+        return GuiType.valueOf(this.configuration.node("menu", "type").getString("chest").toUpperCase());
     }
 
     public final String getGuiTitle() {
-        return this.configuration.getString("menu.title", "<red>Basic Title</red>");
+        return this.configuration.node("menu", "title").getString("<red>Basic Title</red>");
     }
 
     public final int getGuiRows() {
-        return this.configuration.getInt("menu.rows", 6);
+        this.configuration.virtual();
+
+        return this.configuration.node("menu", "rows").getInt(6);
     }
 
     public @Nullable final ButtonProperty getNextButton() {
-        final ConfigurationSection section = this.configuration.getConfigurationSection("menu.next_button");
+        final CommentedConfigurationNode node = this.configuration.node("menu", "next_button");
 
-        if (section == null) return null;
+        if (!node.virtual()) return null;
 
-        return new ButtonProperty(this.configuration.getConfigurationSection("menu.next_button"));
+        return new ButtonProperty(node);
     }
 
     public @Nullable final ButtonProperty getBackButton() {

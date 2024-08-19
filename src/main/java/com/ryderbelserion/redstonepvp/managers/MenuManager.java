@@ -9,11 +9,11 @@ import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.utils.ItemUtils;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
+import com.ryderbelserion.vital.common.managers.files.FileManager;
+import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
+import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import com.ryderbelserion.redstonepvp.api.objects.ItemBuilder;
-import com.ryderbelserion.vital.paper.api.interfaces.gui.Gui;
-import com.ryderbelserion.vital.paper.api.interfaces.gui.GuiItem;
-import com.ryderbelserion.vital.paper.files.config.FileManager;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -31,14 +31,15 @@ public class MenuManager {
     private static final RedstonePvP plugin = RedstonePvP.getPlugin();
     private static final Server server = plugin.getServer();
 
-    private final static FileManager fileManager = ConfigManager.getFileManager();
+    private final static FileManager fileManager = plugin.getFileManager();
 
     public static Map<String, GuiProperty> guis = new HashMap<>();
 
     public static void populate() {
         guis.clear();
 
-        fileManager.getCustomFiles().forEach(file -> guis.put(file.getStrippedName(), new GuiProperty(file.getConfiguration())));
+        //fileManager.getCustomFiles().forEach(file -> guis.put(file.getStrippedName(), new GuiProperty(file.getConfiguration())));
+        fileManager.getCustomFiles().forEach((file, custom) -> guis.put(file, new GuiProperty(custom.getRoot())));
     }
 
     public static GuiProperty getGui(final String name) {
