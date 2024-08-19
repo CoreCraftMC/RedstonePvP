@@ -104,7 +104,7 @@ public class ButtonProperty {
     public final ItemBuilder build(@Nullable final Map<String, String> placeholders, final boolean hasMaterial, @NotNull final String base64) {
         ItemBuilder itemBuilder = new ItemBuilder();
 
-        if (hasMaterial && this.section.contains("preview.display_material")) {
+        if (hasMaterial && !this.section.node("preview", "display_material").virtual()) {
             itemBuilder.withType(getDisplayMaterial());
         } else {
             itemBuilder = itemBuilder.fromBase64(base64);
