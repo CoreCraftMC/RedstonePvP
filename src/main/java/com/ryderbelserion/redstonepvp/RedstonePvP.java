@@ -13,19 +13,19 @@ import com.ryderbelserion.redstonepvp.listeners.modules.combat.AttackCooldownMod
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.HitDelayModule;
 import com.ryderbelserion.redstonepvp.listeners.modules.combat.PlayerDropsModule;
 import com.ryderbelserion.redstonepvp.managers.BeaconManager;
+import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.data.DataManager;
 import com.ryderbelserion.redstonepvp.listeners.PlayerDamageListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.AnvilRepairListener;
 import com.ryderbelserion.redstonepvp.listeners.modules.items.ItemFrameListener;
-import com.ryderbelserion.redstonepvp.managers.RedstoneManager;
 import com.ryderbelserion.redstonepvp.managers.data.types.Connector;
 import com.ryderbelserion.redstonepvp.support.PacketEventsSupport;
 import com.ryderbelserion.redstonepvp.support.PlaceholderAPISupport;
-import com.ryderbelserion.vital.paper.api.commands.modules.ModuleHandler;
+import com.ryderbelserion.vital.common.api.interfaces.IPlugin;
+import com.ryderbelserion.vital.common.managers.PluginManager;
+import com.ryderbelserion.vital.paper.Vital;
 import com.ryderbelserion.vital.paper.api.commands.modules.ModuleLoader;
 import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.api.plugins.PluginManager;
-import com.ryderbelserion.vital.paper.api.plugins.interfaces.Plugin;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -33,7 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.Locale;
 
-public class RedstonePvP extends JavaPlugin {
+public class RedstonePvP extends Vital {
 
     public static RedstonePvP getPlugin() {
         return JavaPlugin.getPlugin(RedstonePvP.class);
@@ -51,21 +51,21 @@ public class RedstonePvP extends JavaPlugin {
 
     private DataManager dataManager;
 
-    private RedstoneManager redstone;
-
     @Override
     public void onEnable() {
-        this.redstone = new RedstoneManager(this).start(redstone -> {
-            final ModuleLoader moduleLoader = redstone.getModuleLoader();
+        getFileManager().addFile("player-drops.yml").addFolder("static").init();
 
-            List.of(
-                    new AttackCooldownModule(),
-                    new PlayerDropsModule(),
-                    new HitDelayModule()
-            ).forEach(moduleLoader::addModule);
+        ConfigManager.load(getDataFolder());
 
-            moduleLoader.load(this);
-        });
+        final ModuleLoader loader = getLoader();
+
+        List.of(
+                new AttackCooldownModule(),
+                new PlayerDropsModule(),
+                new HitDelayModule()
+        ).forEach(loader::addModule);
+
+        loader.load();
 
         // Create data manager.
         this.dataManager = new DataManager().init();
@@ -117,10 +117,10 @@ public class RedstonePvP extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        final Plugin packets = PluginManager.getPlugin("packetevents");
+        final IPlugin packets = PluginManager.getPlugin("packetevents");
 
         if (packets != null) {
-            packets.remove();
+            packets.stop();
         }
 
         if (this.dataManager != null) {
@@ -131,20 +131,12 @@ public class RedstonePvP extends JavaPlugin {
             }
         }
 
-        if (this.redstone == null) return;
-
-        this.redstone.apply(redstone -> {
-            final ModuleLoader moduleLoader = redstone.getModuleLoader();
-
-            moduleLoader.getModules().forEach(ModuleHandler::disable);
-        });
+        // yeet data
+        getLoader().unload(true);
+        getFileManager().purge();
     }
 
     public final DataManager getDataManager() {
         return this.dataManager;
-    }
-
-    public final RedstoneManager getRedstone() {
-        return this.redstone;
     }
 }

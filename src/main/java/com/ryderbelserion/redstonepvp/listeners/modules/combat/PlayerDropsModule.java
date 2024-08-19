@@ -1,9 +1,9 @@
 package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
-import com.ryderbelserion.vital.paper.api.commands.modules.ModuleHandler;
 import com.ryderbelserion.redstonepvp.api.enums.Files;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
+import com.ryderbelserion.vital.paper.api.commands.modules.interfaces.IPaperModule;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerDropsModule extends ModuleHandler {
+public class PlayerDropsModule implements IPaperModule {
 
     private final List<ItemDrop> drops = new ArrayList<>();
 

@@ -3,7 +3,7 @@ package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 import com.ryderbelserion.redstonepvp.RedstonePvP;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
-import com.ryderbelserion.vital.paper.api.commands.modules.ModuleHandler;
+import com.ryderbelserion.vital.paper.api.commands.modules.interfaces.IPaperModule;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class AttackCooldownModule extends ModuleHandler {
+public class AttackCooldownModule implements IPaperModule {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 

@@ -1,9 +1,9 @@
 package com.ryderbelserion.redstonepvp.listeners.modules.combat;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import com.ryderbelserion.vital.paper.api.commands.modules.ModuleHandler;
 import com.ryderbelserion.redstonepvp.managers.config.ConfigManager;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
+import com.ryderbelserion.vital.paper.api.commands.modules.interfaces.IPaperModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class HitDelayModule extends ModuleHandler {
+public class HitDelayModule implements IPaperModule {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
