@@ -11,6 +11,17 @@ public class ButtonProperty {
 
     private final ConfigurationSection section;
 
+    private final SoundProperty soundProperty;
+
+    private final String displayMaterial;
+    private final String displayName;
+    private final List<String> displayLore;
+    private final int displayRow;
+    private final int displayColumn;
+
+    private final List<String> commands;
+    private final List<String> messages;
+
     /**
      * Constructs the button
      *
@@ -18,6 +29,17 @@ public class ButtonProperty {
      */
     public ButtonProperty(final ConfigurationSection section) {
         this.section = section;
+
+        this.soundProperty = new SoundProperty(this.section.getConfigurationSection("sound"));
+
+        this.displayMaterial = this.section.getString("preview.display_material", "compass");
+        this.displayName = this.section.getString("preview.display_name", "");
+        this.displayLore = this.section.getStringList("preview.display_lore");
+        this.displayRow = this.section.getInt("preview.display_position.row", -1);
+        this.displayColumn = this.section.getInt("preview.display_position.column", -1);
+
+        this.commands = this.section.getStringList("commands");
+        this.messages = this.section.getStringList("messages");
     }
 
     /**
@@ -26,7 +48,7 @@ public class ButtonProperty {
      * @return the material to build {@link org.bukkit.Material}
      */
     public final String getDisplayMaterial() {
-        return this.section.getString("preview.display_material", "compass");
+        return this.displayMaterial;
     }
 
     /**
@@ -35,7 +57,7 @@ public class ButtonProperty {
      * @return {@link String} display name
      */
     public final String getDisplayName() {
-        return this.section.getString("preview.display_name", "");
+        return this.displayName;
     }
 
     /**
@@ -44,7 +66,7 @@ public class ButtonProperty {
      * @return {@link List<String>} list of strings
      */
     public final List<String> getDisplayLore() {
-        return this.section.getStringList("preview.display_lore");
+        return this.displayLore;
     }
 
     /**
@@ -53,7 +75,7 @@ public class ButtonProperty {
      * @return the row number
      */
     public final int getDisplayRow() {
-        return this.section.getInt("preview.display_position.row", -1);
+        return this.displayRow;
     }
 
     /**
@@ -62,34 +84,28 @@ public class ButtonProperty {
      * @return the column number
      */
     public final int getDisplayColumn() {
-        return this.section.getInt("preview.display_position.column", -1);
+        return this.displayColumn;
     }
 
     /**
      * @return list of commands to send
      */
     public final List<String> getCommands() {
-        return this.section.getStringList("commands");
+        return this.commands;
     }
 
     /**
      * @return list of messages to send
      */
     public final List<String> getMessages() {
-        return this.section.getStringList("messages");
+        return this.messages;
     }
-
-    /*
-     * @return the nbt tag
-    public final String getNbtTag() {
-        return this.section.getString("nbt-tag", "");
-    }*/
 
     /**
      * @return {@link SoundProperty}
      */
     public final SoundProperty getSoundProperty() {
-        return new SoundProperty(this.section.getConfigurationSection("sound"));
+        return this.soundProperty;
     }
 
     /**

@@ -38,7 +38,6 @@ public class MenuManager {
     public static void populate() {
         guis.clear();
 
-        //fileManager.getCustomFiles().forEach(file -> guis.put(file.getStrippedName(), new GuiProperty(file.getConfiguration())));
         fileManager.getCustomFiles().forEach((file, custom) -> guis.put(file, new GuiProperty(custom.getConfiguration())));
     }
 

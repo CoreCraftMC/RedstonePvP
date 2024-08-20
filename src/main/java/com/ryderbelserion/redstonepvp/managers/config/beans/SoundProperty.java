@@ -8,7 +8,12 @@ import org.simpleyaml.configuration.ConfigurationSection;
 
 public class SoundProperty {
 
-    private final ConfigurationSection section;
+    private final boolean isSoundEnabled;
+    private final float soundVolume;
+    private final float soundPitch;
+    private final String soundName;
+
+    private final String soundSource;
 
     /**
      * Builds a sound property
@@ -16,35 +21,39 @@ public class SoundProperty {
      * @param section the configuration section
      */
     public SoundProperty(final ConfigurationSection section) {
-        this.section = section;
+        this.isSoundEnabled = section.getBoolean("toggle", false);
+        this.soundVolume = (float) section.getDouble("volume", 1.0);
+        this.soundPitch = (float) section.getDouble("pitch", 1.0);
+        this.soundName = section.getString("sound", "");
+        this.soundSource = section.getString("source", "player").toUpperCase();
     }
 
     /**
      * @return true or false
      */
     public final boolean isSoundEnabled() {
-        return this.section.getBoolean("toggle", false);
+        return this.isSoundEnabled;
     }
 
     /**
      * @return the name of the sound
      */
     public final String getSoundName() {
-        return this.section.getString("sound", "");
+        return this.soundName;
     }
 
     /**
      * @return the volume of the sound
      */
     public final float getSoundVolume() {
-        return (float) this.section.getDouble("volume", 1.0);
+        return this.soundVolume;
     }
 
     /**
      * @return the direction the sound will play
      */
     public final float getSoundPitch() {
-        return (float) this.section.getDouble("pitch", 1.0);
+        return this.soundPitch;
     }
 
     /**
@@ -53,7 +62,7 @@ public class SoundProperty {
      * @return {@link Sound.Source}
      */
     public final Sound.Source getSoundSource() {
-        return Sound.Source.valueOf(this.section.getString("source", "player").toUpperCase());
+        return Sound.Source.valueOf(this.soundSource);
     }
 
     /**

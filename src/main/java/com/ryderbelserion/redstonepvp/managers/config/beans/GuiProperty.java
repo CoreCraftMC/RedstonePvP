@@ -11,20 +11,28 @@ public class GuiProperty {
 
     private final YamlFile configuration;
 
+    private final GuiType guiType;
+    private final String guiTitle;
+    private final int guiRows;
+
     public GuiProperty(final YamlFile configuration) {
         this.configuration = configuration;
+
+        this.guiType = GuiType.valueOf(this.configuration.getString("menu.type", "chest").toUpperCase());
+        this.guiTitle = this.configuration.getString("menu.title", "<red>Basic Title</red>");
+        this.guiRows = this.configuration.getInt("menu.rows", 6);
     }
 
     public final GuiType getGuiType() {
-        return GuiType.valueOf(this.configuration.getString("menu.type", "chest").toUpperCase());
+        return this.guiType;
     }
 
     public final String getGuiTitle() {
-        return this.configuration.getString("menu.title", "<red>Basic Title</red>");
+        return this.guiTitle;
     }
 
     public final int getGuiRows() {
-        return this.configuration.getInt("menu.rows", 6);
+        return this.guiRows;
     }
 
     public @Nullable final ButtonProperty getNextButton() {
@@ -32,7 +40,7 @@ public class GuiProperty {
 
         if (section == null) return null;
 
-        return new ButtonProperty(this.configuration.getConfigurationSection("menu.next_button"));
+        return new ButtonProperty(section);
     }
 
     public @Nullable final ButtonProperty getBackButton() {
@@ -40,7 +48,7 @@ public class GuiProperty {
 
         if (section == null) return null;
 
-        return new ButtonProperty(this.configuration.getConfigurationSection("menu.back_button"));
+        return new ButtonProperty(section);
     }
 
     public @Nullable final ButtonProperty getMenuButton() {
@@ -48,7 +56,7 @@ public class GuiProperty {
 
         if (section == null) return null;
 
-        return new ButtonProperty(this.configuration.getConfigurationSection("menu.home_button"));
+        return new ButtonProperty(section);
     }
 
     public final List<ButtonProperty> getButtons() {
