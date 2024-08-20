@@ -20,6 +20,7 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.simpleyaml.configuration.file.YamlFile;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,13 @@ public class MenuManager {
     public static void populate() {
         guis.clear();
 
-        fileManager.getCustomFiles().forEach((file, custom) -> guis.put(file, new GuiProperty(custom.getConfiguration())));
+        fileManager.getCustomFiles().forEach((file, custom) -> {
+            final YamlFile configuration = custom.getConfiguration();
+
+            if (configuration != null) {
+                guis.put(file, new GuiProperty(configuration));
+            }
+        });
     }
 
     public static GuiProperty getGui(final String name) {

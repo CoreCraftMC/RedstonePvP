@@ -43,8 +43,6 @@ public class ConfigManager {
         config.reload();
 
         messages.reload();
-
-        //fileManager.reloadFiles().init();
     }
 
     /**

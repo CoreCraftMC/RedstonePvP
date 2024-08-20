@@ -20,6 +20,8 @@ public class CommandReload extends Command {
 
     @Override
     public void execute(final CommandData data) {
+        this.plugin.getFileManager().reloadFiles();
+
         // Refresh the config.
         ConfigManager.refresh();
 
