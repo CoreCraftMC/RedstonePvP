@@ -4,12 +4,13 @@ import com.ryderbelserion.redstonepvp.utils.MiscUtils;
 import com.ryderbelserion.redstonepvp.api.enums.Files;
 import com.ryderbelserion.redstonepvp.api.objects.ItemDrop;
 import com.ryderbelserion.vital.paper.api.commands.modules.interfaces.IPaperModule;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.jetbrains.annotations.NotNull;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.YamlFile;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class PlayerDropsModule implements IPaperModule {
 
         if (!isEnabled()) return;
 
-        final FileConfiguration configuration = Files.player_drops.getConfiguration();
+        final YamlFile configuration = Files.player_drops.getConfiguration();
 
         final ConfigurationSection section = configuration.getConfigurationSection("drops");
 

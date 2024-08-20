@@ -30,6 +30,7 @@ import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
@@ -53,7 +54,7 @@ public class RedstonePvP extends Vital {
 
     @Override
     public void onEnable() {
-        getFileManager().addFile("player-drops.yml").addFolder("static").init();
+        getFileManager().addFile(new File(getDataFolder(), "player-drops.yml")).addFolder("static").init();
 
         ConfigManager.load(getDataFolder());
 

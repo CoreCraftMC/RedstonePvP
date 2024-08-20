@@ -1,23 +1,22 @@
 package com.ryderbelserion.redstonepvp.managers.config.beans;
 
 import com.ryderbelserion.redstonepvp.api.objects.ItemBuilder;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.List;
 import java.util.Map;
 
 public class ButtonProperty {
 
-    private final CommentedConfigurationNode section;
+    private final ConfigurationSection section;
 
     /**
      * Constructs the button
      *
      * @param section {@link ConfigurationSection} for the button
      */
-    public ButtonProperty(final CommentedConfigurationNode section) {
+    public ButtonProperty(final ConfigurationSection section) {
         this.section = section;
     }
 
@@ -27,7 +26,7 @@ public class ButtonProperty {
      * @return the material to build {@link org.bukkit.Material}
      */
     public final String getDisplayMaterial() {
-        return this.section.node("preview", "display_material").getString("compass");
+        return this.section.getString("preview.display_material", "compass");
     }
 
     /**
@@ -36,7 +35,7 @@ public class ButtonProperty {
      * @return {@link String} display name
      */
     public final String getDisplayName() {
-        return this.section.node("preview", "display_name").getString("");
+        return this.section.getString("preview.display_name", "");
     }
 
     /**
@@ -45,7 +44,7 @@ public class ButtonProperty {
      * @return {@link List<String>} list of strings
      */
     public final List<String> getDisplayLore() {
-        return this.section.node("preview", "display_lore").getList();
+        return this.section.getStringList("preview.display_lore");
     }
 
     /**
@@ -54,7 +53,7 @@ public class ButtonProperty {
      * @return the row number
      */
     public final int getDisplayRow() {
-        return this.section.node("preview", "display_position", "row").getInt(-1);
+        return this.section.getInt("preview.display_position.row", -1);
     }
 
     /**
@@ -63,7 +62,7 @@ public class ButtonProperty {
      * @return the column number
      */
     public final int getDisplayColumn() {
-        return this.section.node("preview", "display_position", "column").getInt(-1);
+        return this.section.getInt("preview.display_position.column", -1);
     }
 
     /**
@@ -104,7 +103,7 @@ public class ButtonProperty {
     public final ItemBuilder build(@Nullable final Map<String, String> placeholders, final boolean hasMaterial, @NotNull final String base64) {
         ItemBuilder itemBuilder = new ItemBuilder();
 
-        if (hasMaterial && !this.section.node("preview", "display_material").virtual()) {
+        if (hasMaterial && !this.section.contains("preview.display_material")) {
             itemBuilder.withType(getDisplayMaterial());
         } else {
             itemBuilder = itemBuilder.fromBase64(base64);

@@ -1,40 +1,38 @@
 package com.ryderbelserion.redstonepvp.managers.config.beans;
 
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiType;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.YamlFile;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuiProperty {
 
-    private final CommentedConfigurationNode configuration;
+    private final YamlFile configuration;
 
-    public GuiProperty(final CommentedConfigurationNode configuration) {
+    public GuiProperty(final YamlFile configuration) {
         this.configuration = configuration;
     }
 
     public final GuiType getGuiType() {
-        return GuiType.valueOf(this.configuration.node("menu", "type").getString("chest").toUpperCase());
+        return GuiType.valueOf(this.configuration.getString("menu.type", "chest").toUpperCase());
     }
 
     public final String getGuiTitle() {
-        return this.configuration.node("menu", "title").getString("<red>Basic Title</red>");
+        return this.configuration.getString("menu.title", "<red>Basic Title</red>");
     }
 
     public final int getGuiRows() {
-        this.configuration.virtual();
-
-        return this.configuration.node("menu", "rows").getInt(6);
+        return this.configuration.getInt("menu.rows", 6);
     }
 
     public @Nullable final ButtonProperty getNextButton() {
-        final CommentedConfigurationNode node = this.configuration.node("menu", "next_button");
+        final ConfigurationSection section = this.configuration.getConfigurationSection("menu.next_button");
 
-        if (!node.virtual()) return null;
+        if (section == null) return null;
 
-        return new ButtonProperty(node);
+        return new ButtonProperty(this.configuration.getConfigurationSection("menu.next_button"));
     }
 
     public @Nullable final ButtonProperty getBackButton() {

@@ -1,9 +1,9 @@
 package com.ryderbelserion.redstonepvp.api.objects;
 
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ItemDrop {

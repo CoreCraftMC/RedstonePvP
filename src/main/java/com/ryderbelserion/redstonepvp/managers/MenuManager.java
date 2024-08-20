@@ -39,7 +39,7 @@ public class MenuManager {
         guis.clear();
 
         //fileManager.getCustomFiles().forEach(file -> guis.put(file.getStrippedName(), new GuiProperty(file.getConfiguration())));
-        fileManager.getCustomFiles().forEach((file, custom) -> guis.put(file, new GuiProperty(custom.getRoot())));
+        fileManager.getCustomFiles().forEach((file, custom) -> guis.put(file, new GuiProperty(custom.getConfiguration())));
     }
 
     public static GuiProperty getGui(final String name) {
