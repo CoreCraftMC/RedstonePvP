@@ -21,9 +21,6 @@ public class Config implements SettingsHolder {
     @Comment("The prefix used in commands")
     public static final Property<String> command_prefix = newProperty("root.prefix", "<dark_red><b>[</b></dark_red><red>Redstone<white>PvP<dark_red><b>]</b></dark_red> <reset>");
 
-    @Comment("Do you want verbose logs in console?")
-    public static final Property<Boolean> verbose_logging = newProperty("root.verbose-logging", false);
-
     @Comment("The name of the main menu for /redstonepvp")
     public static final Property<String> main_menu_name = newProperty("root.main-menu-name", "main-menu");
 
