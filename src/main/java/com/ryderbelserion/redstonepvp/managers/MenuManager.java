@@ -9,18 +9,18 @@ import com.ryderbelserion.redstonepvp.managers.config.beans.GuiProperty;
 import com.ryderbelserion.redstonepvp.managers.config.types.Config;
 import com.ryderbelserion.redstonepvp.utils.ItemUtils;
 import com.ryderbelserion.redstonepvp.utils.MiscUtils;
-import com.ryderbelserion.vital.common.managers.files.FileManager;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import com.ryderbelserion.redstonepvp.api.objects.ItemBuilder;
+import com.ryderbelserion.vital.paper.api.files.FileManager;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.simpleyaml.configuration.file.YamlFile;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +40,7 @@ public class MenuManager {
         guis.clear();
 
         fileManager.getCustomFiles().forEach((file, custom) -> {
-            final YamlFile configuration = custom.getConfiguration();
+            final YamlConfiguration configuration = custom.getConfiguration();
 
             if (configuration != null) {
                 guis.put(file, new GuiProperty(configuration));

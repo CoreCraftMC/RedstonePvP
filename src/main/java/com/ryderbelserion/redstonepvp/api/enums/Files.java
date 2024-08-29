@@ -1,7 +1,7 @@
 package com.ryderbelserion.redstonepvp.api.enums;
 
 import com.ryderbelserion.redstonepvp.RedstonePvP;
-import org.simpleyaml.configuration.file.YamlFile;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public enum Files {
 
@@ -15,7 +15,7 @@ public enum Files {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
-    public final YamlFile getConfiguration() {
+    public final YamlConfiguration getConfiguration() {
         return this.plugin.getFileManager().getFile(this.fileName).getConfiguration();
     }
 }

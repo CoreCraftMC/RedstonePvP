@@ -3,8 +3,8 @@ package com.ryderbelserion.redstonepvp.managers.config.beans;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.simpleyaml.configuration.ConfigurationSection;
 
 public class SoundProperty {
 

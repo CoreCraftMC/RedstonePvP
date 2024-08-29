@@ -1,9 +1,9 @@
 package com.ryderbelserion.redstonepvp.managers.config.beans;
 
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiType;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
-import org.simpleyaml.configuration.ConfigurationSection;
-import org.simpleyaml.configuration.file.YamlFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class GuiProperty {
 
     private final List<ButtonProperty> buttons = new ArrayList<>();
 
-    public GuiProperty(final YamlFile configuration) {
+    public GuiProperty(final YamlConfiguration configuration) {
         this.guiType = GuiType.valueOf(configuration.getString("menu.type", "chest").toUpperCase());
         this.guiTitle = configuration.getString("menu.title", "<red>Basic Title</red>");
         this.guiRows = configuration.getInt("menu.rows", 6);

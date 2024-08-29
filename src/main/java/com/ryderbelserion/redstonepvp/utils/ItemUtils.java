@@ -17,7 +17,7 @@ public class ItemUtils {
     public static void addButtons(final GuiProperty property, final PaginatedGui gui) {
         final ButtonProperty backButton = property.getBackButton();
         final ButtonProperty nextButton = property.getNextButton();
-        final ButtonProperty menuButton = property.getMenuButton();
+        final ButtonProperty menuButton = property.getHomeButton();
 
         if (backButton != null) {
             gui.setItem(backButton.getDisplayRow(), backButton.getDisplayColumn(), gui.asGuiItem(new ItemBuilder().withType(backButton.getDisplayMaterial())
