@@ -46,8 +46,10 @@ public class RedstonePvP extends Vital {
     public void onLoad() {
         this.startTime = System.nanoTime();
 
-        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this, new PacketEventsSettings().checkForUpdates(false)));
-        PacketEvents.getAPI().load();
+        if (PluginManager.isEnabled("packetevents")) {
+            PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this, new PacketEventsSettings().checkForUpdates(false)));
+            PacketEvents.getAPI().load();
+        }
     }
 
     private DataManager dataManager;
