@@ -19,8 +19,6 @@ dependencies {
 
     implementation(libs.vital.paper)
 
-    implementation(libs.yalu)
-
     compileOnly(libs.placeholderapi)
 
     compileOnly(libs.packet.events)
@@ -45,7 +43,6 @@ tasks {
 
         listOf(
             "com.ryderbelserion.vital",
-            "ch.jalu"
         ).forEach {
             relocate(it, "libs.$it")
         }
@@ -63,13 +60,4 @@ tasks {
             expand(inputs.properties)
         }
     }
-}
-
-tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
-    javaLauncher = javaToolchains.launcherFor {
-        vendor = JvmVendorSpec.JETBRAINS
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-
-    jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
 }
