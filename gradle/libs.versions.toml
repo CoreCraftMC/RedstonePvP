@@ -21,7 +21,7 @@ packetevents = "2.4.0"
 adventure = "4.17.0"
 yardwatch = "2.0.0"
 hikari = "4.0.3"
-vital = "2.8.4"
+vital = "2.8.3"
 
 [libraries]
 # Servers
