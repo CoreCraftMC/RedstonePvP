@@ -15,8 +15,6 @@ repositories {
 
     maven("https://jitpack.io")
 
-    flatDir { dirs("libs") }
-
     mavenCentral()
 }
 
