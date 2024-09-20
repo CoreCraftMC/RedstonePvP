@@ -21,7 +21,7 @@ packetevents = "2.4.0"
 adventure = "4.17.0"
 yardwatch = "2.0.0"
 hikari = "4.0.3"
-vital = "2.8.3"
+vital = "0.0.7"
 
 [libraries]
 # Servers
@@ -38,7 +38,6 @@ yardwatch = { module = "com.github.YouHaveTrouble:YardWatchAPI", version.ref = "
 placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
 
 # Common
-vital-common = { module = "com.ryderbelserion.vital:common", version.ref = "vital" }
 vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital" }
 hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 
