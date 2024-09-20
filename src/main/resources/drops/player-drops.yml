@@ -1,9 +1,9 @@
-# settings related to drops.
+# Settings related to drops.
 settings:
-  # should players drop items?
-  player-drops: true
+  # Should player drops be enabled?
+  toggle: true
 
-# the items to drop.
+# The items to drop.
 drops:
   gold_ingot:
     # the material to drop
