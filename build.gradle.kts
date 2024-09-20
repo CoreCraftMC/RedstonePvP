@@ -19,11 +19,11 @@ dependencies {
 
     implementation(libs.vital.paper)
 
+    implementation(libs.hikari.cp)
+
     compileOnly(libs.placeholderapi)
 
     compileOnly(libs.packet.events)
-
-    compileOnly(libs.hikari.cp)
 
     compileOnly(libs.yardwatch)
 }
@@ -43,6 +43,7 @@ tasks {
 
         listOf(
             "com.ryderbelserion.vital",
+            "com.zaxxer",
         ).forEach {
             relocate(it, "libs.$it")
         }
