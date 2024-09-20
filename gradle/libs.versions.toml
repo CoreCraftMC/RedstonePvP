@@ -1,7 +1,7 @@
 [plugins]
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
 runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
-shadow = { id = "io.github.goooler.shadow", version.ref = "shadow" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 
 [versions]
 # Paper
