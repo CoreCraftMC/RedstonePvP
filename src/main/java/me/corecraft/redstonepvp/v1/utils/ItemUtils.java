@@ -23,7 +23,7 @@ public class ItemUtils {
             gui.setItem(backButton.getDisplayRow(), backButton.getDisplayColumn(), gui.asGuiItem(new ItemBuilder().withType(backButton.getDisplayMaterial())
                     .setDisplayName(backButton.getDisplayName())
                     .setDisplayLore(backButton.getDisplayLore())
-                    .getStack(), action -> {
+                    .asItemStack(), action -> {
                 if (!(action.getWhoClicked() instanceof Player clicker)) return;
 
                 backButton.getSoundProperty().playSound(clicker);
@@ -39,7 +39,7 @@ public class ItemUtils {
             gui.setItem(nextButton.getDisplayRow(), nextButton.getDisplayColumn(), gui.asGuiItem(new ItemBuilder().withType(nextButton.getDisplayMaterial())
                     .setDisplayName(nextButton.getDisplayName())
                     .setDisplayLore(nextButton.getDisplayLore())
-                    .getStack(), action -> {
+                    .asItemStack(), action -> {
                 if (!(action.getWhoClicked() instanceof Player clicker)) return;
 
                 nextButton.getSoundProperty().playSound(clicker);
@@ -55,7 +55,7 @@ public class ItemUtils {
             gui.setItem(menuButton.getDisplayRow(), menuButton.getDisplayColumn(), gui.asGuiItem(new ItemBuilder().withType(menuButton.getDisplayMaterial())
                     .setDisplayName(menuButton.getDisplayName())
                     .setDisplayLore(menuButton.getDisplayLore())
-                    .getStack(), action -> {
+                    .asItemStack(), action -> {
                 if (!(action.getWhoClicked() instanceof Player clicker)) return;
 
                 menuButton.getSoundProperty().playSound(clicker);

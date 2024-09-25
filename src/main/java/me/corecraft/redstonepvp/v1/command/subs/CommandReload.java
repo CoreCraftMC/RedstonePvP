@@ -1,11 +1,11 @@
 package me.corecraft.redstonepvp.v1.command.subs;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.ryderbelserion.vital.paper.commands.PaperCommand;
+import com.ryderbelserion.vital.paper.commands.context.PaperCommandInfo;
 import me.corecraft.redstonepvp.v1.RedstonePvP;
 import me.corecraft.redstonepvp.v1.managers.BeaconManager;
 import me.corecraft.redstonepvp.v1.managers.MenuManager;
-import com.ryderbelserion.vital.paper.api.commands.Command;
-import com.ryderbelserion.vital.paper.api.commands.CommandData;
 import me.corecraft.redstonepvp.v1.api.enums.Messages;
 import me.corecraft.redstonepvp.v1.managers.config.ConfigManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -14,12 +14,12 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
 
-public class CommandReload extends Command {
+public class CommandReload extends PaperCommand {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public void execute(final CommandData data) {
+    public void execute(final PaperCommandInfo data) {
         this.plugin.getFileManager().reloadFiles();
 
         // Refresh the config.
@@ -48,14 +48,14 @@ public class CommandReload extends Command {
         return Commands.literal("reload")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .executes(context -> {
-                    execute(new CommandData(context));
+                    execute(new PaperCommandInfo(context));
 
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 }).build();
     }
 
     @Override
-    public @NotNull final Command registerPermission() {
+    public @NotNull final PaperCommand registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

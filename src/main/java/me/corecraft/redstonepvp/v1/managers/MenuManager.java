@@ -69,7 +69,7 @@ public class MenuManager {
             final List<ButtonProperty> buttons = property.getButtons();
 
             buttons.forEach(button -> {
-                final GuiItem item = gui.asGuiItem(button.build().getStack(), action -> {
+                final GuiItem item = gui.asGuiItem(button.build().asItemStack(), action -> {
                     if (!(action.getWhoClicked() instanceof Player clicker)) return;
 
                     button.getCommands().forEach(command -> server.dispatchCommand(server.getConsoleSender(), command.replaceAll("\\{player}", clicker.getName())));
@@ -110,7 +110,7 @@ public class MenuManager {
                                 }})
                         .setPersistentString(PersistentKeys.beacon_uuid.getNamespacedKey(), beacon.getName());
 
-                gui.addPageItem(gui.asGuiItem(itemBuilder.getStack(), event -> {
+                gui.addItem(gui.asGuiItem(itemBuilder.asItemStack(), event -> {
                     if (!(event.getWhoClicked() instanceof Player player)) return;
 
                     switch (event.getClick()) {
@@ -175,7 +175,7 @@ public class MenuManager {
 
                                 drop.setPersistentString(PersistentKeys.beacon_item.getNamespacedKey(), key);
 
-                                item_gui.addPageItem(item_gui.asGuiItem(drop.getStack(), clickEvent -> {
+                                item_gui.addItem(item_gui.asGuiItem(drop.asItemStack(), clickEvent -> {
                                     final GuiItem guiItem = item_gui.getPageItem(clickEvent.getSlot());
 
                                     if (guiItem == null) return;
@@ -192,7 +192,7 @@ public class MenuManager {
                                 }));
                             });
 
-                            item_gui.open(player, 1);
+                            item_gui.open(player);
                         }
                     }
                 }));
@@ -203,6 +203,6 @@ public class MenuManager {
             }
         }
 
-        gui.open(sender, 1);
+        gui.open(sender);
     }
 }

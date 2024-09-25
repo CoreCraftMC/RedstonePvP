@@ -1,38 +1,8 @@
 package me.corecraft.redstonepvp.v1;
 
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.settings.PacketEventsSettings;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import me.corecraft.redstonepvp.v1.command.BaseCommand;
-import me.corecraft.redstonepvp.v1.command.subs.CommandBypass;
-import me.corecraft.redstonepvp.v1.command.subs.CommandHelp;
-import me.corecraft.redstonepvp.v1.command.subs.CommandOpen;
-import me.corecraft.redstonepvp.v1.command.subs.CommandReload;
-import me.corecraft.redstonepvp.v1.command.subs.beacons.CommandBeacon;
-import me.corecraft.redstonepvp.v1.listeners.modules.combat.AttackCooldownModule;
-import me.corecraft.redstonepvp.v1.listeners.modules.combat.HitDelayModule;
-import me.corecraft.redstonepvp.v1.listeners.modules.combat.PlayerDropsModule;
-import me.corecraft.redstonepvp.v1.managers.BeaconManager;
-import me.corecraft.redstonepvp.v1.managers.config.ConfigManager;
 import me.corecraft.redstonepvp.v1.managers.data.DataManager;
-import me.corecraft.redstonepvp.v1.listeners.PlayerDamageListener;
-import me.corecraft.redstonepvp.v1.listeners.modules.items.AnvilRepairListener;
-import me.corecraft.redstonepvp.v1.listeners.modules.items.ItemFrameListener;
-import me.corecraft.redstonepvp.v1.managers.data.types.Connector;
-import me.corecraft.redstonepvp.v1.support.PacketEventsSupport;
-import me.corecraft.redstonepvp.v1.support.PlaceholderAPISupport;
-import com.ryderbelserion.vital.common.api.interfaces.IPlugin;
-import com.ryderbelserion.vital.common.managers.PluginManager;
 import com.ryderbelserion.vital.paper.Vital;
-import com.ryderbelserion.vital.paper.api.commands.modules.ModuleLoader;
-import com.ryderbelserion.vital.paper.api.enums.Support;
-import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
-import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.List;
-import java.util.Locale;
 
 public class RedstonePvP extends Vital {
 
@@ -46,17 +16,17 @@ public class RedstonePvP extends Vital {
     public void onLoad() {
         this.startTime = System.nanoTime();
 
-        if (PluginManager.isEnabled("packetevents")) {
-            PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this, new PacketEventsSettings().checkForUpdates(false)));
-            PacketEvents.getAPI().load();
-        }
+        //if (PluginManager.isEnabled("packetevents")) {
+        //    PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this, new PacketEventsSettings().checkForUpdates(false)));
+        //    PacketEvents.getAPI().load();
+        //}
     }
 
     private DataManager dataManager;
 
     @Override
     public void onEnable() {
-        //getFileManager().addFile(new File(getDataFolder(), "player-drops.yml")).addFolder("static").init();
+        /*//getFileManager().addFile(new File(getDataFolder(), "player-drops.yml")).addFolder("static").init();
 
         ConfigManager.load(getDataFolder());
 
@@ -116,11 +86,12 @@ public class RedstonePvP extends Vital {
         }
 
         getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
+        */
     }
 
     @Override
     public void onDisable() {
-        final IPlugin packets = PluginManager.getPlugin("packetevents");
+        /*final IPlugin packets = PluginManager.getPlugin("packetevents");
 
         if (packets != null) {
             packets.stop();
@@ -136,7 +107,7 @@ public class RedstonePvP extends Vital {
 
         // yeet data
         getLoader().unload(true);
-        getFileManager().purge();
+        getFileManager().purge();*/
     }
 
     public final DataManager getDataManager() {

@@ -4,9 +4,9 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.ryderbelserion.vital.paper.commands.PaperCommand;
+import com.ryderbelserion.vital.paper.commands.context.PaperCommandInfo;
 import me.corecraft.redstonepvp.v1.RedstonePvP;
-import com.ryderbelserion.vital.paper.api.commands.Command;
-import com.ryderbelserion.vital.paper.api.commands.CommandData;
 import me.corecraft.redstonepvp.v1.api.enums.Messages;
 import me.corecraft.redstonepvp.v1.managers.BeaconManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -17,12 +17,12 @@ import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
-public class CommandBeaconRemove extends Command {
+public class CommandBeaconRemove extends PaperCommand {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public void execute(final CommandData data) {
+    public void execute(final PaperCommandInfo data) {
         final CommandSender sender = data.getCommandSender();
 
         final String name = data.getStringArgument("name");
@@ -52,7 +52,7 @@ public class CommandBeaconRemove extends Command {
 
             return builder.buildFuture();
         }).executes(context -> {
-            execute(new CommandData(context));
+            execute(new PaperCommandInfo(context));
 
             return com.mojang.brigadier.Command.SINGLE_SUCCESS;
         });
@@ -61,7 +61,7 @@ public class CommandBeaconRemove extends Command {
     }
 
     @Override
-    public @NotNull final Command registerPermission() {
+    public @NotNull final PaperCommand registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

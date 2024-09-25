@@ -4,11 +4,11 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.ryderbelserion.vital.paper.commands.PaperCommand;
+import com.ryderbelserion.vital.paper.commands.context.PaperCommandInfo;
 import me.corecraft.redstonepvp.v1.RedstonePvP;
 import me.corecraft.redstonepvp.v1.api.enums.Messages;
 import me.corecraft.redstonepvp.v1.managers.MenuManager;
-import com.ryderbelserion.vital.paper.api.commands.Command;
-import com.ryderbelserion.vital.paper.api.commands.CommandData;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.Server;
@@ -18,13 +18,13 @@ import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
-public class CommandOpen extends Command {
+public class CommandOpen extends PaperCommand {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
     private final Server server = this.plugin.getServer();
 
     @Override
-    public void execute(final CommandData data) {
+    public void execute(final PaperCommandInfo data) {
         final String arg1 = data.getStringArgument("name");
 
         if (arg1.isEmpty() || !MenuManager.getGuis().containsKey(arg1)) {
@@ -66,7 +66,7 @@ public class CommandOpen extends Command {
 
             return builder.buildFuture();
         }).executes(context -> {
-            execute(new CommandData(context));
+            execute(new PaperCommandInfo(context));
 
             return com.mojang.brigadier.Command.SINGLE_SUCCESS;
         });
@@ -75,7 +75,7 @@ public class CommandOpen extends Command {
     }
 
     @Override
-    public @NotNull final Command registerPermission() {
+    public @NotNull final PaperCommand registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

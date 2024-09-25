@@ -2,10 +2,10 @@ package me.corecraft.redstonepvp.v1.command.subs;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.ryderbelserion.vital.paper.commands.PaperCommand;
+import com.ryderbelserion.vital.paper.commands.context.PaperCommandInfo;
 import me.corecraft.redstonepvp.v1.RedstonePvP;
 import me.corecraft.redstonepvp.v1.api.cache.CacheManager;
-import com.ryderbelserion.vital.paper.api.commands.Command;
-import com.ryderbelserion.vital.paper.api.commands.CommandData;
 import me.corecraft.redstonepvp.v1.api.enums.Messages;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -14,12 +14,12 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
 
-public class CommandBypass extends Command {
+public class CommandBypass extends PaperCommand {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public void execute(final CommandData data) {
+    public void execute(final PaperCommandInfo data) {
         if (!data.isPlayer()) {
             Messages.not_a_player.sendMessage(data.getCommandSender());
 
@@ -49,14 +49,14 @@ public class CommandBypass extends Command {
         LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("bypass").requires(source -> source.getSender().hasPermission(getPermission()));
 
         return root.executes(context -> {
-                    execute(new CommandData(context));
+                    execute(new PaperCommandInfo(context));
 
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 }).build();
     }
 
     @Override
-    public @NotNull final Command registerPermission() {
+    public @NotNull final PaperCommand registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

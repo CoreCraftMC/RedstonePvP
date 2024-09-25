@@ -5,13 +5,13 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.ryderbelserion.vital.paper.commands.PaperCommand;
+import com.ryderbelserion.vital.paper.commands.context.PaperCommandInfo;
 import me.corecraft.redstonepvp.v1.RedstonePvP;
 import me.corecraft.redstonepvp.v1.api.enums.Messages;
 import me.corecraft.redstonepvp.v1.api.objects.beacons.Beacon;
 import me.corecraft.redstonepvp.v1.api.objects.beacons.BeaconDrop;
 import me.corecraft.redstonepvp.v1.managers.BeaconManager;
-import com.ryderbelserion.vital.paper.api.commands.Command;
-import com.ryderbelserion.vital.paper.api.commands.CommandData;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.entity.Player;
@@ -21,12 +21,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
-public class CommandBeaconItemRemove extends Command {
+public class CommandBeaconItemRemove extends PaperCommand {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public void execute(final CommandData data) {
+    public void execute(final PaperCommandInfo data) {
         if (!data.isPlayer()) {
             Messages.not_a_player.sendMessage(data.getCommandSender());
 
@@ -94,7 +94,7 @@ public class CommandBeaconItemRemove extends Command {
 
             return builder.buildFuture();
         }).executes(context -> {
-            execute(new CommandData(context));
+            execute(new PaperCommandInfo(context));
 
             return com.mojang.brigadier.Command.SINGLE_SUCCESS;
         });
@@ -103,7 +103,7 @@ public class CommandBeaconItemRemove extends Command {
     }
 
     @Override
-    public @NotNull final Command registerPermission() {
+    public @NotNull final PaperCommand registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

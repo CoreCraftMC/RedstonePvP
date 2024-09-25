@@ -1,22 +1,22 @@
 package me.corecraft.redstonepvp.v1.command.subs.beacons.item;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.ryderbelserion.vital.paper.commands.PaperCommand;
+import com.ryderbelserion.vital.paper.commands.context.PaperCommandInfo;
 import me.corecraft.redstonepvp.v1.RedstonePvP;
 import me.corecraft.redstonepvp.v1.api.enums.Messages;
-import com.ryderbelserion.vital.paper.api.commands.Command;
-import com.ryderbelserion.vital.paper.api.commands.CommandData;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
 
-public class CommandBeaconItem extends Command {
+public class CommandBeaconItem extends PaperCommand {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public void execute(final CommandData data) {
+    public void execute(final PaperCommandInfo data) {
         Messages.beacon_drop_help.sendMessage(data.getCommandSender());
     }
 
@@ -30,7 +30,7 @@ public class CommandBeaconItem extends Command {
         return Commands.literal("item")
                 .requires(source -> source.getSender().hasPermission(getPermission()))
                 .executes(context -> {
-                    execute(new CommandData(context));
+                    execute(new PaperCommandInfo(context));
 
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 })
@@ -41,7 +41,7 @@ public class CommandBeaconItem extends Command {
     }
 
     @Override
-    public @NotNull final Command registerPermission() {
+    public @NotNull final PaperCommand registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

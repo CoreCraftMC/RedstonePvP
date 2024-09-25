@@ -3,7 +3,7 @@ package me.corecraft.redstonepvp.v1.listeners.modules.combat;
 import me.corecraft.redstonepvp.v1.utils.MiscUtils;
 import me.corecraft.redstonepvp.v1.api.enums.Files;
 import me.corecraft.redstonepvp.v1.api.objects.ItemDrop;
-import com.ryderbelserion.vital.paper.api.commands.modules.interfaces.IPaperModule;
+import com.ryderbelserion.vital.paper.modules.interfaces.IPaperModule;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;

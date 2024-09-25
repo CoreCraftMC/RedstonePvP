@@ -6,12 +6,12 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.ryderbelserion.vital.paper.commands.PaperCommand;
+import com.ryderbelserion.vital.paper.commands.context.PaperCommandInfo;
 import me.corecraft.redstonepvp.v1.RedstonePvP;
 import me.corecraft.redstonepvp.v1.api.enums.Messages;
 import me.corecraft.redstonepvp.v1.api.objects.beacons.BeaconDrop;
 import me.corecraft.redstonepvp.v1.managers.BeaconManager;
-import com.ryderbelserion.vital.paper.api.commands.Command;
-import com.ryderbelserion.vital.paper.api.commands.CommandData;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -24,12 +24,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
-public class CommandBeaconItemSet extends Command {
+public class CommandBeaconItemSet extends PaperCommand {
 
     private final RedstonePvP plugin = RedstonePvP.getPlugin();
 
     @Override
-    public void execute(final CommandData data) {
+    public void execute(final PaperCommandInfo data) {
         if (!data.isPlayer()) {
             Messages.not_a_player.sendMessage(data.getCommandSender());
 
@@ -96,7 +96,7 @@ public class CommandBeaconItemSet extends Command {
         final RequiredArgumentBuilder<CommandSourceStack, Integer> arg2 = argument("min", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder, 1, 60));
         final RequiredArgumentBuilder<CommandSourceStack, Integer> arg3 = argument("max", IntegerArgumentType.integer()).suggests((ctx, builder) -> suggestIntegers(builder, 1, 60));
         final RequiredArgumentBuilder<CommandSourceStack, Float> arg4 = argument("weight", FloatArgumentType.floatArg()).suggests((ctx, builder) -> suggestDoubles(builder)).executes(context -> {
-            execute(new CommandData(context));
+            execute(new PaperCommandInfo(context));
 
             return com.mojang.brigadier.Command.SINGLE_SUCCESS;
         });
@@ -105,7 +105,7 @@ public class CommandBeaconItemSet extends Command {
     }
 
     @Override
-    public @NotNull final Command registerPermission() {
+    public @NotNull final PaperCommand registerPermission() {
         final Permission permission = this.plugin.getServer().getPluginManager().getPermission(getPermission());
 
         if (permission == null) {

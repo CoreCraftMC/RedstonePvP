@@ -1,9 +1,9 @@
 package me.corecraft.redstonepvp.v1.listeners.modules.combat;
 
+import com.ryderbelserion.vital.paper.modules.interfaces.IPaperModule;
 import me.corecraft.redstonepvp.v1.RedstonePvP;
 import me.corecraft.redstonepvp.v1.managers.config.ConfigManager;
 import me.corecraft.redstonepvp.v1.managers.config.types.Config;
-import com.ryderbelserion.vital.paper.api.commands.modules.interfaces.IPaperModule;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
