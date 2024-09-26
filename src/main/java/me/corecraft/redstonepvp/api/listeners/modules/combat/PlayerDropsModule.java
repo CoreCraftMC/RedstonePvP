@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PlayerDropsModule implements IPaperModule {
@@ -53,7 +54,7 @@ public class PlayerDropsModule implements IPaperModule {
 
             if (subSection == null) return;
 
-            this.drops.add(new ItemDrop(subSection));
+            this.drops.add(new ItemDrop(subSection, new HashMap<>()));
         });
     }
 

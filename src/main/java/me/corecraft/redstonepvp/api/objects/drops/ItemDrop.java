@@ -8,22 +8,23 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ItemDrop extends ItemProperty {
 
     private ItemBuilder itemBuilder;
 
-    private List<String> commands;
-    private List<String> messages;
+    private final List<String> commands;
+    private final List<String> messages;
     private final double weight;
     private final int max;
     private final int min;
 
-    public ItemDrop(final ConfigurationSection section) {
-        super(section, null);
+    public ItemDrop(final ConfigurationSection section, final Map<String, String> placeholders) {
+        super(section, placeholders);
 
-        this.itemBuilder = new ItemBuilder().withType(section.getString("material", "gold_ingot"));
+        this.itemBuilder = new ItemBuilder().setNamePlaceholders(placeholders).setLorePlaceholders(placeholders).withType(section.getString("material", "gold_ingot"));
 
         this.commands = section.getStringList("commands");
         this.messages = section.getStringList("messages");
@@ -37,6 +38,9 @@ public class ItemDrop extends ItemProperty {
 
         this.itemBuilder = new ItemBuilder().withType(material).setAmount(ThreadLocalRandom.current().nextInt(min, max));
 
+        this.commands = null;
+        this.messages = null;
+
         this.weight = weight;
         this.min = min;
         this.max = max;
@@ -48,6 +52,9 @@ public class ItemDrop extends ItemProperty {
         if (item != null) {
             this.itemBuilder = new ItemBuilder().fromBase64(item).setAmount(ThreadLocalRandom.current().nextInt(min, max));
         }
+
+        this.commands = null;
+        this.messages = null;
 
         this.weight = weight;
         this.min = min;
