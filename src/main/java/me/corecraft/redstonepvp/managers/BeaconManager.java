@@ -99,7 +99,7 @@ public class BeaconManager {
         if (isReload) {
             beaconTasks.forEach((name, task) -> {
                 if (!task.isCancelled()) {
-                    plugin.getLogger().warning("The task for " + name + " was cancelled because the plugin reloaded.");
+                    plugin.getComponentLogger().warn("The task for {} was cancelled because the plugin reloaded.", name);
 
                     final Beacon beacon = beaconDrops.get(name);
 
